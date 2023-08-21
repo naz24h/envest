@@ -1,6 +1,23 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'
+
+const gilroy = localFont({
+  src: [
+    {
+      path: '../assets/fonts/Gilroy-Light.otf',
+      weight: '400',
+    },
+    {
+      path: '../assets/fonts/Gilroy-ExtraBold.otf',
+      weight: '700',
+    }
+  ]
+},
+)
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={gilroy.className}>{children}</body>
     </html>
   )
 }
