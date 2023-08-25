@@ -3,15 +3,17 @@ import Image from 'next/image';
 
 const Logo = () => {
     return (
-        <Image
-            src="/site/logo.png"
-            alt="envest"
-            width={126}
-            height={30}
-            quality={70}
-            priority={true}
-            style={{ width: '126px', height: '30px' }}
-        />
+        <div className='relative w-[126px] h-[30px]'  >
+            <>
+            <Image
+                src="/site/logo.png"
+                alt="envest" 
+                quality={70}
+                priority={true}
+                fill={true}
+            />
+            </>
+        </div>
     )
 }
 
