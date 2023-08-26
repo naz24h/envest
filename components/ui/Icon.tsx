@@ -93,90 +93,96 @@ export default function Icon({ name, className = 'stroke-white' }: { name: strin
                 </svg>
             );
         case 'user-chat':
-            return(
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
-                    <path d="M48 50.2926H45.9733C43.84 50.2926 41.8133 51.1193 40.32 52.6126L35.7599 57.1193C33.6799 59.1726 30.2934 59.1726 28.2134 57.1193L23.6533 52.6126C22.16 51.1193 20.1067 50.2926 18 50.2926H16C11.5733 50.2926 8 46.7461 8 42.3727V13.2793C8 8.90596 11.5733 5.35938 16 5.35938H48C52.4267 5.35938 56 8.90596 56 13.2793V42.3727C56 46.7194 52.4267 50.2926 48 50.2926Z" stroke="#123857" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M32 26.6668C35.4315 26.6668 38.2134 23.885 38.2134 20.4535C38.2134 17.0219 35.4315 14.2402 32 14.2402C28.5685 14.2402 25.7866 17.0219 25.7866 20.4535C25.7866 23.885 28.5685 26.6668 32 26.6668Z" stroke="#00D296" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M42.6667 41.7596C42.6667 36.9596 37.8933 33.0664 32 33.0664C26.1067 33.0664 21.3333 36.9596 21.3333 41.7596" stroke="#00D296" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M48 50.2926H45.9733C43.84 50.2926 41.8133 51.1193 40.32 52.6126L35.7599 57.1193C33.6799 59.1726 30.2934 59.1726 28.2134 57.1193L23.6533 52.6126C22.16 51.1193 20.1067 50.2926 18 50.2926H16C11.5733 50.2926 8 46.7461 8 42.3727V13.2793C8 8.90596 11.5733 5.35938 16 5.35938H48C52.4267 5.35938 56 8.90596 56 13.2793V42.3727C56 46.7194 52.4267 50.2926 48 50.2926Z" stroke="#123857" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M32 26.6668C35.4315 26.6668 38.2134 23.885 38.2134 20.4535C38.2134 17.0219 35.4315 14.2402 32 14.2402C28.5685 14.2402 25.7866 17.0219 25.7866 20.4535C25.7866 23.885 28.5685 26.6668 32 26.6668Z" stroke="#00D296" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M42.6667 41.7596C42.6667 36.9596 37.8933 33.0664 32 33.0664C26.1067 33.0664 21.3333 36.9596 21.3333 41.7596" stroke="#00D296" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             );
 
         case 'transaktionen':
-            return(
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className={`stroke-[#292D32] ${className}`} fill="none">
-                <path d="M6.72827 19.7C7.54827 18.82 8.79828 18.89 9.51828 19.85L10.5283 21.2C11.3383 22.27 12.6483 22.27 13.4583 21.2L14.4683 19.85C15.1883 18.89 16.4383 18.82 17.2583 19.7C19.0383 21.6 20.4883 20.97 20.4883 18.31V7.04C20.4883 3.01 19.5483 2 15.7683 2H8.20828C4.42828 2 3.48828 3.01 3.48828 7.04V18.3C3.49828 20.97 4.95827 21.59 6.72827 19.7Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9.25 10H14.75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M6.72827 19.7C7.54827 18.82 8.79828 18.89 9.51828 19.85L10.5283 21.2C11.3383 22.27 12.6483 22.27 13.4583 21.2L14.4683 19.85C15.1883 18.89 16.4383 18.82 17.2583 19.7C19.0383 21.6 20.4883 20.97 20.4883 18.31V7.04C20.4883 3.01 19.5483 2 15.7683 2H8.20828C4.42828 2 3.48828 3.01 3.48828 7.04V18.3C3.49828 20.97 4.95827 21.59 6.72827 19.7Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M9.25 10H14.75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             );
         case 'wallet-card':
             return (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className={` stroke-primary ${className}`} viewBox="0 0 24 24" fill="none">
-            <path d="M2 8.50586H22" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M6 16.5059H8" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M10.5 16.5059H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M6.44 3.50586H17.55C21.11 3.50586 22 4.38586 22 7.89586V16.1059C22 19.6159 21.11 20.4959 17.56 20.4959H6.44C2.89 20.5059 2 19.6259 2 16.1159V7.89586C2 4.38586 2.89 3.50586 6.44 3.50586Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 8.50586H22" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 16.5059H8" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M10.5 16.5059H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6.44 3.50586H17.55C21.11 3.50586 22 4.38586 22 7.89586V16.1059C22 19.6159 21.11 20.4959 17.56 20.4959H6.44C2.89 20.5059 2 19.6259 2 16.1159V7.89586C2 4.38586 2.89 3.50586 6.44 3.50586Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>);
 
-        case 'money-up': 
-            return(
+        case 'money-up':
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className={`stroke-white ${className}`} viewBox="0 0 24 24" fill="none">
-                <path d="M2 8.5H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M6 16.5H8" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M10.5 16.5H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M22 14.03V16.11C22 19.62 21.11 20.5 17.56 20.5H6.44C2.89 20.5 2 19.62 2 16.11V7.89C2 4.38 2.89 3.5 6.44 3.5H14.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M20 9.5V3.5L22 5.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M20 3.5L18 5.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+                    <path d="M2 8.5H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M6 16.5H8" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M10.5 16.5H14.5" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M22 14.03V16.11C22 19.62 21.11 20.5 17.56 20.5H6.44C2.89 20.5 2 19.62 2 16.11V7.89C2 4.38 2.89 3.5 6.44 3.5H14.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M20 9.5V3.5L22 5.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M20 3.5L18 5.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
             );
 
-        case 'wallet-add': 
-            return(
+        case 'wallet-add':
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className={`stroke-[#123857] ${className}`} viewBox="0 0 24 24" fill="none">
-                    <path d="M14.2617 15.4375H9.26172" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M11.7617 12.998V17.998" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12.66 2.51814L12.63 2.58814L9.73001 9.31814H6.88001C6.20001 9.31814 5.55001 9.45814 4.96001 9.70814L6.71001 5.52814L6.75001 5.42814L6.82001 5.26814C6.84001 5.20814 6.86001 5.14814 6.89001 5.09814C8.20001 2.06814 9.68001 1.37814 12.66 2.51814Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M18.05 9.51758C17.6 9.37758 17.12 9.31758 16.64 9.31758H9.73L12.63 2.58758L12.66 2.51758C12.81 2.56758 12.95 2.63758 13.1 2.69758L15.31 3.62758C16.54 4.13758 17.4 4.66758 17.92 5.30758C18.02 5.42758 18.1 5.53758 18.17 5.66758C18.26 5.80758 18.33 5.94758 18.37 6.09758C18.41 6.18758 18.44 6.27758 18.46 6.35758C18.73 7.19758 18.57 8.22758 18.05 9.51758Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M21.5217 14.1984V16.1484C21.5217 16.3484 21.5117 16.5484 21.5017 16.7484C21.3117 20.2384 19.3617 21.9984 15.6617 21.9984H7.86172C7.62172 21.9984 7.38172 21.9784 7.15172 21.9484C3.97172 21.7384 2.27172 20.0384 2.06172 16.8584C2.03172 16.6284 2.01172 16.3884 2.01172 16.1484V14.1984C2.01172 12.1884 3.23172 10.4584 4.97172 9.70836C5.57172 9.45836 6.21172 9.31836 6.89172 9.31836H16.6517C17.1417 9.31836 17.6217 9.38836 18.0617 9.51836C20.0517 10.1284 21.5217 11.9884 21.5217 14.1984Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M6.71 5.52734L4.96 9.70734C3.22 10.4573 2 12.1873 2 14.1973V11.2673C2 8.42734 4.02 6.05734 6.71 5.52734Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M21.5186 11.2677V14.1977C21.5186 11.9977 20.0586 10.1277 18.0586 9.52766C18.5786 8.22766 18.7286 7.20766 18.4786 6.35766C18.4586 6.26766 18.4286 6.17766 18.3886 6.09766C20.2486 7.05766 21.5186 9.02766 21.5186 11.2677Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>);
+                    <path d="M14.2617 15.4375H9.26172" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M11.7617 12.998V17.998" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M12.66 2.51814L12.63 2.58814L9.73001 9.31814H6.88001C6.20001 9.31814 5.55001 9.45814 4.96001 9.70814L6.71001 5.52814L6.75001 5.42814L6.82001 5.26814C6.84001 5.20814 6.86001 5.14814 6.89001 5.09814C8.20001 2.06814 9.68001 1.37814 12.66 2.51814Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M18.05 9.51758C17.6 9.37758 17.12 9.31758 16.64 9.31758H9.73L12.63 2.58758L12.66 2.51758C12.81 2.56758 12.95 2.63758 13.1 2.69758L15.31 3.62758C16.54 4.13758 17.4 4.66758 17.92 5.30758C18.02 5.42758 18.1 5.53758 18.17 5.66758C18.26 5.80758 18.33 5.94758 18.37 6.09758C18.41 6.18758 18.44 6.27758 18.46 6.35758C18.73 7.19758 18.57 8.22758 18.05 9.51758Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M21.5217 14.1984V16.1484C21.5217 16.3484 21.5117 16.5484 21.5017 16.7484C21.3117 20.2384 19.3617 21.9984 15.6617 21.9984H7.86172C7.62172 21.9984 7.38172 21.9784 7.15172 21.9484C3.97172 21.7384 2.27172 20.0384 2.06172 16.8584C2.03172 16.6284 2.01172 16.3884 2.01172 16.1484V14.1984C2.01172 12.1884 3.23172 10.4584 4.97172 9.70836C5.57172 9.45836 6.21172 9.31836 6.89172 9.31836H16.6517C17.1417 9.31836 17.6217 9.38836 18.0617 9.51836C20.0517 10.1284 21.5217 11.9884 21.5217 14.1984Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M6.71 5.52734L4.96 9.70734C3.22 10.4573 2 12.1873 2 14.1973V11.2673C2 8.42734 4.02 6.05734 6.71 5.52734Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M21.5186 11.2677V14.1977C21.5186 11.9977 20.0586 10.1277 18.0586 9.52766C18.5786 8.22766 18.7286 7.20766 18.4786 6.35766C18.4586 6.26766 18.4286 6.17766 18.3886 6.09766C20.2486 7.05766 21.5186 9.02766 21.5186 11.2677Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>);
 
         case 'three-dots':
-            return(
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M9 11.5C9 12.3284 8.32843 13 7.5 13C6.67157 13 6 12.3284 6 11.5C6 10.6716 6.67157 10 7.5 10C8.32843 10 9 10.6716 9 11.5Z" fill="#123857"/>
-                    <path d="M13.5 11.5C13.5 12.3284 12.8284 13 12 13C11.1716 13 10.5 12.3284 10.5 11.5C10.5 10.6716 11.1716 10 12 10C12.8284 10 13.5 10.6716 13.5 11.5Z" fill="#123857"/>
-                    <path d="M18 11.5C18 12.3284 17.3284 13 16.5 13C15.6716 13 15 12.3284 15 11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5Z" fill="#123857"/>
-                    </svg>
+                    <path d="M9 11.5C9 12.3284 8.32843 13 7.5 13C6.67157 13 6 12.3284 6 11.5C6 10.6716 6.67157 10 7.5 10C8.32843 10 9 10.6716 9 11.5Z" fill="#123857" />
+                    <path d="M13.5 11.5C13.5 12.3284 12.8284 13 12 13C11.1716 13 10.5 12.3284 10.5 11.5C10.5 10.6716 11.1716 10 12 10C12.8284 10 13.5 10.6716 13.5 11.5Z" fill="#123857" />
+                    <path d="M18 11.5C18 12.3284 17.3284 13 16.5 13C15.6716 13 15 12.3284 15 11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5Z" fill="#123857" />
+                </svg>
             );
         case 'dot':
-            return(
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="16" 
-                    height="16" 
-                    fill="currentColor" 
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
                     viewBox="0 0 16 16"
                     className={`stroke-white ${className}`}
                 >
-                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
                 </svg>
             );
-        case 'bank': 
-            return(
+        case 'bank':
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none" className={`stroke-[#00D296] ${className}`}>
-                    <path d="M6.33338 23.7508V19.5254M14.7778 23.7508V19.5254M23.2223 23.7508V19.5254M31.6667 23.7508V19.5254M3.80005 29.1341H34.2V34.2008H3.80005V29.1341ZM3.80005 13.9341V10.5563L18.3754 3.80078L34.2 10.5563V13.9341H3.80005Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M6.33338 23.7508V19.5254M14.7778 23.7508V19.5254M23.2223 23.7508V19.5254M31.6667 23.7508V19.5254M3.80005 29.1341H34.2V34.2008H3.80005V29.1341ZM3.80005 13.9341V10.5563L18.3754 3.80078L34.2 10.5563V13.9341H3.80005Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             );
-        case 'wallet-check': 
-            return(
+        case 'wallet-check':
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className={`stroke-[#123857] ${className}`}>
-                 <path d="M13.8001 18.8994H4.20043C2.87497 18.8994 1.80047 17.8249 1.80043 16.4995L1.80017 7.49968C1.80013 6.17417 2.87466 5.09961 4.20017 5.09961H18.5996C19.9251 5.09961 20.9997 6.17351 20.9997 7.49903L20.9997 11.6996M17.3997 16.4825L18.9083 17.991L22.1997 14.6995M2.39971 9.29946H20.3997"  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M13.8001 18.8994H4.20043C2.87497 18.8994 1.80047 17.8249 1.80043 16.4995L1.80017 7.49968C1.80013 6.17417 2.87466 5.09961 4.20017 5.09961H18.5996C19.9251 5.09961 20.9997 6.17351 20.9997 7.49903L20.9997 11.6996M17.3997 16.4825L18.9083 17.991L22.1997 14.6995M2.39971 9.29946H20.3997" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             );
         case 'menu':
-            return(
+            return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                    <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            );
+        case 'x':
+            return (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className={className} fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                 </svg>
             )
     }

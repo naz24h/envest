@@ -4,7 +4,7 @@ import React, { Fragment, useState } from 'react'
 import Image from 'next/image'
 import Icon from '@/components/ui/Icon'
 import LinkButton from '@/components/ui/LinkButton'
-import { Dialog, Transition } from '@headlessui/react' 
+import { Dialog, Transition } from '@headlessui/react'
 import Button from '@/components/ui/Button';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -49,74 +49,80 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 </span>
                             </div>
 
-                            <Button  
-                                variant='primary' 
+                            <Button
+                                variant='primary'
                                 onClick={() => setIsModalOpen(true)}
                                 className='mt-3 lg:mt-12 text-sm lg:text-[16px] text-primary w-fit pt-2 pb-2 pl-3'
                             >
                                 <>
-                                    <Icon name="arrow-right" className='stroke-primary'  />
+                                    <Icon name="arrow-right" className='stroke-primary' />
                                     <span className='ml-2'> Geld senden</span>
                                 </>
-                            </Button> 
+                            </Button>
 
                             <div className='absolute'>
-                            <Transition appear show={isModalOpen} as='div'>
-                                <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
-                                <Transition.Child
-                                    as={Fragment}
-                                    enter="ease-out duration-300"
-                                    enterFrom="opacity-0"
-                                    enterTo="opacity-100"
-                                    leave="ease-in duration-200"
-                                    leaveFrom="opacity-100"
-                                    leaveTo="opacity-0"
-                                >
-                                    <div className="fixed inset-0 bg-black bg-opacity-25" />
-                                </Transition.Child>
-
-                                <div className="fixed inset-0 overflow-y-auto">
-                                    <div className="flex min-h-full items-center justify-center p-4 text-center">
-                                    <Transition.Child
-                                        as={Fragment}
-                                        enter="ease-out duration-300"
-                                        enterFrom="opacity-0 scale-95"
-                                        enterTo="opacity-100 scale-100"
-                                        leave="ease-in duration-200"
-                                        leaveFrom="opacity-100 scale-100"
-                                        leaveTo="opacity-0 scale-95"
-                                    >
-                                        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                        <Dialog.Title
-                                            as="h3"
-                                            className="text-lg leading-6 text-gray-900 font-bold"
+                                <Transition appear show={isModalOpen} as='div'>
+                                    <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
+                                        <Transition.Child
+                                            as={Fragment}
+                                            enter="ease-out duration-300"
+                                            enterFrom="opacity-0"
+                                            enterTo="opacity-100"
+                                            leave="ease-in duration-200"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
                                         >
-                                            Einzahlen
-                                        </Dialog.Title>
-                                        <div className="mt-2">
-                                            <p className="text-sm text-gray-500">
-                                            Your payment has been successfully submitted. We’ve sent
-                                            you an email with all of the details of your order.
-                                            </p>
-                                        </div>
+                                            <div className="fixed inset-0 bg-black bg-opacity-25" />
+                                        </Transition.Child>
 
-                                        <div className="mt-4">
-                                            <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                            onClick={() => setIsModalOpen(false)}
-                                            >
-                                            Got it, thanks!
-                                            </button>
+                                        <div className="fixed inset-0 overflow-y-auto">
+                                            <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                                <Transition.Child
+                                                    as={Fragment}
+                                                    enter="ease-out duration-300"
+                                                    enterFrom="opacity-0 scale-95"
+                                                    enterTo="opacity-100 scale-100"
+                                                    leave="ease-in duration-200"
+                                                    leaveFrom="opacity-100 scale-100"
+                                                    leaveTo="opacity-0 scale-95"
+                                                >
+                                                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                                        <Dialog.Title
+                                                            as="h3"
+                                                            className="text-lg leading-6 text-gray-900 font-bold"
+                                                        >
+                                                            Einzahlen
+
+                                                            <Button
+                                                                className='w-8 h-8 bg-primary/10 text-black rounded-full absolute top-3 right-3'
+                                                            >
+                                                                <Icon name="x" className='w-6 h-6 stroke-primary' />
+                                                            </Button>
+                                                        </Dialog.Title>
+                                                        <div className="mt-2">
+                                                            <p className="text-sm text-gray-500">
+                                                                Your payment has been successfully submitted. We’ve sent
+                                                                you an email with all of the details of your order.
+                                                            </p>
+                                                        </div>
+
+                                                        <div className="mt-4">
+                                                            <button
+                                                                type="button"
+                                                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                                                onClick={() => setIsModalOpen(false)}
+                                                            >
+                                                                Got it, thanks!
+                                                            </button>
+                                                        </div>
+                                                    </Dialog.Panel>
+                                                </Transition.Child>
+                                            </div>
                                         </div>
-                                        </Dialog.Panel>
-                                    </Transition.Child>
-                                    </div>
-                                </div>
-                                </Dialog>
-                            </Transition>
+                                    </Dialog>
+                                </Transition>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </header>
@@ -131,11 +137,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                         <div className="grid grid-cols-12 gap-3 lg:gap-10">
                             {/* card */}
                             <div className="gap-3 col-span-12 md:col-span-4 flex md:block  bg-white p-3.5 lg:p-10 rounded-lg shadow-mg border">
-                                
+
                                 <div>
                                     <Icon name='bar-chart' className='w-14 h-14 lg:w-16 lg:h-16' />
                                 </div>
-                                <div> 
+                                <div>
                                     <div className='flex items-center text-xs lg:text-sm  lg:mt-8 lg:mb-8'>
                                         <span className='uppercase mr-2.5 font-medium '>Zinsdepot</span>
                                         <span className='p-1.5 block-inline bg-[#00D296] rounded-[6px] mr-1.5'>
@@ -148,7 +154,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         33,000 €
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
                             {/* card */}
                             <div className="col-span-12 md:col-span-4 flex gap-3 md:block bg-white p-3.5 lg:p-10 rounded-lg shadow-mg border">
@@ -169,7 +175,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         700 €
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
                             {/* card */}
                             <div className="col-span-12 md:col-span-4 flex gap-3 md:block bg-white p-3.5 lg:p-10 rounded-lg shadow-mg border">
@@ -179,21 +185,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
                                 <div>
                                     <div className='flex items-center text-xs md:text-sm lg:mt-8 lg:mb-8'>
-                                        <span className='uppercase mr-2.5 font-medium '>Gewinn Total</span> 
+                                        <span className='uppercase mr-2.5 font-medium '>Gewinn Total</span>
                                     </div>
 
                                     <div className='text-2xl font-medium lg:text-[48px]'>
                                         1,623 €
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 {children}
-            </main> 
-        </React.Fragment>
+            </main>
+        </React.Fragment >
     )
 }
 
