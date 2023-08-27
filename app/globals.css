@@ -4,17 +4,75 @@
 
 
 @layer base{
+
+    html{
+        scroll-behavior: smooth;
+    }
+
     *::-webkit-scrollbar{
         width: 0.5rem;
-        height: 0.5rem;
+        height: 1rem;
     }
 
     *::-webkit-scrollbar-track{
-        background: #f6f6f6;
+        background-color: transparent;
     }
 
     *::-webkit-scrollbar-thumb{
-        background: #888;
+        background: #ddd;
+        border: 5px solid #fff;
         border-radius: 0.5rem;
+    }
+
+    *::-webkit-scrollbar-thumb:hover{
+        background: #ccc;
+    }
+
+    *::-webkit-scrollbar-thumb:active{
+        background: #aaa;
+    }
+
+    *::-webkit-scrollbar-thumb:window-inactive{
+        background: #aaa;
+    }
+
+    *::-webkit-scrollbar-corner{
+        background: transparent;
+    }
+
+
+    h1, h2, h3, h4, h5, h6{
+        font-weight: 600;
+    }
+
+    h1{
+        font-size: 2.5rem;
+    }
+
+    h2{
+        font-size: 2rem;
+    }
+
+    h3{
+        font-size: 1.75rem;
+    }
+
+    h4{
+        font-size: 1.5rem;
+    }
+
+    h5{
+        font-size: 1.25rem;
+    }
+
+    h6{
+        font-size: 1rem;
+    }
+    
+}
+
+@layer components{
+    .box-shadow{
+        box-shadow: 0px 4px 134px 0px rgba(0, 0, 0, 0.03);
     }
 }
