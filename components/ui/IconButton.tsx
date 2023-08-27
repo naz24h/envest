@@ -7,6 +7,7 @@ type IconButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLBu
     icon: string;
     className?: string;
     children?: React.ReactNode;
+    iconclassname?: string;
     disabled?: boolean;
     loading?: boolean;
     href?: string;
@@ -24,10 +25,13 @@ const IconButton:React.FC<IconButtonProps> = React.forwardRef(function IconButto
         <Button
             ref={ref}
             variant='primary'
-            className='p-2.5 rounded-lg'
+            className={`p-2.5 rounded-lg ${props.className ?? ''}`}
             {...props}
         >
-            <Icon name={props.icon} />
+            <Icon 
+                name={props.icon}
+                className={props.iconclassname ?? ''} 
+            />
         </Button>
     )
 })

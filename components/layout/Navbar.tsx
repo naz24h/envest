@@ -6,24 +6,38 @@ import Logo from "./Logo"
 import Link from "next/link"
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from "react"
-import { useWindowScroll } from "react-use"
+
 
 const Navbar = () => { 
-    const scrolling = useWindowScroll(); 
+    const [isSticky, setSticky] = React.useState(false);
+
+    const handleScroll = () => {
+        const offset = window.scrollY;
+        if (offset > 0) {
+            setSticky(true);
+        } else {
+            setSticky(false);
+        }
+    };
+
+    React.useEffect(() => { 
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+  
 
     return (
         <div className={
-                scrolling.y > 0 ? 
-                'fixed top-0 left-0 w-full z-[999] shadow-lg bg-primary py-3 transition-all duration-300' : 
-                'sticky top-0 left-0 w-full z-10 py-5 transition-all duration-300'
-            }> 
+            `fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300 ${isSticky ? 'py-3 bg-primary' : 'py-5 bp-transparent'}`
+        }> 
             <div className="container flex items-center justify-between gap-10">
                 <Logo /> 
 
                 {/* menu link */}
                 <Menu as="div" className="block md:hidden">
-                    <Menu.Button className="border p-1.5 rounded-sm border-primary-700 hover:bg-primary-900/50">
-                        <Icon name="menu" className="w-10 h-10" />
+                    <Menu.Button className="border p-1 rounded-sm border-primary-700 hover:bg-primary-900/50">
+                        <Icon name="menu" className="w-5 h-5 stroke-white/80" />
                     </Menu.Button> 
                     <Transition
                         as='div'
@@ -87,7 +101,7 @@ const Navbar = () => {
 
 
                 {/* nav links */}
-                <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm">
+                <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm text-white">
                     <Link href="/">Home</Link>
                     <Link href="/">Assets</Link>
                     <Link href="/">Investment</Link>

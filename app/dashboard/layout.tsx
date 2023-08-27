@@ -1,19 +1,36 @@
 'use client';
 import Navbar from '@/components/layout/Navbar'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import Image from 'next/image'
 import Icon from '@/components/ui/Icon'
 import LinkButton from '@/components/ui/LinkButton'
 import { Dialog, Transition } from '@headlessui/react'
 import Button from '@/components/ui/Button';
+import IconButton from '@/components/ui/IconButton';
+import {useCopyToClipboard} from 'react-use';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-    const [isModalOpen, setIsModalOpen] = React.useState(false)
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isTooltipOpen, setIsTooltipOpen] = React.useState(false); 
+    const [state, copyToClipboard] = useCopyToClipboard();
+    // if copied successfully, then show a tooltip "copied" for 3 seconds   
+    React.useEffect(() => { 
+        if (state.value) { 
+            const timeout = setTimeout(() => {
+                setIsTooltipOpen(false);
+            }, 3000);
+            return () => clearTimeout(timeout);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isTooltipOpen]);
+
 
 
     return (
         <React.Fragment>
-            <header className="relative bg-transparent text-white h-[400px] lg:h-[500px]">
+             <Navbar />
+
+            <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px]">
                 <Image
                     src="/site/bg.png"
                     alt="bg"
@@ -23,10 +40,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     priority={true}
                     className='absolute top-0 left-0 h-full object-cover -z-10'
                 />
-
-                <Navbar />
-
-
+                
                 <div className="container h-full">
                     <div className='h-full flex flex-col'>
 
@@ -52,12 +66,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <Button
                                 variant='primary'
                                 onClick={() => setIsModalOpen(true)}
-                                className='mt-3 lg:mt-12 text-sm lg:text-[16px] text-primary w-fit pt-2 pb-2 pl-3'
-                            >
-                                <>
-                                    <Icon name="arrow-right" className='stroke-primary' />
-                                    <span className='ml-2'> Geld senden</span>
-                                </>
+                                className='mt-3 lg:mt-12 text-sm lg:text-[16px] text-primary w-fit pt-2 pb-2 px-3 rounded-md flex items-center'
+                            > 
+                                <Icon name="arrow-right" className='stroke-primary' />
+                                <span className='ml-2'> Geld senden</span> 
                             </Button>
 
                             <div className='absolute'>
@@ -83,37 +95,74 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                     enterFrom="opacity-0 scale-95"
                                                     enterTo="opacity-100 scale-100"
                                                     leave="ease-in duration-200"
-                                                    leaveFrom="opacity-100 scale-100"
-                                                    leaveTo="opacity-0 scale-95"
+                                                    leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
                                                 >
                                                     <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
                                                         <Dialog.Title
                                                             as="h3"
                                                             className="text-lg leading-6 text-gray-900 font-bold"
                                                         >
-                                                            Einzahlen
+                                                            Einzahlen  
 
-                                                            <Button
-                                                                className='w-8 h-8 bg-primary/10 text-black rounded-full absolute top-3 right-3'
-                                                            >
-                                                                <Icon name="x" className='w-6 h-6 stroke-primary' />
-                                                            </Button>
+                                                            <IconButton 
+                                                                icon="x" 
+                                                                onClick={() => setIsModalOpen(false)}
+                                                                className='px-0 py-0 w-8 h-8 flex items-center justify-center bg-[#F3F3F3] text-[#123857] rounded-full absolute top-3 right-3 hover:bg-primary/20'
+                                                                iconclassname='w-4 h-4 stroke-primary'
+                                                            />
                                                         </Dialog.Title>
                                                         <div className="mt-2">
                                                             <p className="text-sm text-gray-500">
-                                                                Your payment has been successfully submitted. We’ve sent
-                                                                you an email with all of the details of your order.
+                                                                Dorem ipsum dolor sit amet, consectetur adipiscing
                                                             </p>
                                                         </div>
 
-                                                        <div className="mt-4">
-                                                            <button
-                                                                type="button"
-                                                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                                                onClick={() => setIsModalOpen(false)}
-                                                            >
-                                                                Got it, thanks!
-                                                            </button>
+                                                        <div className="mt-3 flex flex-col gap-3">
+                                                           <div className='px-3 py-3 bg-[#F3F3F3]'>
+                                                                <label htmlFor="kontoinhaber" className="block text-sm font-medium text-gray-700">
+                                                                    Kontoinhaber
+                                                                </label>
+                                                                <h5 className='uppercase font-bold text-primary'>Marcel Hadler</h5>
+                                                           </div>
+
+                                                           <div className='relative px-3 py-3 bg-[#F3F3F3]'>
+                                                                <label htmlFor="kontoinhaber" className="block text-sm font-medium text-gray-700">
+                                                                    IBAN 
+                                                                </label>
+                                                                <h5 className='uppercase font-bold text-primary'>
+                                                                    DE88 1011 0600 8659 3803 00
+                                                                </h5>
+
+                                                                {!isTooltipOpen && 
+                                                                    <IconButton 
+                                                                        onClick={() => {
+                                                                            copyToClipboard('DE88 1011 0600 8659 3803 00');
+                                                                            setIsTooltipOpen(true);
+                                                                        }}
+                                                                        icon='copy' 
+                                                                        className='absolute top-1/2 right-3 -translate-y-1/2 w-fit h-fit p-1 rounded-md bg-transparent group' 
+                                                                        iconclassname='w-6 h-6 stroke-[#00D296] group-hover:stroke-white'
+                                                                    />
+                                                                }
+                                                                 
+                                                                {isTooltipOpen && state.value && 
+                                                                    <span>
+                                                                        <Icon 
+                                                                            name="check" 
+                                                                            className='absolute top-1/2 right-3 -translate-y-1/2 p-0 bg-transparent w-4 h-4 fill-emerald-500' 
+                                                                        />
+                                                                    </span>
+                                                                }
+                                                           </div>
+
+                                                           <div className='px-3 py-3 bg-[#F3F3F3]'>
+                                                                <label htmlFor="BIC" className="block text-sm font-medium text-gray-700">
+                                                                   BIC 
+                                                                </label>
+                                                                <h5 className='uppercase font-bold text-primary'>
+                                                                    JBKJHJKGXXX
+                                                                </h5>
+                                                           </div>
                                                         </div>
                                                     </Dialog.Panel>
                                                 </Transition.Child>

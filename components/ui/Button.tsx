@@ -20,7 +20,11 @@ type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButton
 
 
 
-const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {children, className, ...props}, ref){
+const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
+    children, 
+    className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md font-medium",
+    ...props
+}, ref){
 
     const variant = () => {
         switch (props.variant) {
@@ -32,7 +36,7 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {childre
     }
 
 
-    const classes = `inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md font-medium ${variant()} ${className}`
+    const classes = `${variant()} ${className}`
 
     return (
         <button

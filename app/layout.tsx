@@ -1,4 +1,5 @@
 import './globals.css'
+import React from 'react'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'
@@ -12,6 +13,10 @@ const gilroy = localFont({
     {
       path: '../assets/fonts/Gilroy-ExtraBold.otf',
       weight: '700',
+    },
+    {
+      path: '../assets/fonts/Gilroy-Medium.woff2',
+      weight: '500',
     }
   ]
 },
@@ -30,7 +35,7 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+}) { 
   return (
     <html lang="en">
       <body className={gilroy.className}>{children}</body>
