@@ -8,9 +8,9 @@ import React from 'react'
 const Dashboard = () => {
     return (
         <div className='container pb-10'>  
-            <div className="grid grid-cols-12 mt-12 lg:gap-20"> 
+            <div className="grid grid-cols-12 mt-12 gap-6 lg:gap-20"> 
                 <div className="col-span-12">
-                    <div className='flex items-center gap-3'>
+                    <div className='flex flex-wrap items-center gap-3'>
                         <div>
                             <Image
                                 src='/user-tag.png'
@@ -27,7 +27,7 @@ const Dashboard = () => {
                             </p>
                         </div>
 
-                        <Button className='ml-auto py-2 px-3 rounded-md'>
+                        <Button className='lg:ml-auto py-2 px-3 rounded-md'>
                             Jetzt loslegen
                         </Button>
                     </div> 
