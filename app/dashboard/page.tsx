@@ -2,13 +2,37 @@ import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import IconButton from '@/components/ui/IconButton'
 import Input from '@/components/ui/form/Input'
+import Image from 'next/image'
 import React from 'react'
 
 const Dashboard = () => {
     return (
         <div className='container pb-10'>  
             <div className="grid grid-cols-12 mt-12 lg:gap-20"> 
-                <div className='col-span-12 lg:col-span-6'>
+                <div className="col-span-12">
+                    <div className='flex items-center gap-3'>
+                        <div>
+                            <Image
+                                src='/user-tag.png'
+                                width={64}
+                                height={64}
+                                alt='user' 
+                                loading='lazy'
+                            />
+                        </div>
+                        <div>
+                            <h6 className='text-primary text-lg font-medium'>Herzlich willkommen bei Envest!</h6>
+                            <p className='text-sm max-w-[600px] text-[#8A9EAE]'>
+                                Um unseren Service vollständig nutzen zu können, lege bitte zunächst deine persönlichen Informationen an und hinterlegen deinen Ausweis bzw. Reisepass, damit wir deine Identität bestätigen können.
+                            </p>
+                        </div>
+
+                        <Button className='ml-auto py-2 px-3 rounded-md'>
+                            Jetzt loslegen
+                        </Button>
+                    </div> 
+                </div>
+                <div className='col-span-12 lg:col-span-6'> 
                     <div className='flex gap-2 pb-6 border-b'>
                         <Icon name='transaktionen' className='w-8 h-8' />
                         <div>

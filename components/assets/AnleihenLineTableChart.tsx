@@ -1,7 +1,9 @@
 'use client'
 import { faker } from '@faker-js/faker';
-import _ from 'lodash';
+import _, { replace } from 'lodash';
 import React from 'react';
+import { useRouter  } from 'next/navigation'
+
 import {
     LineChart, 
     Line, 
@@ -18,7 +20,7 @@ import {
  
 
 const AnleihenLineTableChart:React.FC = () => { 
-
+    const router = useRouter();
 
     // rendom lost or profit graph data with unique key 
     const data = _.times(20, () => ({
@@ -26,12 +28,18 @@ const AnleihenLineTableChart:React.FC = () => {
         pv: faker.finance.amount(0, 100, 2)
     }));
 
+    const handleRedirect = () => {
+        console.log('clicked');
+        return router.replace('/dashboard/assets/anleihen/2')
+    }
+
+
     return( 
             <LineChart 
                 data={data}
                 height={35} 
                 width={100}   
-                onClick={() => console.log('clicked')}
+                onClick={() => handleRedirect()}
             > 
                 <Line
                     type="linear"

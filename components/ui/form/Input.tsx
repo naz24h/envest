@@ -35,7 +35,7 @@ const Input:React.FC<InputProps> = React.forwardRef(function Input(props, ref) {
                 ref={ref}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                className = {`py-3 px-6 rounded-sm bg-transparent text-[#0621378e] placeholder-[#0621378e] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent w-full`}
+                className = {`py-3 px-3 rounded-sm bg-transparent text-[#0621378e] placeholder-[#0621378e] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent w-full`}
                 {...props}
             />
         </div>

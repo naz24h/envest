@@ -46,8 +46,8 @@ const AnleihenLineChart = () => {
                     dataKey="name" 
                     tickLine={false}  
                     axisLine={false}
-                    tick={{ fill: '#B6B6B6', fontSize: 14 }}
-                    padding={{ left: 30, right: 30 }}
+                    tick={{ fill: '#B6B6B6', fontSize: 13 }}
+                    padding={{ right: 30 }}
                 />
                 <YAxis
                     tickLine={false} 
@@ -55,7 +55,12 @@ const AnleihenLineChart = () => {
                     tickFormatter={(value) => `${value} €`}  
                     orientation="right"
                     axisLine={false}
-                    tick={{ fill: '#B6B6B6', fontSize: 14 }} 
+                    tick={{ 
+                        fill: '#B6B6B6', 
+                        fontSize: 13
+                    }} 
+                    width={50}
+                    
                 />
                 <Tooltip />
                 <Line
