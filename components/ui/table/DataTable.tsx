@@ -83,9 +83,9 @@ const DataTable:React.FC<DataTableProps> = ({
     return(
         <div className='py-5'>
             {/* table container */}
-            <div className='w-100 overflow-auto'>
-                <table className={`sticky w-100 ${classes?.table ?? ''}`}>
-                    <thead className={`${classes?.tableHead ?? ''}`}>
+            <div className='w-100 overflow-auto pb-5'>
+                <table className={`table-auto w-100 ${classes?.table ?? ''}`}>
+                    <thead className={`sticky w-100 top-0 left-0 ${classes?.tableHead ?? ''}`}>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr 
                             key={headerGroup.id}

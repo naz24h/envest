@@ -183,8 +183,7 @@ export default function Icon({ name, className = 'stroke-white' }: { name: strin
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    stroke="red"
-                    className={className}
+                    className={className ?? 'stroke-red-500'}
                     fill="currentColor"
                     viewBox="0 0 16 16"
                 >
@@ -234,6 +233,15 @@ export default function Icon({ name, className = 'stroke-white' }: { name: strin
                     <path d="M3 9.10937V14.8794C3 16.9994 3 16.9994 5 18.3494L10.5 21.5294C11.33 22.0094 12.68 22.0094 13.5 21.5294L19 18.3494C21 16.9994 21 16.9994 21 14.8894V9.10937C21 6.99937 21 6.99937 19 5.64937L13.5 2.46937C12.68 1.98937 11.33 1.98937 10.5 2.46937L5 5.64937C3 6.99937 3 6.99937 3 9.10937Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#123857" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
+            );
+        case 'i':
+            return (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className}>
+                    <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+                    <path d="M12,10H11a1,1,0,0,0,0,2h1v6a1,1,0,0,0,2,0V12A2,2,0,0,0,12,10Z"/>
+                    <circle cx="12" cy="6.5" r="1.5"/>
+                </svg>
+
             )
     }
 }

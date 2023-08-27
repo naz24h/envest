@@ -50,19 +50,19 @@ const Navbar = () => {
                     >
                         <Menu.Items className="absolute overflow-hidden right-0 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1">
                             <Menu.Item as="div">
-                                <Link href="/" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Home</Link>
+                                <Link href="/dashboard" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Home</Link>
                             </Menu.Item>
 
                             <Menu.Item as="div">
-                                <Link href="/" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Assets</Link>
+                                <Link href="/dashboard/assets" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Assets</Link>
                             </Menu.Item>
 
                             <Menu.Item as="div">
-                                <Link href="/" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Investment</Link>
+                                <Link href="/dashboard/investments" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Investment</Link>
                             </Menu.Item>
 
                             <Menu.Item as="div">
-                                <Link href="/" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Übersicht</Link>
+                                <Link href="/dashboard/ubersicht" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Übersicht</Link>
                             </Menu.Item>
 
 
@@ -102,8 +102,8 @@ const Navbar = () => {
 
                 {/* nav links */}
                 <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm text-white">
-                    <Link href="/">Home</Link>
-                    <Link href="/">Assets</Link>
+                    <Link href="/dashboard">Home</Link>
+                    <Link href="/dashboard/assets">Assets</Link>
                     <Link href="/dashboard/investments">Investment</Link>
                     <Link href="/dashboard/ubersicht">Übersicht</Link>
                 </nav>
