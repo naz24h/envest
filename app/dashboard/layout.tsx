@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <React.Fragment>
              <Navbar />
 
-            <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px]">
+            <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px] w-screen">
                 <Image
                     src="/site/bg.png"
                     alt="bg"
@@ -38,7 +38,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     height={680}
                     quality={70}
                     priority={true}
-                    className='absolute top-0 left-0 h-full object-cover -z-10'
+                    sizes='100vw'
+                    className='absolute top-0 left-0 h-full object-fill -z-10'
                 />
                 
                 <div className="container h-full">

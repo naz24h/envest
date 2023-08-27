@@ -7,13 +7,13 @@ import React from 'react';
 
 const Investments = () => {
     return (
-        <div className='container py-3'>
+        <div className='container py-3'> 
            <div className='mt-5'>
                 <h3 className='font-medium text-2xl flex items-center gap-3'>
                     <Icon name='single-line' className='w-6 h-6' />
                     My Investments
                 </h3>
-           </div>
+           </div> 
 
             {/* table container */}
            <div>
