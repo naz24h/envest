@@ -29,10 +29,7 @@ export default function Login(){
             password
         });
 
-        if(res?.status === 200){
-            setShow(true)
-        }
-
+        
     } 
 
 

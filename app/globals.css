@@ -85,4 +85,36 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
+     
+    scrollbar::-webkit-scrollbar{
+        width: 0.5rem;
+        height: 1rem;
+    }
+
+    scrollbar::-webkit-scrollbar-track{
+        background-color: transparent;
+    }
+
+    scrollbar::-webkit-scrollbar-thumb{
+        background: #ddd;
+        border: 5px solid #fff;
+        border-radius: 0.5rem;
+    }
+
+    scrollbar::-webkit-scrollbar-thumb:hover{
+        background: #ccc;
+    }
+
+    scrollbar::-webkit-scrollbar-thumb:active{
+        background: #aaa;
+    }
+
+    scrollbar::-webkit-scrollbar-thumb:window-inactive{
+        background: #aaa;
+    }
+
+    scrollbar::-webkit-scrollbar-corner{
+        background: transparent;
+    }
 }

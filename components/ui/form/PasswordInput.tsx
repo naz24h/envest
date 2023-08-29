@@ -3,12 +3,7 @@ import * as React from 'react';
 
 
 const PasswordInput:React.FC<InputProps> = React.forwardRef(function PasswordInput(props, ref) {
-    const [value, setValue] = React.useState(props.value);
     const [show, setShow] = React.useState(false);
-
-    React.useEffect(() => {
-        setValue(props.value)
-    }, [props.value])
 
     const toggleShow = () => setShow(!show);
 
@@ -20,7 +15,7 @@ const PasswordInput:React.FC<InputProps> = React.forwardRef(function PasswordInp
                 {...props}
             />
 
-            <div className='flex justify-end'>
+            {/* <div className='flex justify-end'>
                 <button 
                     type='button'
                     onClick={toggleShow} 
@@ -28,7 +23,7 @@ const PasswordInput:React.FC<InputProps> = React.forwardRef(function PasswordInp
                 >
                     {show ? 'Hide' : 'Show'}
                 </button>
-            </div>
+            </div> */}
        </div>
     )
 });

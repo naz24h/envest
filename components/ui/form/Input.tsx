@@ -18,7 +18,7 @@ const Input:React.FC<InputProps> = React.forwardRef(function Input(props, ref) {
     const iconPosition = props.iconPosition ?? 'left';
 
     return(
-        <div className='relative border border-rad-500 p-0'> 
+        <div className='relative border border-rad-500 p-0 w-full'> 
             {props.icon && 
             <Icon 
                 name={props.icon ?? 'wallet-check'} 
