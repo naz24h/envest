@@ -3,24 +3,18 @@ import * as React from 'react';
 import {useDebounce} from 'react-use';
 import Icon from '../Icon';
 
-type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
+export type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
     className?: string;
     children?: React.ReactNode;
-    onChange?: (value:any) => void;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     ref?: React.ForwardedRef<HTMLInputElement>;
     icon?: string;
     iconPosition?: 'left' | 'right';
 }
 
-const Input:React.FC<InputProps> = React.forwardRef(function Input(props, ref) {
-    const [value, setValue] = React.useState(props.value);
-
-    useDebounce(
-        () => { props.onChange && props.onChange(value)  },
-        100,
-        [value]
-    );
-
+const Input:React.FC<InputProps> = React.forwardRef(function Input(props, ref) { 
+     
     const iconPosition = props.iconPosition ?? 'left';
 
     return(
@@ -33,8 +27,8 @@ const Input:React.FC<InputProps> = React.forwardRef(function Input(props, ref) {
             
             <input
                 ref={ref}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                value={props?.value}
+                onChange={props.onChange}
                 className = {`py-3 px-3 rounded-sm bg-transparent text-[#0621378e] placeholder-[#0621378e] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent w-full`}
                 {...props}
             />

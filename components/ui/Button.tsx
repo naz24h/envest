@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 
-type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
     variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'link' | 'text';
     size?: 'sm' | 'md' | 'lg';
     className?: string;
@@ -22,6 +22,7 @@ type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButton
 
 const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     children, 
+    onClick,
     className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md font-medium",
     ...props
 }, ref){
@@ -41,6 +42,7 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     return (
         <button
             ref={ref}
+            onClick={onClick}
             className={classes}
             {...props}
         > 
