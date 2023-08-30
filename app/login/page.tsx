@@ -12,7 +12,6 @@ export default function Login(){
     const [username, setUsername] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [code, setCode] = React.useState('')
-    const [show, setShow] = React.useState(false);
     const router = useRouter();
     const [value, setValue] = useLocalStorage('xtx', '');
 
@@ -38,8 +37,8 @@ export default function Login(){
             
         if(res?.status === 200){
             setValue(res?.data?.data?.access_token);
-            router.push('/register/verify/email')
-            // Redirect to email verification page
+            // Redirect to dashboard
+            router.push('/dashboard')
         }
 
       

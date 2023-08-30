@@ -10,7 +10,9 @@ import { Combobox } from '@headlessui/react';
 import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { useLocalStorage } from 'react-use';
 
 
 type Country = {
@@ -31,14 +33,13 @@ export default function Register(props: any){
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [mobile, setMobile] = React.useState('');
     const [agree, setAgree] = React.useState(false)
-
     const [countryFilter , setCountryFilter] = React.useState('')
     const [error, setError] = React.useState<{[key: string]: any} | null>(null);
-
-
-    const {user, setUser} = useUser();
+    const {setUser} = useUser();
+    const router = useRouter();
+    const [value , setValue] = useLocalStorage('xtx', '');
      
-    // ger countries
+    // get countries
     React.useEffect(() => {
         const getCountriesData = async () => {
             const res = await getCountries();
@@ -142,7 +143,17 @@ export default function Register(props: any){
 
         if(isValid()){
             const res = await registerNewUser(data);
-            setUser(res?.data as any);
+            if (res?.status === 200) {
+                // set user to the context
+                setUser(res?.data as any);
+
+                // set the access token to local storage
+                setValue(res?.data?.data?.access_token)
+
+                // redirect to email verification page
+                router.push('/register/verify/email')
+            }
+            
         } else {
             setError(error);
         }
