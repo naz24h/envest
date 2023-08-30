@@ -1,4 +1,4 @@
-'use client';
+
 import './globals.css'
 import React from 'react'
 import type { Metadata } from 'next'
@@ -6,8 +6,8 @@ import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'
 import { getLoggedUser } from '@/api/getLoggedUser';
 import Provider from './Provider';
-import PageLoading from '@/components/ui/PageLoading';
-import { useGlobalLoading } from '@/context/GlobalLoader';
+import Children from './Children'
+ 
 
 const gilroy = localFont({
   src: [
@@ -39,17 +39,6 @@ export const metadata: Metadata = {
 
 
 
-const Children = ({children}: {
-  children: React.ReactNode
-}) => {
-  const {globalLoading} = useGlobalLoading();
-  return(
-    <React.Fragment>
-        {globalLoading ? <PageLoading /> : null } 
-        {children}
-    </React.Fragment>
-  )
-}
 
 
 export default function RootLayout({
@@ -61,7 +50,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={gilroy.className}>
         <Provider>
-          <Children> 
+          <Children > 
               {children}
           </Children>
         </Provider>

@@ -1,9 +1,6 @@
 'use client'
 import * as React from 'react';
 
-
-
-
 export const GlobalLoaderContext = React.createContext({
     globalLoading: true,
     setGlobalLoading: (value: boolean) => {}

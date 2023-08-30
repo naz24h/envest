@@ -1,3 +1,4 @@
+'use client'
 import { logout } from '@/api/logout';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
