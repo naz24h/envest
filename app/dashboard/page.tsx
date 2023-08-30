@@ -9,8 +9,10 @@ import {useRouter} from 'next/navigation'
 
 import { useLocalStorage } from 'react-use'
 import { useGlobalLoading } from '@/context/GlobalLoader';
+import axios from '@/lib/axios';
 
 const Dashboard = () => { 
+    const [transactions, setTransactions] = React.useState([]);
     const { setGlobalLoading } = useGlobalLoading();
     const [value] = useLocalStorage('xtx');
     const route = useRouter();
@@ -26,6 +28,29 @@ const Dashboard = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+
+    // get transactions
+    React.useEffect(() => { 
+        let token = value as string;
+        token = token ? token.split('0|')[1] : ''; 
+        
+        const getTransactions = async () => {
+            let res = await axios.get('/transactions', {
+                headers: {
+                    "Authorization": `Bearer C5PtqQA1K28MkPaNs50ch0StEW1mYtqzeFMwcfJ1`
+                }
+            }) 
+
+            setTransactions(res?.data?.data?.transactions?.data);
+            return res?.data?.data ;
+        }
+
+        getTransactions();
+    }, [])
+
+
+    console.log(transactions);
 
    
     return (
