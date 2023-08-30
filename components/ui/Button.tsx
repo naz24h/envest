@@ -1,4 +1,6 @@
+'use client';
 import * as React from 'react';
+import Spinner from './Spinner';
 
 
 export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
@@ -23,6 +25,8 @@ export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTM
 const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     children, 
     onClick,
+    loading,
+    disabled,
     className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md font-medium",
     ...props
 }, ref){
@@ -30,11 +34,13 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     const variant = () => {
         switch (props.variant) {
             case 'primary':
-                return 'bg-[#00D296] text-primary hover:bg-[#00D296] hover:bg-opacity-80';
+                return 'bg-[#00D296] text-primary hover:bg-[#00D296] hover:bg-opacity-80 disabled:bg-[#00D296] disabled:bg-opacity-80';
             default:
-                return 'bg-[#00D296] text-primary hover:bg-primary-dark';
+                return 'bg-[#00D296] text-primary hover:bg-primary-dark disabled:bg-[#00D296] disabled:bg-opacity-80';
         }
     }
+
+
 
 
     const classes = `${variant()} ${className}`
@@ -44,9 +50,15 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
             ref={ref}
             onClick={onClick}
             className={classes}
+            disabled= {disabled || loading}
             {...props}
         > 
-            {children}
+            {loading ? <span className="flex items-center w-full justify-center space-x-2">
+                <Spinner />
+                <span>Loading...</span>
+            </span>: 
+              children 
+            }
         </button>
     )
 })

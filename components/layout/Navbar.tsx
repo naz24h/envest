@@ -6,10 +6,13 @@ import Logo from "./Logo"
 import Link from "next/link"
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from "react"
+import { logout } from "@/api/logout"
+import { useUser } from "@/context/UserProvider"
 
 
 const Navbar = () => {
     const [isSticky, setSticky] = React.useState(false);
+    const {logout} = useUser();
 
     const handleScroll = () => {
         const offset = window.scrollY;
@@ -90,6 +93,7 @@ const Navbar = () => {
                                 <IconLink
                                     href="/"
                                     icon="logout"
+                                    onClick={logout}
                                     className="w-8 h-8 rounded-lg hover:bg-primary/10 group flex items-center justify-center"
                                     iconClassName="stroke-black w-3.5 h-3.5 group-hover:stroke-black"
                                 />
@@ -133,7 +137,7 @@ const Navbar = () => {
 
 
                     <IconLink
-                        href="/"
+                        href="/dashboard"
                         icon="user"
                         className="w-8 h-8 lg:w-10 lg:h-10  rounded-full hover:bg-white group flex items-center justify-center"
                         iconClassName="w-4 h-4 lg:w-6 lg:h-6 stroke-white group-hover:stroke-black"
@@ -143,6 +147,7 @@ const Navbar = () => {
                     <IconLink
                         href="/"
                         icon="logout"
+                        onClick={logout}
                         className="w-8 h-8 lg:w-10 lg:h-10  rounded-full hover:bg-white group flex items-center justify-center"
                         iconClassName="w-4 h-4 lg:w-6 lg:h-6 stroke-white group-hover:stroke-black"
                     />

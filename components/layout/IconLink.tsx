@@ -7,6 +7,7 @@ type IconLinkProps = {
     icon: string | React.ReactNode,
     className?: string,
     iconClassName?: string,
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 }
 
 
@@ -17,6 +18,7 @@ const IconLink = ({ href = "", iconClassName, icon, className, ...props }: IconL
             <Link
                 aria-label="Icon Link"
                 href={href}
+                onClick={props?.onClick} 
                 className={` transition-all duration-500 ${className}`}
                 {...props}
             >

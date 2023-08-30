@@ -1,5 +1,4 @@
 import axios from '@/lib/axios'
-import loadConfig from 'next/dist/server/config';
 
 export const loginWithUsernameAndPassword = async(data: any) => {
     try{

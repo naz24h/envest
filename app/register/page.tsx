@@ -7,12 +7,15 @@ import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner';
 import Input from '@/components/ui/form/Input';
 import PasswordInput from '@/components/ui/form/PasswordInput'; 
+import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useUser } from '@/context/UserProvider';
 import { Combobox } from '@headlessui/react';
 import _ from 'lodash';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { useLocalStorage } from 'react-use';
 
 
 type Country = {
@@ -32,15 +35,20 @@ export default function Register(props: any){
     const [password, setPassword] = React.useState('')
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [mobile, setMobile] = React.useState('');
-    const [agree, setAgree] = React.useState(false)
+    const [agree, setAgree] = React.useState(false);
+
+    const [loading, setLoading] = React.useState(false);
 
     const [countryFilter , setCountryFilter] = React.useState('')
     const [error, setError] = React.useState<{[key: string]: any} | null>(null);
 
-
+    const [value, setValue] = useLocalStorage('xtx', '');
+    const { setGlobalLoading } = useGlobalLoading(); 
+    const route = useRouter();
     const {user, setUser} = useUser();
+
      
-    // ger countries
+    // get countries
     React.useEffect(() => {
         const getCountriesData = async () => {
             const res = await getCountries();
@@ -48,6 +56,21 @@ export default function Register(props: any){
         } 
         getCountriesData();
     }, [])
+
+    //  check user already logged in
+    React.useEffect(() => {
+        setGlobalLoading(true); 
+
+        let token = value as string;
+        token = token ? token.split('0|')[1] : ''; 
+
+        if(token){
+            route.push('/dashboard');
+        }else{
+            setGlobalLoading(false);
+        }
+    }, [])
+
 
 
     // validation
@@ -126,6 +149,7 @@ export default function Register(props: any){
     // submit login system
     const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        setLoading(true);
         
         const data = {
             username,
@@ -144,7 +168,11 @@ export default function Register(props: any){
 
         if(isValid()){
             const res = await registerNewUser(data);
-            setUser(res?.data as any);
+            if(res?.status === 200){
+                setValue(res?.data?.data?.access_token);
+                setUser(res?.data?.data?.user);
+                route.push('/dashboard');
+            }
         } else {
             setError(error);
         }

@@ -1,54 +1,69 @@
 "use client";
 import { loginWithUsernameAndPassword } from '@/api/loginApi';
-import Button from '@/components/ui/Button';
+import Button from '@/components/ui/Button'; 
 import Input from '@/components/ui/form/Input';
 import PasswordInput from '@/components/ui/form/PasswordInput';
+import { useGlobalLoading } from '@/context/GlobalLoader';
+import { useUser } from '@/context/UserProvider';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import {useLocalStorage} from 'react-use';
 
 export default function Login(){
     const [username, setUsername] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const [code, setCode] = React.useState('')
-
-    const [show, setShow] = React.useState(false);
+    const [password, setPassword] = React.useState('') 
+    const [loading, setLoading] = React.useState(false); 
     const [value, setValue] = useLocalStorage('xtx', '');
+    const { setGlobalLoading } = useGlobalLoading(); 
+    const route = useRouter();
+    const {setUser} = useUser();
 
   
     // submit login system
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
 
-        console.log({
-            username,
-            password,
-            code
-        })
-
-        
         let res = await loginWithUsernameAndPassword({
             username,
             password
-        });
-
+        })
         
-        console.log(res);
-            
         if(res?.status === 200){
             setValue(res?.data?.data?.access_token);
-            console.log(res?.data.access_token);
+            setUser(res?.data?.data?.user);
+            route.push('/dashboard');
         }
 
-      
+        setLoading(false);
     } 
 
-    const access_token = value?.split('0|')[1];
-    console.log(access_token);
+    // check user already logged in
+    React.useEffect(() => {
+        setGlobalLoading(true);
+        
+        let token = value as string;
+        token = token ? token.split('0|')[1] : ''; 
+
+        if(token){
+            route.push('/dashboard');
+        }else{
+            setGlobalLoading(false);
+        }
+    }, [])
+
+    
 
     return (
         <div className='w-screen h-screen flex items-center justify-center'>  
-            <form action="" className='w-full max-w-[450px]'>
-                <div className=''>
+            <form action="" className='w-full max-w-[350px] p-5 shadow-md'>
+
+                <div className='text-center mb-4'>
+                <h4>Welcome Back</h4>
+                <p className='text-sm text-gray-500'>Login to your account</p>
+                </div>
+                
+                <div className='mb-4'>
                     <label htmlFor="">Username</label>
                     <Input
                         value={username}
@@ -64,12 +79,15 @@ export default function Login(){
                     />
                 </div>
 
-                <div className='py-5'>
+                <div className='py-5'> 
                     <Button
-                        onClick={handleSubmit as any}
                         type='button'
-                        className="w-full text-white py-2 px-4 rounded-lg"
-                    > Login </Button>
+                        loading={loading ? true : false}
+                        onClick={handleSubmit as any}
+                        className="w-full text-white py-2 px-4 rounded-lg"                    
+                    >
+                        Login
+                    </Button>
                 </div>
             </form>  
         </div>

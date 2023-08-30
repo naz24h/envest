@@ -1,14 +1,36 @@
+'use client';
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import IconButton from '@/components/ui/IconButton'
 import Input from '@/components/ui/form/Input'
 import Image from 'next/image'
 import React from 'react'
+import {useRouter} from 'next/navigation'
 
-const Dashboard = () => {
+import { useLocalStorage } from 'react-use'
+import { useGlobalLoading } from '@/context/GlobalLoader';
+
+const Dashboard = () => { 
+    const { setGlobalLoading } = useGlobalLoading();
+    const [value] = useLocalStorage('xtx');
+    const route = useRouter();
+ 
+    React.useEffect(() => { 
+        setGlobalLoading(true);
+        let token = value as string;
+        token = token ? token.split('0|')[1] : ''; 
+        if(!token){
+            route.push('/login');
+        }else{
+            setGlobalLoading(false);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+   
     return (
         <div className='container pb-10'>  
-            <div className="grid grid-cols-12 mt-12 gap-6 lg:gap-20"> 
+            <div className="grid grid-cols-12 mt-12 gap-y-6 md:gap-6 lg:gap-20"> 
                 <div className="col-span-12">
                     <div className='flex flex-wrap items-center gap-3'>
                         <div>

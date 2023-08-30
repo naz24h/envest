@@ -5,6 +5,9 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'
 import { getLoggedUser } from '@/api/getLoggedUser';
+import Provider from './Provider';
+import PageLoading from '@/components/ui/PageLoading';
+import { useGlobalLoading } from '@/context/GlobalLoader';
 
 const gilroy = localFont({
   src: [
@@ -35,22 +38,34 @@ export const metadata: Metadata = {
 
 
 
+
+const Children = ({children}: {
+  children: React.ReactNode
+}) => {
+  const {globalLoading} = useGlobalLoading();
+  return(
+    <React.Fragment>
+        {globalLoading ? <PageLoading /> : null } 
+        {children}
+    </React.Fragment>
+  )
+}
+
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) { 
-
-  
-React.useEffect(() => {
-  const user = getLoggedUser();
-  console.log({user});
-}, [])
-
-
+}) {  
   return (
     <html lang="en">
-      <body className={gilroy.className}>{children}</body>
+      <body className={gilroy.className}>
+        <Provider>
+          <Children> 
+              {children}
+          </Children>
+        </Provider>
+      </body>
     </html>
   )
 }
