@@ -1,17 +1,15 @@
 'use client'
-import Image from 'next/image'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { useUser } from '@/context/UserProvider'
 import { getLoggedUser } from '@/api/getLoggedUser'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { useLocalStorage } from 'react-use'
 
 export default function Home() {
   const router = useRouter()
-  const {setUser} = useUser()
 
   
   const [value] = useLocalStorage('xtx');
+  const [user, setUser] = useLocalStorage('user', '')
 
 
   React.useEffect(() => {
@@ -20,21 +18,25 @@ export default function Home() {
   })
 
 
-  // React.useEffect(() => { 
-  //   (async () => {
-  //     console.log({value});
-  //     const access_token = value;
-  //     console.log({access_token});
+  React.useEffect(() => { 
+    (async () => {
+      if(value) {
+        const access_token = value?.split('0|')[1];
     
-  //     const user = await getLoggedUser(access_token);
-  //     console.log({user});
-  //   })()
-  // }, [])
+        const userData = await getLoggedUser(access_token);
+        console.log(userData);
+        setUser(userData)
+      } else {
+        console.log('token not found');
+      }
+      
+    })()
+  }, [])
 
 
 
   return (
-    <main className="p-24 flex gap-5">
-    </main>
+      <main className="p-24 flex gap-5">
+      </main>
   )
 }

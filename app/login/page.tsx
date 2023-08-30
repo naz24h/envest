@@ -3,15 +3,17 @@ import { loginWithUsernameAndPassword } from '@/api/loginApi';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/form/Input';
 import PasswordInput from '@/components/ui/form/PasswordInput';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import {useLocalStorage} from 'react-use';
+import { useLocalStorage } from 'react-use';
 
 export default function Login(){
     const [username, setUsername] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [code, setCode] = React.useState('')
-
     const [show, setShow] = React.useState(false);
+    const router = useRouter();
     const [value, setValue] = useLocalStorage('xtx', '');
 
   
@@ -36,18 +38,22 @@ export default function Login(){
             
         if(res?.status === 200){
             setValue(res?.data?.data?.access_token);
-            console.log(res?.data.access_token);
+            router.push('/register/verify/email')
+            // Redirect to email verification page
         }
 
       
     } 
 
-    const access_token = value?.split('0|')[1];
-    console.log(access_token);
+    // const access_token = value?.split('0|')[1];
+    // console.log(access_token);
 
     return (
-        <div className='w-screen h-screen flex items-center justify-center'>  
+        <div className='w-screen h-screen flex items-center justify-center'>             
             <form action="" className='w-full max-w-[450px]'>
+                <div className='mb-1'>
+                    <h1 className='text-2xl font-bold text-center'>Login</h1>
+                </div>
                 <div className=''>
                     <label htmlFor="">Username</label>
                     <Input
@@ -63,6 +69,13 @@ export default function Login(){
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+
+                {/* go to register */}
+                <div className="col-span-12 mt-3">
+                            <div className='flex items-center'>
+                                <p className='text-primary-600 hover:text-primary-700'>Not registered yet? <Link href='/register' className='text-blue-600'>Register</Link></p>
+                            </div>
+                        </div> 
 
                 <div className='py-5'>
                     <Button

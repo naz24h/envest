@@ -1,11 +1,17 @@
+'use client'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import IconButton from '@/components/ui/IconButton'
 import Input from '@/components/ui/form/Input'
 import Image from 'next/image'
-import React from 'react'
+import { useLocalStorage } from 'react-use'
 
 const Dashboard = () => {
+    const [user] = useLocalStorage('user')
+    const userData = user?.data?.user ;
+    console.log(userData);
+    console.log(user);
+
     return (
         <div className='container pb-10'>  
             <div className="grid grid-cols-12 mt-12 gap-6 lg:gap-20"> 
@@ -158,7 +164,7 @@ const Dashboard = () => {
                                 <div className="grid grid-cols-2 gap-2 xl:gap-5">
                                     <div className='col-span-2 xl:col-span-1 text-left xl:mb-10'>
                                         <span className='block text-xs md:text-sm uppercase text-[rgba(255,255,255,0.30)] leading-[21px] tracking-[0.56px]'>Name</span>
-                                        <span className='block'>Investory Card</span>
+                                        <span className='block'>{userData?.firstname} {userData?.lastname}</span>
                                     </div>
 
                                     <div className='col-span-2 xl:col-span-1 text-left xl:mb-10'>

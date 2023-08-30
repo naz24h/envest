@@ -1,17 +1,15 @@
 "use client";
 import { getCountries } from '@/api/countries';
-import { loginWithUsernameAndPassword } from '@/api/loginApi';
 import { registerNewUser } from '@/api/registerApi';
 import Button from '@/components/ui/Button';
-import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner';
 import Input from '@/components/ui/form/Input';
-import PasswordInput from '@/components/ui/form/PasswordInput'; 
+import PasswordInput from '@/components/ui/form/PasswordInput';
 import { useUser } from '@/context/UserProvider';
 import { Combobox } from '@headlessui/react';
 import _ from 'lodash';
-import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import * as React from 'react';
 
 
@@ -349,6 +347,13 @@ export default function Register(props: any){
                                 <label htmlFor='agree' className='text-sm font-medium text-slate-500'> I agree to the <a href="#" className='text-primary-600 hover:text-primary-700'>Terms and Conditions</a> </label>
                             </div>
                             
+                        </div>    
+                                  
+                        {/* go to login */}
+                        <div className="col-span-12">
+                            <div className='flex items-center'>
+                                <p className='text-primary-600 hover:text-primary-700'>Already have an account? <Link href='/login' className='text-blue-600'>Login</Link></p>
+                            </div>
                         </div>              
 
                         {/* button */}

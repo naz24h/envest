@@ -1,10 +1,10 @@
 'use client';
-import './globals.css'
-import React from 'react'
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import { Inter } from 'next/font/google'
-import { getLoggedUser } from '@/api/getLoggedUser';
+import { UserProvider } from '@/context/UserProvider';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import React from 'react';
+import './globals.css';
 
 const gilroy = localFont({
   src: [
@@ -41,16 +41,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) { 
 
+//   const [token] = useLocalStorage('xtx')
+//   console.log(token);
+
   
-React.useEffect(() => {
-  const user = getLoggedUser();
-  console.log({user});
-}, [])
+// React.useEffect(() => {
+//   const user = getLoggedUser();
+//   console.log({user});
+// }, [])
 
 
   return (
     <html lang="en">
-      <body className={gilroy.className}>{children}</body>
+      <UserProvider>
+        <body className={gilroy.className}>{children}</body>
+      </UserProvider>
     </html>
   )
 }

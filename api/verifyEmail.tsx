@@ -1,17 +1,14 @@
 
 import axios from '@/lib/axios';
 
-export const getLoggedUser = async(token: any) => {
- 
+export const verifyEmail = async(code: string, token: string) => {
  
     try{
-        let res = await axios.get('/authorization', {
+        let res = await axios.post(`/verify-mobile`, {code}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
-        
         return res;
-        
     } catch(e) {console.log(e);}
 }

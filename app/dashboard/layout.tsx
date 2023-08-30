@@ -1,18 +1,19 @@
 'use client';
-import Navbar from '@/components/layout/Navbar'
-import React, { Fragment } from 'react'
-import Image from 'next/image'
-import Icon from '@/components/ui/Icon'
-import LinkButton from '@/components/ui/LinkButton'
-import { Dialog, Transition } from '@headlessui/react'
+import Navbar from '@/components/layout/Navbar';
 import Button from '@/components/ui/Button';
+import Icon from '@/components/ui/Icon';
 import IconButton from '@/components/ui/IconButton';
-import {useCopyToClipboard} from 'react-use';
+import { Dialog, Transition } from '@headlessui/react';
+import Image from 'next/image';
+import React, { Fragment } from 'react';
+import { useCopyToClipboard, useLocalStorage } from 'react-use';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [isTooltipOpen, setIsTooltipOpen] = React.useState(false); 
     const [state, copyToClipboard] = useCopyToClipboard();
+    const [user] = useLocalStorage('user')
+    const userData = user?.data?.user ;
     // if copied successfully, then show a tooltip "copied" for 3 seconds   
     React.useEffect(() => { 
         if (state.value) { 
@@ -50,7 +51,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <div>
                                 <h6 className='mb-2.5 lg:mb-4 block md:inline-block text-sm'>Guthaben Total</h6>
                                 <div className="flex flex-col md:flex-row md:items-end gap-4">
-                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">33,000 €</h1>
+                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">{userData?.balance} <span>€</span></h1>
                                     <div className='flex items-center gap-3.5 text-sm tracking-[0.56px]'>
                                         <div className='w-6 h-6 flex items-center justify-center bg-green-500 rounded-[6px] '>
                                             <Icon name="clock" className='w-2 h-2 stroke-black' />

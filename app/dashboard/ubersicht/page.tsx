@@ -1,15 +1,29 @@
 'use client'
-import { InvestmentDataTableColumn } from '@/components/Investments/InvestmentDataTableColumn';
-import Icon from '@/components/ui/Icon';
-import DataTable from '@/components/ui/table/DataTable';
-import React from 'react';
-import { Tab } from '@headlessui/react'
-import Input from '@/components/ui/form/Input';
-import Button from '@/components/ui/Button';
+import { getCountryDetails } from '@/api/getCounrtyDetails';
 import PriceCard from '@/components/ubersicht/PriceCard';
+import Button from '@/components/ui/Button';
+import Icon from '@/components/ui/Icon';
+import Input from '@/components/ui/form/Input';
+import { Tab } from '@headlessui/react';
+import React from 'react';
+import { useLocalStorage } from 'react-use';
 
 
 const Ubersicht = () => {
+    const [user] = useLocalStorage('user')
+    const [nationality, setNationality] = React.useState('')
+    const userData = user?.data?.user ;
+    console.log(userData);
+
+    React.useEffect(() => {
+        (async () => {
+            const res = await getCountryDetails(userData?.country_code)
+            setNationality(res?.demonyms?.eng?.f);
+        })()
+    },[]);
+    
+    
+
     return (
         <div className='container py-3 '>
             <div className='mt-5'>
@@ -39,6 +53,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Vorname</label>
                                                 <Input
+                                                    value={userData?.firstname}
                                                     type='text'
                                                     placeholder='Max'
                                                 />
@@ -48,6 +63,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Nachname</label>
                                                 <Input
+                                                    value={userData?.lastname}
                                                     type='text'
                                                     placeholder='Mustermann'
                                                 />
@@ -57,6 +73,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Straße</label>
                                                 <Input
+                                                    value={userData?.address?.city}
                                                     type='text'
                                                     placeholder='Maxstraße'
                                                 />
@@ -71,13 +88,18 @@ const Ubersicht = () => {
                                                     placeholder='12'
                                                 />
                                             </div>
+
+                                            
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>PLZ</label>
                                                 <Input
+                                                    value={userData?.address?.zip}
                                                     type='text'
                                                     placeholder='45127'
                                                 />
                                             </div>
+
+                                            
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Ort</label>
                                                 <Input
@@ -90,6 +112,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Adressland</label>
                                                 <Input
+                                                    value={userData?.address?.country}
                                                     type='text'
                                                     placeholder='Deutschland'
                                                 />
@@ -97,6 +120,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Telefonnummer (Mobil)</label>
                                                 <Input
+                                                    value={userData?.mobile}
                                                     type='text'
                                                     placeholder='+49 17134534567'
                                                 />
@@ -119,6 +143,7 @@ const Ubersicht = () => {
                                             <div className='col-span-2'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Nationalität</label>
                                                 <Input
+                                                    value={nationality}
                                                     type='text'
                                                     placeholder='Deutsch'
                                                 />
