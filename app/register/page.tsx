@@ -172,7 +172,7 @@ export default function Register(props: any){
             if(res?.status === 200){
                 setValue(res?.data?.data?.access_token);
                 setUser(res?.data?.data?.user);
-                route.push('/dashboard');
+                route.push('/register/verify/email');
             }
         } else {
             setError(error);

@@ -10,13 +10,16 @@ import {useRouter} from 'next/navigation'
 import { useLocalStorage } from 'react-use'
 import { useGlobalLoading } from '@/context/GlobalLoader';
 import axios from '@/lib/axios';
+import { getUserInfo } from '@/api/getUser';
+import { useUser } from '@/context/UserProvider';
 
 const Dashboard = () => { 
     const [transactions, setTransactions] = React.useState([]);
     const { setGlobalLoading } = useGlobalLoading();
     const [value] = useLocalStorage('xtx');
     const route = useRouter();
- 
+    const { setUser } = useUser();
+
     React.useEffect(() => { 
         setGlobalLoading(true);
         let token = value as string;
@@ -24,10 +27,25 @@ const Dashboard = () => {
         if(!token){
             route.push('/login');
         }else{
-            setGlobalLoading(false);
+            (async () => {
+                let userInfo = await getUserInfo(token); // GET USER INFO AFTER RELOADING THE PAGE
+                console.log({userInfo});
+                if(userInfo?.data?.remark === 'unverified'){
+                    if(!userInfo?.data?.data?.email_verified){
+                        route.push('/register/verify/email');
+                    } 
+                    if(!userInfo?.data?.data?.mobile_verified){
+                        route.push('/register/verify/mobile');
+                    }
+                }else{
+                    setUser(userInfo?.data?.data?.user);
+                    setGlobalLoading(false);
+                }
+            })()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
 
 
     // get transactions

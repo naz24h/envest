@@ -1,58 +1,48 @@
 "use client";
-import { verifyEmail } from '@/api/verifyEmail';
+import { verifyMobile } from '@/api/verifyMobileApi';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/form/Input';
-import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useUser } from '@/context/UserProvider';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { useLocalStorage } from 'react-use';
 
 
 
+export default function VerifyMobile(props: any){
 
-export default function VerifyEmail(props: any){
-    const [isOpen, setIsOpen] = React.useState<boolean>(false)
-    const [code, setCode] = React.useState('')
+    const [code, setCode] = React.useState<string>('')
     const [error, setError] = React.useState<string | null>(null);
+    const [isOpen, setIsOpen] = React.useState<boolean>(false) 
     const [token] = useLocalStorage('xtx')
     const router = useRouter()
-    const { user } = useUser();
-    const {setGlobalLoading} = useGlobalLoading();
-   
-    
-    // check user already logged and email already verified
-    React.useEffect(() => {
-        let _token = token as string;
-        _token = _token ? _token.split('0|')[1] : ''; 
+    const {setUser} = useUser()
 
-        
-        if(token && user?.ev){
-            router.push('/dashboard');
-        }else{
-            setGlobalLoading(false);
-        }
-    });
+
 
     // submit login system
     const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         const _token = token as string;
-        const accessToken = _token?.split('|')[1];
+        const accessToken = _token?.split('|')[1]
+
 
         if(code && accessToken){
-            const res = await verifyEmail(code, accessToken);
- 
+            const res = await verifyMobile(code, accessToken);
+            console.log(res);
             if(res?.data?.status !== 'error'){
 
                 // show a success message
                 setIsOpen(true)
                 
+                // set the user data to context api
+                setUser(res)
+
                 // redirect to mobile verification page after 2 seconds
                 setTimeout(() => {
-                    router.push('/register/verify/mobile');
+                    router.push('/dashboard');
                 }, 2000);
                 
                 console.log(res?.data);
@@ -74,15 +64,15 @@ export default function VerifyEmail(props: any){
 
 
     return (
-        <div>
-            
 
-        {/* show modal if successful */}
         <div>
-            <Transition appear show={isOpen} as={Fragment}>
+
+            {/* show modal if successful */}
+        <div>
+            <Transition appear show={isOpen} as={React.Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={() => {}}>
                 <Transition.Child
-                    as={Fragment}
+                    as={React.Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
                     enterTo="opacity-100"
@@ -96,7 +86,7 @@ export default function VerifyEmail(props: any){
                 <div className="fixed inset-0 overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
                     <Transition.Child
-                        as={Fragment}
+                        as={React.Fragment}
                         enter="ease-out duration-300"
                         enterFrom="opacity-0 scale-95"
                         enterTo="opacity-100 scale-100"
@@ -110,8 +100,8 @@ export default function VerifyEmail(props: any){
                                 className="text-lg font-medium leading-6 text-gray-900 h-[300px] flex justify-center items-center"
                             >
                                 <div>
-                                    <span>Email Verification successful </span> <br />
-                                    <span className='text-sm mt-3'>Redirecting to mobile verification page ...</span>
+                                    <span>Mobile Verification successful </span> <br />
+                                    <span className='text-sm mt-3'>Redirecting to dashboard ...</span>
                                 </div>
                                 
                             </Dialog.Title>
@@ -123,45 +113,43 @@ export default function VerifyEmail(props: any){
             </Transition>
         </div>
 
-
-        {/* email verification form  */}
-        <div className='w-screen h-screen flex items-center justify-center'>  
+            {/* mobile verification form  */}
+            <div className='w-screen h-screen flex items-center justify-center'>  
             <div className='w-full max-w-[450px] shadow-lg p-5'>
-                <div className='text-center text-justify'>
-                    <h1 className='text-2xl font-semibold tracking-[1px] text-center'>Email Verification</h1> 
-                    <p className='text-center text-xs text-slate-700 mt-2 max-w-[280px] w-fit mx-auto'>
-                        Please enter the 6-digit verification code sent to your email address
-                    </p>
-                </div> 
+                <div>
+                    <h1 className='text-2xl font-bold text-center'>Mobile Verification</h1>
+
+                    <p className='text-center text-sm text-slate-500 mt-2'>Please verify your account</p>
+                </div>
                 <form action="" className='w-full'>
                     <div className="grid grid-cols-12 gap-5">
                         <div className="col-span-12">
-                            <div className='flex items-center space-x-3'>
-                                <Input 
-                                    type="number"
-                                    max={9}
-                                    min={0}
-                                    maxLength={1}
-                                    value={code[0]}
-                                    onChange={(e) => setCode(e.target.value)}
-                                />
-                            </div>
-                        </div> 
-                    </div>
+                            <label htmlFor='username' className='text-sm font-medium text-slate-500'> 
+                             Verify Code
+                             <sup className='text-red-500'>*</sup> </label>
+                            <Input
+                                type='text' 
+                                name='username'
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                placeholder='Verify Code'
+                                required
+                            /> 
+                        </div>  
+                    </div> 
 
-                        {/* error showing component  */}
-                        { error && <div className='text-sm font-medium text-red-500'>{error}</div> }
+                    {/* error showing component  */}
+                    {
+                        error && <div className='text-sm font-medium text-red-500'>{error}</div>
+                    }
 
-                        <Button className='py-1.5 px-4'>
-                            Resend Code
-                        </Button>
-                        <Button type='submit' onClick={handleSubmit} className='px-3 py-2 rounded-sm float-right mt-3'>
-                            Verify
-                        </Button>
+                    <Button type='submit' onClick={handleSubmit} className='px-3 py-2 rounded-sm float-right mt-3'>
+                        Verify
+                    </Button>
                 </form>  
             </div>
         </div>
-    </div>
+        </div>
         
     )
 
