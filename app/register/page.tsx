@@ -13,6 +13,7 @@ import { Combobox } from '@headlessui/react';
 import _ from 'lodash';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useLocalStorage } from 'react-use';
@@ -388,6 +389,11 @@ export default function Register(props: any){
                             >
                                 Register
                             </Button>
+                        </div>
+
+                        {/* login */}
+                        <div className="col-span-12">
+                            <p className='text-center text-sm text-slate-500'>Already have an account? <Link href="/login" className='text-primary-600 hover:text-primary-700'>Login</Link></p>
                         </div>
                     </div> 
                 </form>  

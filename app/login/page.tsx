@@ -5,6 +5,7 @@ import Input from '@/components/ui/form/Input';
 import PasswordInput from '@/components/ui/form/PasswordInput';
 import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useUser } from '@/context/UserProvider';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import {useLocalStorage} from 'react-use';
@@ -88,6 +89,11 @@ export default function Login(){
                     >
                         Login
                     </Button>
+                </div>
+
+
+                <div>
+                    <p className='text-center text-sm text-gray-500'>{"Don't have an account?"} <Link href="/register" className='text-blue-500'>Register</Link></p>
                 </div>
             </form>  
         </div>
