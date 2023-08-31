@@ -5,7 +5,7 @@ import IconButton from '@/components/ui/IconButton'
 import Input from '@/components/ui/form/Input'
 import Image from 'next/image'
 import React from 'react'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { useLocalStorage } from 'react-use'
 import { useGlobalLoading } from '@/context/GlobalLoader';
@@ -13,55 +13,55 @@ import axios from '@/lib/axios';
 import { getUserInfo } from '@/api/getUser';
 import { useUser } from '@/context/UserProvider';
 
-const Dashboard = () => { 
+const Dashboard = () => {
     const [transactions, setTransactions] = React.useState([]);
     const { setGlobalLoading } = useGlobalLoading();
     const [value] = useLocalStorage('xtx');
     const route = useRouter();
     const { setUser } = useUser();
 
-    React.useEffect(() => { 
+    React.useEffect(() => {
         setGlobalLoading(true);
         let token = value as string;
-        token = token ? token.split('0|')[1] : ''; 
-        if(!token){
+        token = token ? token.split('0|')[1] : '';
+        if (!token) {
             route.push('/login');
-        }else{
+        } else {
             (async () => {
                 let userInfo = await getUserInfo(token); // GET USER INFO AFTER RELOADING THE PAGE
-                console.log({userInfo});
-                if(userInfo?.data?.remark === 'unverified'){
-                    if(!userInfo?.data?.data?.email_verified){
-                        route.push('/register/verify/email');
-                    } 
-                    if(!userInfo?.data?.data?.mobile_verified){
-                        route.push('/register/verify/mobile');
+                console.log({ userInfo });
+                if (userInfo?.data?.remark === 'unverified') {
+                    if (!userInfo?.data?.data?.email_verified) {
+                        route.push('/verify/email');
                     }
-                }else{
+                    if (!userInfo?.data?.data?.mobile_verified) {
+                        route.push('/verify/mobile');
+                    }
+                } else {
                     setUser(userInfo?.data?.data?.user);
                     setGlobalLoading(false);
                 }
             })()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
 
     // get transactions
-    React.useEffect(() => { 
+    React.useEffect(() => {
         let token = value as string;
-        token = token ? token.split('0|')[1] : ''; 
-        
+        token = token ? token.split('0|')[1] : '';
+
         const getTransactions = async () => {
             let res = await axios.get('/transactions', {
                 headers: {
                     "Authorization": `Bearer C5PtqQA1K28MkPaNs50ch0StEW1mYtqzeFMwcfJ1`
                 }
-            }) 
+            })
 
             setTransactions(res?.data?.data?.transactions?.data);
-            return res?.data?.data ;
+            return res?.data?.data;
         }
 
         getTransactions();
@@ -70,10 +70,10 @@ const Dashboard = () => {
 
     console.log(transactions);
 
-   
+
     return (
-        <div className='container pb-10'>  
-            <div className="grid grid-cols-12 mt-12 gap-y-6 md:gap-6 lg:gap-20"> 
+        <div className='container pb-10'>
+            <div className="grid grid-cols-12 mt-12 gap-y-6 md:gap-6 lg:gap-20">
                 <div className="col-span-12">
                     <div className='flex flex-wrap items-center gap-3'>
                         <div>
@@ -81,7 +81,7 @@ const Dashboard = () => {
                                 src='/user-tag.png'
                                 width={64}
                                 height={64}
-                                alt='user' 
+                                alt='user'
                                 loading='lazy'
                             />
                         </div>
@@ -95,9 +95,9 @@ const Dashboard = () => {
                         <Button className='lg:ml-auto py-2 px-3 rounded-md'>
                             Jetzt loslegen
                         </Button>
-                    </div> 
+                    </div>
                 </div>
-                <div className='col-span-12 lg:col-span-6'> 
+                <div className='col-span-12 lg:col-span-6'>
                     <div className='flex gap-2 pb-6 border-b'>
                         <Icon name='transaktionen' className='w-8 h-8' />
                         <div>
@@ -131,9 +131,9 @@ const Dashboard = () => {
                             </div>
                         </div>
                         {/* end table row */}
- 
-                       {/* table row */}
-                       <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
+
+                        {/* table row */}
+                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
                             <div className="flex items-center gap-3">
                                 <div className="bg-[#00D296] p-2 md:p-2.5 rounded-lg">
                                     <Icon name="wallet-add" className='w-4 h-4 md:w-6 md:h-6' />
@@ -156,8 +156,8 @@ const Dashboard = () => {
                         </div>
                         {/* end table row */}
 
-                       {/* table row */}
-                       <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
+                        {/* table row */}
+                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
                             <div className="flex items-center gap-3">
                                 <div className="bg-primary p-2 md:p-2.5 rounded-lg">
                                     <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
@@ -179,9 +179,9 @@ const Dashboard = () => {
                             </div>
                         </div>
                         {/* end table row */}
- 
-                       {/* table row */}
-                       <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
+
+                        {/* table row */}
+                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
                             <div className="flex items-center gap-3">
                                 <div className="bg-primary p-2 md:p-2.5 rounded-lg">
                                     <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
@@ -205,15 +205,15 @@ const Dashboard = () => {
                         {/* end table row */}
                     </div>
 
-                    
+
                 </div>
 
 
 
-                <div className='col-span-12 lg:col-span-6 mt-10'>    
+                <div className='col-span-12 lg:col-span-6 mt-10'>
                     <div className='flex items-center gap-2 pb-6 border-b'>
-                        <Icon name='wallet-card' className='w-8 h-8' /> 
-                        <h5 className='text-primary leading-5 tracking-[0.2px] text-xl gl:text-2xl font-bold'>Meine Bankverbindung</h5> 
+                        <Icon name='wallet-card' className='w-8 h-8' />
+                        <h5 className='text-primary leading-5 tracking-[0.2px] text-xl gl:text-2xl font-bold'>Meine Bankverbindung</h5>
                         <IconButton icon='three-dots' className='ml-auto bg-slate-100 md:bg-slate-100/30 hover:bg-slate-100 p-1.5 rounded-full' />
                     </div>
 
@@ -229,18 +229,18 @@ const Dashboard = () => {
                                     <div className='col-span-2 xl:col-span-1 text-left xl:mb-10'>
                                         <span className='block text-xs md:text-sm uppercase text-[rgba(255,255,255,0.30)]'>Kontonummer</span>
                                         <div className='flex items-center'>
-                                            <span className="text-lg"> 2342 •••• •••• 3213</span> 
+                                            <span className="text-lg"> 2342 •••• •••• 3213</span>
                                         </div>
                                     </div>
 
                                     <div className='col-span-1 text-left'>
                                         <span className='block text-xs md:text-sm uppercase text-[rgba(255,255,255,0.30)]'>Verfügbar</span>
                                         <div className='flex items-center'>
-                                            <span className="text-xl font-bold tracking-widest"> 5,623 € </span> 
+                                            <span className="text-xl font-bold tracking-widest"> 5,623 € </span>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div className='col-span-1'>
-                                       <Icon name='bank' className='ml-auto mr-4' />
+                                        <Icon name='bank' className='ml-auto mr-4' />
                                     </div>
                                 </div>
                             </div>
@@ -248,10 +248,10 @@ const Dashboard = () => {
                             {/* form */}
                             <div className='col-span-2 p-2.5 xl:p-4 text-left flex flex-col gap-4'>
                                 <h4 className='font-bold text-xl'>Quick transfer</h4>
-                                
+
                                 <div className='py-2 px-3 border w-full text-primary border-[#E7EEF0] hover:outline-none rounded-lg font-bold text-lg focus:border-primary-600 focus:shadow-sm focus:ring-0 active:outline-none flex items-center gap-3 justify-between'>
                                     <span className='text-primary text-base md:text-lg font-[400]'>Verfügbar</span>
-                                    <span className='text-base md:text-lg'>5,623 €</span> 
+                                    <span className='text-base md:text-lg'>5,623 €</span>
                                 </div>
 
                                 <Input
@@ -264,7 +264,7 @@ const Dashboard = () => {
                                 <Button className='w-fit bg-primary text-white py-2 md:py-1.5 px-3 md:px-5 rounded-lg flex items-center space-x-1.5 text-sm'>
                                     <Icon name="arrow-right" className='mr-2 stroke-white' />
                                     <span className='text-sm md:text-lg font-[400]'>Geld senden</span>
-                                </Button> 
+                                </Button>
                             </div>
                         </div>
                     </div>
