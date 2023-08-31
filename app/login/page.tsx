@@ -40,8 +40,6 @@ export default function Login(){
             // Redirect to dashboard
             router.push('/dashboard')
         }
-
-      
     } 
 
     // const access_token = value?.split('0|')[1];

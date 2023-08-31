@@ -1,16 +1,35 @@
 'use client'
+import { getTransaction } from '@/api/getTransaction'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import IconButton from '@/components/ui/IconButton'
 import Input from '@/components/ui/form/Input'
 import Image from 'next/image'
+import React from 'react'
 import { useLocalStorage } from 'react-use'
 
 const Dashboard = () => {
-    const [user] = useLocalStorage('user')
-    const userData = user?.data?.user ;
-    console.log(userData);
-    console.log(user);
+    const [transactions, setTransactions] = React.useState({})
+    const [token] = useLocalStorage('xtx')
+
+
+    console.log(transactions);
+
+
+    React.useEffect(() => {
+
+        const accessToken = token?.split('0|')[1];
+        console.log(token);
+
+        (async () => {
+            const res = await getTransaction(accessToken)
+            setTransactions(res?.data)
+        })()
+
+    },[])
+
+    
+
 
     return (
         <div className='container pb-10'>  
@@ -164,7 +183,7 @@ const Dashboard = () => {
                                 <div className="grid grid-cols-2 gap-2 xl:gap-5">
                                     <div className='col-span-2 xl:col-span-1 text-left xl:mb-10'>
                                         <span className='block text-xs md:text-sm uppercase text-[rgba(255,255,255,0.30)] leading-[21px] tracking-[0.56px]'>Name</span>
-                                        <span className='block'>{userData?.firstname} {userData?.lastname}</span>
+                                        <span className='block'>John Doe</span>
                                     </div>
 
                                     <div className='col-span-2 xl:col-span-1 text-left xl:mb-10'>
@@ -199,7 +218,7 @@ const Dashboard = () => {
                                     type='text'
                                     placeholder='EX: 5,623 €'
                                     icon='wallet-check'
-                                    className='py-2 px-3 pl-10 border w-full font-bold text-primary border-[#E7EEF0] hover:outline-none rounded-lg  focus:border-primary-600 focus:shadow-sm focus:ring-0 active:outline-none text-right text-base md:text-lg'
+                                    className='py-2 px-3 pl-10 border w-full font-bold text-primary border-[#E7EEF0] hover:outline-none rounded focus:border-primary-600 focus:shadow-sm focus:ring-0 active:outline-none text-right text-base md:text-lg'
                                 />
 
                                 <Button className='w-fit bg-primary text-white py-2 md:py-1.5 px-3 md:px-5 rounded-lg flex items-center space-x-1.5 text-sm'>

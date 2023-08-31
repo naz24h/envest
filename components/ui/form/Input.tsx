@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import {useDebounce} from 'react-use';
 import Icon from '../Icon';
 
 export type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {

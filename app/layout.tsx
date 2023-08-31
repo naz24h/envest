@@ -41,15 +41,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) { 
 
-//   const [token] = useLocalStorage('xtx')
-//   console.log(token);
-
-  
-// React.useEffect(() => {
-//   const user = getLoggedUser();
-//   console.log({user});
-// }, [])
-
 
   return (
     <html lang="en">
