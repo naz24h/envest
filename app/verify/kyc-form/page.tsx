@@ -20,22 +20,22 @@ const KYCValidation = () => {
 
     // handle image upload
     const handleImageChange = (
-        e: React.ChangeEvent<HTMLInputElement>, 
-        setState: React.Dispatch<React.SetStateAction<File | null>> 
+        e: React.ChangeEvent<HTMLInputElement>,
+        setState: React.Dispatch<React.SetStateAction<File | null>>
     ) => {
         const file = e.target.files?.[0];
-        if(!file) return;
+        if (!file) return;
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
             setState(file);
-       }
+        }
     }
 
     // handle submit
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(!frontImageData || !backImageData || !faceImageData) return;
+        if (!frontImageData || !backImageData || !faceImageData) return;
 
         // submit
         setSubmitting(true);
@@ -59,11 +59,11 @@ const KYCValidation = () => {
     }
 
 
-    return(
+    return (
         <section className='w-screen h-screen relative'>
             <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
                 <div className='flex flex-col items-center shadow-xl shadow-primary-200 rounded-lg overflow-hidden'>
-                    <div className='w-96 h-fit py-10 bg-white flex flex-col items-center justify-center'>  
+                    <div className='w-96 h-fit py-10 bg-white flex flex-col items-center justify-center'>
 
                         <div className='text-2xl font-bold mt-4'>KYC Validation</div>
 
@@ -75,24 +75,24 @@ const KYCValidation = () => {
                             {/* input grpup */}
                             <div className='mb-4'>
                                 <label
-                                    htmlFor='frontPartImage'  
+                                    htmlFor='frontPartImage'
                                     className='font-medium text-sm block flock mb-1 text-primary-500'
                                 >
                                     Upload Front Part Image:
                                 </label>
-                                <div className='flex items-center border rounded-md overflow-hidden'>
+                                <div className='flex items-center rounded-md overflow-hidden'>
                                     <div className='bg-primary-700 py-1.5 px-3 w-fit'>
                                         <Icon name="photo-id" className='w-5 fill-primary-100' />
                                     </div>
-                                    <div className='relative w-3/4 px-2'>
+                                    <div className='relative w-full rounded-r-md px-2 border h-9 flex items-center'>
                                         <span className='text-sm text-primary-400 line-clamp-1'>
                                             {frontImageData ? frontImageData.name : 'Upload here...'}
                                         </span>
-                                        <input 
-                                            type='file' 
+                                        <input
+                                            type='file'
                                             id='frontPartImage'
                                             onChange={(e) => handleImageChange(e, setFrontImageData)}
-                                            className='absolute top-0 left-0 w-full h-full opacity-0 z-10' 
+                                            className='absolute top-0 left-0 w-full h-full opacity-0 z-10'
                                         />
                                     </div>
                                 </div>
@@ -100,22 +100,22 @@ const KYCValidation = () => {
 
 
                             <div className='my-2 w-full'>
-                            <label
-                                    htmlFor='backPartImage'  
+                                <label
+                                    htmlFor='backPartImage'
                                     className='font-medium text-sm block flock mb-1 text-primary-500'
                                 >
                                     Upload Back Part Image:
                                 </label>
-                                <div className='flex items-center border rounded-md overflow-hidden'>
+                                <div className='flex items-center rounded-md overflow-hidden'>
                                     <div className='bg-primary-700 py-1.5 px-3 w-fit'>
                                         <Icon name="photo-id" className='w-5 fill-primary-100' />
                                     </div>
-                                    <div className='relative px-2 py-1.5 w-full'>
+                                    <div className='relative w-full rounded-r-md px-2 border h-9 flex items-center'>
                                         <span className="block text-sm text-primary-400 line-clamp-1">
-                                           {backImageData ? backImageData.name : 'Upload here...'}
+                                            {backImageData ? backImageData.name : 'Upload here...'}
                                         </span>
-                                        <input 
-                                            type='file' 
+                                        <input
+                                            type='file'
                                             id='backPartImage'
                                             onChange={(e) => handleImageChange(e, setBackImageData)}
                                             className='absolute top-0 left-0 w-full h-full opacity-0 z-10'
@@ -135,12 +135,12 @@ const KYCValidation = () => {
                                 >
                                     Upload Face Image
                                 </label>
-                                <div className='flex items-center border rounded-md overflow-hidden'>
+                                <div className='flex items-center rounded-md overflow-hidden'>
                                     <div className='bg-primary-700 py-1.5 px-3 w-fit'>
                                         <Icon name="photo-capture" className='w-5 fill-primary-100' />
                                     </div>
 
-                                    <div className='relative px-2 py-1.5 w-full'>
+                                    <div className='relative w-full rounded-r-md px-2 border h-9 flex items-center'>
                                         <span className='text-sm text-primary-400 line-clamp-1'>
                                             {faceImageData ? faceImageData.name : 'Upload here...'}
                                         </span>
@@ -166,18 +166,18 @@ const KYCValidation = () => {
                                 >
                                     Submit
                                 </Button>
-                            </div> 
+                            </div>
 
                         </form>
 
 
-                            
-                         <div className='w-full flex justify-center mt-4'>
+
+                        <div className='w-full flex justify-center mt-4'>
                             <div className='w-1/2 h-1 bg-gray-300 rounded-full'>
-                                <div 
-                                    className='h-1 bg-primary-500 rounded-full' 
-                                    style={{width: '50%'}}
-                                /> 
+                                <div
+                                    className='h-1 bg-primary-500 rounded-full'
+                                    style={{ width: '50%' }}
+                                />
                             </div>
                         </div>
                     </div>

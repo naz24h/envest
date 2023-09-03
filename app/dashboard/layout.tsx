@@ -7,7 +7,7 @@ import LinkButton from '@/components/ui/LinkButton'
 import { Dialog, Transition } from '@headlessui/react'
 import Button from '@/components/ui/Button';
 import IconButton from '@/components/ui/IconButton';
-import {useCopyToClipboard, useLocalStorage} from 'react-use';
+import { useCopyToClipboard, useLocalStorage } from 'react-use';
 import { getTransaction } from '@/api/getTransaction';
 import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useRouter } from 'next/navigation';
@@ -17,69 +17,69 @@ import { getUserInfo } from '@/api/getUser';
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [transactions, setTransactions] = React.useState<any>()
     const [isModalOpen, setIsModalOpen] = React.useState(false);
-    const [isTooltipOpen, setIsTooltipOpen] = React.useState(false); 
+    const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
     const [state, copyToClipboard] = useCopyToClipboard();
- 
+
     const { setGlobalLoading } = useGlobalLoading();
     const [token] = useLocalStorage('xtx');
     const route = useRouter();
     const { user, setUser } = useUser();
 
     let _token = token as string;
-        _token = _token ? _token.split('0|')[1] : '';
+    _token = _token ? _token.split('0|')[1] : '';
 
 
     // check user already logged in add token to header
     // user has verified email and mobile number
-    React.useEffect(() => { 
-        if(!_token) {
-            console.log('loading dashboard page');
-        }else{
+    React.useEffect(() => {
+        if (!_token) {
+            route.push('/login')
+        } else {
             (async () => {
                 let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE
-                let user = userInfo?.data?.data?.user; 
-                if(!user?.ev){
+                let user = userInfo?.data?.data?.user;
+                if (!user?.ev) {
                     route.push('/verify/email');
-                }else if(!user?.phone_veriry_status){
+                } else if (!user?.phone_veriry_status) {
                     route.push('/verify/mobile');
-                }else{
+                } else {
                     setUser(user);
                     setGlobalLoading(false);
                 }
             })()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-  
+
 
     React.useEffect(() => {
-        if(user && _token ){
-            (async() => {
+        if (user && _token) {
+            (async () => {
                 const res = await getTransaction(_token);
-                let data = res?.data; 
+                let data = res?.data;
                 setTransactions(data)
             })();
         }
     }, [_token, user])
 
-    
+
     // if copied successfully, then show a tooltip "copied" for 3 seconds   
-    React.useEffect(() => { 
+    React.useEffect(() => {
         let timeout: any;
-        if (state.value) { 
+        if (state.value) {
             timeout = setTimeout(() => {
                 setIsTooltipOpen(false);
                 clearTimeout(timeout);
             }, 3000);
-            
+
         }
         return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isTooltipOpen]);
- 
+
     return (
         <React.Fragment>
-             <Navbar />
+            <Navbar />
 
             <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px] w-screen">
                 <Image
@@ -92,7 +92,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     sizes='100vw'
                     className='absolute top-0 left-0 h-full object-fill -z-10'
                 />
-                
+
                 <div className="container h-full">
                     <div className='h-full flex flex-col'>
 
@@ -119,9 +119,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 variant='primary'
                                 onClick={() => setIsModalOpen(true)}
                                 className='mt-3 lg:mt-12 text-sm lg:text-[16px] text-primary w-fit pt-2 pb-2 px-3 rounded-md flex items-center'
-                            > 
+                            >
                                 <Icon name="arrow-right" className='stroke-primary' />
-                                <span className='ml-2'> Geld senden</span> 
+                                <span className='ml-2'> Geld senden</span>
                             </Button>
 
                             <div className='absolute'>
@@ -147,7 +147,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                     enterFrom="opacity-0 scale-95"
                                                     enterTo="opacity-100 scale-100"
                                                     leave="ease-in duration-200"
-                                                    leaveFrom="opacity-100 scale-100" 
+                                                    leaveFrom="opacity-100 scale-100"
                                                     leaveTo="opacity-0 scale-95"
                                                 >
                                                     <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
@@ -155,10 +155,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                             as="h3"
                                                             className="text-lg leading-6 text-gray-900 font-bold"
                                                         >
-                                                            Einzahlen  
+                                                            Einzahlen
 
-                                                            <IconButton 
-                                                                icon="x" 
+                                                            <IconButton
+                                                                icon="x"
                                                                 onClick={() => setIsModalOpen(false)}
                                                                 className='px-0 py-0 w-8 h-8 flex items-center justify-center bg-[#F3F3F3] text-[#123857] rounded-full absolute top-3 right-3 hover:bg-primary/20'
                                                                 iconclassname='w-4 h-4 stroke-primary'
@@ -171,51 +171,51 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                         </div>
 
                                                         <div className="mt-3 flex flex-col gap-3">
-                                                           <div className='px-3 py-3 bg-[#F3F3F3]'>
+                                                            <div className='px-3 py-3 bg-[#F3F3F3]'>
                                                                 <label htmlFor="kontoinhaber" className="block text-sm font-medium text-gray-700">
                                                                     Kontoinhaber
                                                                 </label>
                                                                 <h5 className='uppercase font-bold text-primary'>Marcel Hadler</h5>
-                                                           </div>
+                                                            </div>
 
-                                                           <div className='relative px-3 py-3 bg-[#F3F3F3]'>
+                                                            <div className='relative px-3 py-3 bg-[#F3F3F3]'>
                                                                 <label htmlFor="kontoinhaber" className="block text-sm font-medium text-gray-700">
-                                                                    IBAN 
+                                                                    IBAN
                                                                 </label>
                                                                 <h5 className='uppercase font-bold text-primary'>
                                                                     DE88 1011 0600 8659 3803 00
                                                                 </h5>
 
-                                                                {!isTooltipOpen && 
-                                                                    <IconButton 
+                                                                {!isTooltipOpen &&
+                                                                    <IconButton
                                                                         onClick={() => {
                                                                             copyToClipboard('DE88 1011 0600 8659 3803 00');
                                                                             setIsTooltipOpen(true);
                                                                         }}
-                                                                        icon='copy' 
-                                                                        className='absolute top-1/2 right-3 -translate-y-1/2 w-fit h-fit p-1 rounded-md bg-transparent group' 
+                                                                        icon='copy'
+                                                                        className='absolute top-1/2 right-3 -translate-y-1/2 w-fit h-fit p-1 rounded-md bg-transparent group'
                                                                         iconclassname='w-6 h-6 stroke-[#00D296] group-hover:stroke-white'
                                                                     />
                                                                 }
-                                                                 
-                                                                {isTooltipOpen && state.value && 
+
+                                                                {isTooltipOpen && state.value &&
                                                                     <span>
-                                                                        <Icon 
-                                                                            name="check" 
-                                                                            className='absolute top-1/2 right-3 -translate-y-1/2 p-0 bg-transparent w-4 h-4 fill-emerald-500' 
+                                                                        <Icon
+                                                                            name="check"
+                                                                            className='absolute top-1/2 right-3 -translate-y-1/2 p-0 bg-transparent w-4 h-4 fill-emerald-500'
                                                                         />
                                                                     </span>
                                                                 }
-                                                           </div>
+                                                            </div>
 
-                                                           <div className='px-3 py-3 bg-[#F3F3F3]'>
+                                                            <div className='px-3 py-3 bg-[#F3F3F3]'>
                                                                 <label htmlFor="BIC" className="block text-sm font-medium text-gray-700">
-                                                                   BIC 
+                                                                    BIC
                                                                 </label>
                                                                 <h5 className='uppercase font-bold text-primary'>
                                                                     JBKJHJKGXXX
                                                                 </h5>
-                                                           </div>
+                                                            </div>
                                                         </div>
                                                     </Dialog.Panel>
                                                 </Transition.Child>
