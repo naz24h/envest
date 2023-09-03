@@ -3,7 +3,7 @@ import axios from 'axios'
  
 
 const AxiosInstance = axios.create({
-    baseURL: 'https://getenvest.com/api',
+    baseURL: 'https://admin.getenvest.com/api',
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json',

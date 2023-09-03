@@ -50,7 +50,7 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     return (
         <button
             ref={ref}
-            onClick={onClick}
+            onClick={!loading ? onClick : () => null}
             className={ loading ? loadingClass: classes }
             disabled= {disabled || loading}
             {...props}

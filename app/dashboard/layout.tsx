@@ -13,6 +13,7 @@ import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserProvider';
 import { getUserInfo } from '@/api/getUser';
+import { Toaster } from '@/components/ui/toaster';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [transactions, setTransactions] = React.useState<any>()
@@ -79,7 +80,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <React.Fragment>
-            <Navbar />
+            <Navbar /> 
+            <Toaster />
 
             <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px] w-screen">
                 <Image
