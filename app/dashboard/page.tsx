@@ -12,64 +12,37 @@ import { useGlobalLoading } from '@/context/GlobalLoader';
 import axios from '@/lib/axios';
 import { getUserInfo } from '@/api/getUser';
 import { useUser } from '@/context/UserProvider';
+import { getTransaction } from '@/api/getTransaction';
+import _ from 'lodash';
+import dayjs from 'dayjs';
+
+ 
+
 
 const Dashboard = () => {
-    const [transactions, setTransactions] = React.useState([]);
+    const [transactions, setTransactions] = React.useState<any>();
     const { setGlobalLoading } = useGlobalLoading();
-    const [value] = useLocalStorage('xtx');
+    const [token] = useLocalStorage('xtx');
     const route = useRouter();
-    const { setUser } = useUser();
+    const { user, setUser } = useUser();
+     
+    let _token = token as string;
+        _token = _token ? _token.split('0|')[1] : '';
+    
 
     React.useEffect(() => {
-        setGlobalLoading(true);
-        let token = value as string;
-        token = token ? token.split('0|')[1] : '';
-        if (!token) {
-            route.push('/login');
-        } else {
-            (async () => {
-                let userInfo = await getUserInfo(token); // GET USER INFO AFTER RELOADING THE PAGE
-                console.log({ userInfo });
-                if (userInfo?.data?.remark === 'unverified') {
-                    if (!userInfo?.data?.data?.email_verified) {
-                        route.push('/verify/email');
-                    }
-                    if (!userInfo?.data?.data?.mobile_verified) {
-                        route.push('/verify/mobile');
-                    }
-                } else {
-                    setUser(userInfo?.data?.data?.user);
-                    setGlobalLoading(false);
-                }
-            })()
+        if(user && _token ){
+            (async() => {
+                const res = await getTransaction(_token);
+                let data = res?.data; 
+                setTransactions(data)
+            })();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [_token, user])
 
+    const _transactions = transactions?.data?.transactions?.data;
 
-
-    // get transactions
-    React.useEffect(() => {
-        let token = value as string;
-        token = token ? token.split('0|')[1] : '';
-
-        const getTransactions = async () => {
-            let res = await axios.get('/transactions', {
-                headers: {
-                    "Authorization": `Bearer C5PtqQA1K28MkPaNs50ch0StEW1mYtqzeFMwcfJ1`
-                }
-            })
-
-            setTransactions(res?.data?.data?.transactions?.data);
-            return res?.data?.data;
-        }
-
-        getTransactions();
-    }, [])
-
-
-    console.log(transactions);
-
+    console.log(user);
 
     return (
         <div className='container pb-10'>
@@ -108,101 +81,31 @@ const Dashboard = () => {
 
                     {/* table */}
                     <div>
-                        {/* table row */}
-                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-primary p-2 md:p-2.5 rounded-lg">
-                                    <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
-                                </div>
-                                <div>
-                                    <h6 className='text-primary text-base md:text-xl font-bold'><span className='leading-6'>Einzahlungen</span></h6>
-                                    <span className='text-xs md:text-sm whitespace-nowrap text-[#0621378e]'>16.07.2023, 14:23PM</span>
-                                </div>
-                            </div>
+                        {
+                            _.map(_transactions, (t, i) => (
+                                <div key={t.id} className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
+                                    <div className="flex items-center gap-3">
+                                        <div className="bg-primary p-2 md:p-2.5 rounded-lg">
+                                            <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
+                                        </div>
+                                        <div>
+                                            <h6 className='text-primary text-base md:text-xl font-bold'><span className='leading-6'>{t.trx}</span></h6>
+                                            <span className='text-xs md:text-sm whitespace-nowrap text-[#0621378e]'>{dayjs(t.created_at).format('DD.MM.DDDD')} {dayjs(t.created_at).format('HH:mm A')} </span>
+                                        </div>
+                                    </div>
 
-                            <div className='block md:flex items-center md:w-full'>
-                                <div className='w-fit py-0.5 px-2 md:mx-auto font-bold md:py-3 md:px-5 text-[10px] md:text-base rounded-lg bg-primary text-primary-100 md:bg-primary-100/50 md:text-primary'>
-                                    Bank Transfer
-                                </div>
+                                    <div className='block md:flex items-center md:w-full'>
+                                        <div className='w-fit py-0.5 px-2 md:mx-auto font-bold md:py-3 md:px-5 text-[10px] md:text-base rounded-lg bg-primary text-primary-100 md:bg-primary-100/50 md:text-primary'>
+                                            Bank Transfer
+                                        </div>
 
-                                <h5 className='text-red-500 font-bold'>
-                                    -1.000,00 €
-                                </h5>
-                            </div>
-                        </div>
-                        {/* end table row */}
-
-                        {/* table row */}
-                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-[#00D296] p-2 md:p-2.5 rounded-lg">
-                                    <Icon name="wallet-add" className='w-4 h-4 md:w-6 md:h-6' />
+                                        <h5 className={t.trx_type === '-'? 'text-red-500 font-bold': 'text-green-500 font-bold'}>
+                                            {t.trx_type} {t.amount} €
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h6 className='text-primary text-base md:text-xl font-bold'><span className='leading-6'>Einzahlungen</span></h6>
-                                    <span className='text-xs md:text-sm whitespace-nowrap text-[#0621378e]'>16.07.2023, 14:23PM</span>
-                                </div>
-                            </div>
-
-                            <div className='block md:flex items-center md:w-full'>
-                                <div className='w-fit py-0.5 px-2 md:mx-auto font-bold md:py-3 md:px-5 text-[10px] md:text-base rounded-lg bg-primary text-primary-100 md:bg-primary-100/50 md:text-primary'>
-                                    Bank Transfer
-                                </div>
-
-                                <h5 className='text-red-500 font-bold'>
-                                    -1.000,00 €
-                                </h5>
-                            </div>
-                        </div>
-                        {/* end table row */}
-
-                        {/* table row */}
-                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-primary p-2 md:p-2.5 rounded-lg">
-                                    <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
-                                </div>
-                                <div>
-                                    <h6 className='text-primary text-base md:text-xl font-bold'><span className='leading-6'>Einzahlungen</span></h6>
-                                    <span className='text-xs md:text-sm whitespace-nowrap text-[#0621378e]'>16.07.2023, 14:23PM</span>
-                                </div>
-                            </div>
-
-                            <div className='block md:flex items-center md:w-full'>
-                                <div className='w-fit py-0.5 px-2 md:mx-auto font-bold md:py-3 md:px-5 text-[10px] md:text-base rounded-lg bg-primary text-primary-100 md:bg-primary-100/50 md:text-primary'>
-                                    Bank Transfer
-                                </div>
-
-                                <h5 className='text-red-500 font-bold'>
-                                    -1.000,00 €
-                                </h5>
-                            </div>
-                        </div>
-                        {/* end table row */}
-
-                        {/* table row */}
-                        <div className="flex flex-row items-center gap-3 py-3 justify-between border-b hover:bg-slate-50">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-primary p-2 md:p-2.5 rounded-lg">
-                                    <Icon name="money-up" className='w-4 h-4 md:w-6 md:h-6' />
-                                </div>
-                                <div>
-                                    <h6 className='text-primary text-base md:text-xl font-bold'><span className='leading-6'>Einzahlungen</span></h6>
-                                    <span className='text-xs md:text-sm whitespace-nowrap text-[#0621378e]'>16.07.2023, 14:23PM</span>
-                                </div>
-                            </div>
-
-                            <div className='block md:flex items-center md:w-full'>
-                                <div className='w-fit py-0.5 px-2 md:mx-auto font-bold md:py-3 md:px-5 text-[10px] md:text-base rounded-lg bg-primary text-primary-100 md:bg-primary-100/50 md:text-primary'>
-                                    Bank Transfer
-                                </div>
-
-                                <h5 className='text-red-500 font-bold'>
-                                    -1.000,00 €
-                                </h5>
-                            </div>
-                        </div>
-                        {/* end table row */}
+                            ))
+                        }
                     </div>
 
 

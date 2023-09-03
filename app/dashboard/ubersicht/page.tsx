@@ -10,6 +10,9 @@ import PriceCard from '@/components/ubersicht/PriceCard';
 
 
 const Ubersicht = () => {
+    
+
+
     return (
         <div className='container py-3 '>
             <div className='mt-5'>

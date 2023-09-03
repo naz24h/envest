@@ -29,6 +29,8 @@ const config: Config = {
       padding: '1rem',
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 }
 export default config

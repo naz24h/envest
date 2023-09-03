@@ -7,25 +7,76 @@ import LinkButton from '@/components/ui/LinkButton'
 import { Dialog, Transition } from '@headlessui/react'
 import Button from '@/components/ui/Button';
 import IconButton from '@/components/ui/IconButton';
-import {useCopyToClipboard} from 'react-use';
+import {useCopyToClipboard, useLocalStorage} from 'react-use';
+import { getTransaction } from '@/api/getTransaction';
+import { useGlobalLoading } from '@/context/GlobalLoader';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/context/UserProvider';
+import { getUserInfo } from '@/api/getUser';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+    const [transactions, setTransactions] = React.useState<any>()
     const [isModalOpen, setIsModalOpen] = React.useState(false);
     const [isTooltipOpen, setIsTooltipOpen] = React.useState(false); 
     const [state, copyToClipboard] = useCopyToClipboard();
-    // if copied successfully, then show a tooltip "copied" for 3 seconds   
+ 
+    const { setGlobalLoading } = useGlobalLoading();
+    const [token] = useLocalStorage('xtx');
+    const route = useRouter();
+    const { user, setUser } = useUser();
+
+    let _token = token as string;
+        _token = _token ? _token.split('0|')[1] : '';
+
+
+    // check user already logged in add token to header
+    // user has verified email and mobile number
     React.useEffect(() => { 
-        if (state.value) { 
-            const timeout = setTimeout(() => {
-                setIsTooltipOpen(false);
-            }, 3000);
-            return () => clearTimeout(timeout);
+        if(!_token) {
+            console.log('loading dashboard page');
+        }else{
+            (async () => {
+                let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE
+                let user = userInfo?.data?.data?.user; 
+                if(!user?.ev){
+                    route.push('/verify/email');
+                }else if(!user?.phone_veriry_status){
+                    route.push('/verify/mobile');
+                }else{
+                    setUser(user);
+                    setGlobalLoading(false);
+                }
+            })()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  
+
+    React.useEffect(() => {
+        if(user && _token ){
+            (async() => {
+                const res = await getTransaction(_token);
+                let data = res?.data; 
+                setTransactions(data)
+            })();
+        }
+    }, [_token, user])
+
+    
+    // if copied successfully, then show a tooltip "copied" for 3 seconds   
+    React.useEffect(() => { 
+        let timeout: any;
+        if (state.value) { 
+            timeout = setTimeout(() => {
+                setIsTooltipOpen(false);
+                clearTimeout(timeout);
+            }, 3000);
+            
+        }
+        return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isTooltipOpen]);
-
-
-
+ 
     return (
         <React.Fragment>
              <Navbar />
@@ -50,7 +101,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <div>
                                 <h6 className='mb-2.5 lg:mb-4 block md:inline-block text-sm'>Guthaben Total</h6>
                                 <div className="flex flex-col md:flex-row md:items-end gap-4">
-                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">33,000 €</h1>
+                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">{Number(user?.balance ?? 0).toFixed(5)} €</h1>
                                     <div className='flex items-center gap-3.5 text-sm tracking-[0.56px]'>
                                         <div className='w-6 h-6 flex items-center justify-center bg-green-500 rounded-[6px] '>
                                             <Icon name="clock" className='w-2 h-2 stroke-black' />
@@ -96,7 +147,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                     enterFrom="opacity-0 scale-95"
                                                     enterTo="opacity-100 scale-100"
                                                     leave="ease-in duration-200"
-                                                    leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
+                                                    leaveFrom="opacity-100 scale-100" 
+                                                    leaveTo="opacity-0 scale-95"
                                                 >
                                                     <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
                                                         <Dialog.Title
@@ -197,11 +249,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         <span className='p-1.5 block-inline bg-[#00D296] rounded-[6px] mr-1.5'>
                                             <Icon name="clock" className='w-2 h-2 stroke-white' />
                                         </span>
-                                        <span className='font-medium '>23.000 €</span>
+                                        <span className='font-medium '>{transactions?.interest_deposite} €</span>
                                     </div>
 
                                     <div className='font-medium text-2xl lg:text-[48px]'>
-                                        33,000 €
+                                        {Number(transactions?.interest_deposite ?? 0).toFixed(2)} €
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +274,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                     </div>
 
                                     <div className='text-2xl lg:text-[48px]'>
-                                        700 €
+                                        {Number(transactions?.invesment_deposite ?? 0).toFixed(2)} €
                                     </div>
                                 </div>
                             </div>
@@ -239,7 +291,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                     </div>
 
                                     <div className='text-2xl font-medium lg:text-[48px]'>
-                                        1,623 €
+                                        {Number(transactions?.profite_total ?? 0).toFixed(2)} €
                                     </div>
                                 </div>
                             </div>

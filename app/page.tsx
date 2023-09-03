@@ -17,7 +17,7 @@ export default function Home() {
   React.useEffect(() => {
     // navigate to the page landing
     router.push('/dashboard')
-  })
+  }, [])
 
 
   // React.useEffect(() => { 

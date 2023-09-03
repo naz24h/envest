@@ -10,6 +10,7 @@ export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTM
     children?: React.ReactNode;
     disabled?: boolean;
     loading?: boolean;
+    loadingClass?: string;
     icon?: React.ReactNode;
     iconPosition?: 'left' | 'right';
     href?: string;
@@ -17,7 +18,7 @@ export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTM
     rel?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     type?: 'button' | 'submit' | 'reset';
-    ref?: React.ForwardedRef<HTMLButtonElement>;
+    ref?: React.ForwardedRef<HTMLButtonElement>;  
 }
 
 
@@ -27,6 +28,7 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
     onClick,
     loading,
     disabled,
+    loadingClass,
     className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md font-medium",
     ...props
 }, ref){
@@ -49,15 +51,16 @@ const Button:React.FC<ButtonProps> = React.forwardRef( function Button( {
         <button
             ref={ref}
             onClick={onClick}
-            className={classes}
+            className={ loading ? loadingClass: classes }
             disabled= {disabled || loading}
             {...props}
         > 
-            {loading ? <span className="flex items-center w-full justify-center space-x-2">
-                <Spinner />
-                <span>Loading...</span>
-            </span>: 
-              children 
+            {loading ? 
+                <>
+                    <Spinner />
+                    <span>Loading...</span>
+                </>
+                : children 
             }
         </button>
     )
