@@ -28,7 +28,7 @@ export default function VerifyEmail(props: any) {
 
     // check user already logged and email already verified
     React.useEffect(() => {
-        if (_token && user?.ev) {
+        if (user?.ev) {
             router.push('/dashboard');
         } else {
             setGlobalLoading(false);
@@ -46,7 +46,9 @@ export default function VerifyEmail(props: any) {
     React.useEffect(() => {
         (async () => {
             const res = await sendVerificationCode('email', _token); 
-                console.log(res);
+            if(res?.status === 200) {
+                router.push('/dashboard');
+            }
         })()
     }, [])
 
@@ -143,7 +145,7 @@ export default function VerifyEmail(props: any) {
                     <div>
                         <h1 className='text-2xl font-bold text-center'>Verification Code</h1>
 
-                        <p className='text-center text-sm text-primary-500 w-[280px] mt-2 mx-auto tracking-[0.86px]'>We have to sent the code verification to Your Mobile Number</p>
+                        <p className='text-center text-sm text-primary-500 w-[280px] mt-2 mx-auto tracking-[0.86px]'>We have to sent the code verification to your email address</p>
                     </div>
                     <form action="" className='w-full'>
                         <div className="grid grid-cols-12 gap-5">

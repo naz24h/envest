@@ -68,6 +68,14 @@ const Navbar = () => {
                                 <Link href="/dashboard/ubersicht" className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Übersicht</Link>
                             </Menu.Item>
 
+                            
+                            <Menu.Item as="div">
+                                <Link 
+                                href="/dashboard/tickets/new-ticket" 
+                                    className="text-primary block px-3 py-1 w-full hover:bg-primary hover:text-primary-100 transition-colors duration-300 rounded-sm text-sm">Fahrkarte</Link>
+                            </Menu.Item>
+
+
 
                             <div className="flex items-center justify-between pt-2 pb-1.5 px-3 ">
                                 <IconLink
@@ -110,6 +118,7 @@ const Navbar = () => {
                     <Link href="/dashboard/assets">Assets</Link>
                     <Link href="/dashboard/investments">Investment</Link>
                     <Link href="/dashboard/ubersicht">Übersicht</Link>
+                    <Link href="/dashboard/tickets/new-ticket">Fahrkarte</Link>
                 </nav>
 
                 <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm">
@@ -150,7 +159,7 @@ const Navbar = () => {
                         onClick={logout}
                         className="w-8 h-8 lg:w-10 lg:h-10  rounded-full hover:bg-white group flex items-center justify-center"
                         iconClassName="w-4 h-4 lg:w-6 lg:h-6 stroke-white group-hover:stroke-black"
-                    />
+                    /> 
                 </nav>
             </div>
         </div>

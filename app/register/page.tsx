@@ -140,8 +140,7 @@ export default function Register(props: any){
             err['confirmPassword'] = 'Confirm Password must be equal to password';
             count++;
         }
-
-
+ 
         return count === 0 ? true : false;
     }
  
@@ -172,8 +171,7 @@ export default function Register(props: any){
             if(res?.status === 200){
                 setValue(res?.data?.data?.access_token);
                 setUser(res?.data?.data?.user);
-                route.push('/register/verify/email');
-            }
+                route.push('/verify/email');}
         } else {
             setError(error);
         }

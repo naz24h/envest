@@ -37,16 +37,28 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             route.push('/login')
         } else {
             (async () => {
-                let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE
+                let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE                 
                 let user = userInfo?.data?.data?.user;
-                if (!user?.ev) {
-                    route.push('/verify/email');
-                } else if (!user?.phone_veriry_status) {
-                    route.push('/verify/mobile');
-                } else {
-                    setUser(user);
-                    setGlobalLoading(false);
-                }
+
+                // if(!user){
+                //     // check email verification
+                //     const validationInfo = userInfo?.data?.email_verified;
+                //     if (!validationInfo) {
+                //         route.push('/verify/email');
+                //     }else{
+                //         route.push('/dashboard');
+                //     }
+                // }else{ 
+                //     if (!user?.ev) {
+                //         route.push('/verify/email');
+                //     } else {
+                //         setUser(user);
+                //         setGlobalLoading(false);
+                //     } 
+                // }
+
+                setUser(user);
+                setGlobalLoading(false);
             })()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,13 +1,36 @@
 'use client';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/form/Input';
+import { useUser } from '@/context/UserProvider';
 import { Listbox, RadioGroup } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 const RegisterPage = () => {
+    const { user } = useUser();
     const [step, setStep] = React.useState(1);
+
+    // form data
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [street, setStreet] = React.useState('');
+    const [city, setCity] = React.useState('');
+    const [zipCode, setZipCode] = React.useState('');
+    const [country, setCountry] = React.useState('');
+
+
+
+    React.useEffect(() => {
+        if(!user) return;
+        setFirstName(user?.firstname);
+        setLastName(user?.lastname);
+        setStreet(user?.address?.state);
+        setCity(user?.address?.city);
+        setZipCode(user?.address?.zip);
+        setCountry: user?.address?.country;
+    }, [user])
+
     return(
         <section>
             {/* 1st step */}
@@ -23,6 +46,8 @@ const RegisterPage = () => {
                                         <label htmlFor="">Vorname</label>
                                         <Input
                                             type='text' 
+                                            value={firstName}
+                                            onChange={(e) => setFirstName(e.target.value)}
                                         />
                                     </div>
 
@@ -31,6 +56,8 @@ const RegisterPage = () => {
                                         <label htmlFor="">Nachname</label>
                                         <Input
                                             type='text' 
+                                            value={lastName}
+                                            onChange={(e) => setLastName(e.target.value)}
                                         />
                                     </div>
                                     
@@ -38,22 +65,28 @@ const RegisterPage = () => {
                                         <label htmlFor="">Straße + Hausnummer</label>
                                         <Input
                                             type='text' 
+                                            value={street}
+                                            onChange={(e) => setStreet(e.target.value)}
                                         />
                                     </div>
 
                                     
                                     <div className='col-span-12 md:col-span-4'>
-                                        <label htmlFor="">Nachname</label>
+                                        <label htmlFor="">Postleitzahl</label>
                                         <Input
-                                            type='text' 
+                                            type='text'
+                                            value={zipCode}
+                                            onChange={(e) => setZipCode(e.target.value)}
                                         />
                                     </div>
 
                                     
                                     <div className='col-span-12 md:col-span-8'>
-                                        <label htmlFor="">Nachname</label>
+                                        <label htmlFor="">Ort</label>
                                         <Input
                                             type='text' 
+                                            value={city}
+                                            onChange={(e) => setCity(e.target.value)}
                                         />
                                     </div>
 
@@ -62,6 +95,7 @@ const RegisterPage = () => {
                                         <label htmlFor="">E-Mail</label>
                                         <Input
                                             type='text' 
+                                            value={user?.email}
                                         />
                                     </div>
 
@@ -69,9 +103,14 @@ const RegisterPage = () => {
                                     <div className='col-span-12'>
                                         <label htmlFor="">Land</label>
                                         <div className='relative'>
-                                            <Listbox>
+                                            <Listbox
+                                                value={country}
+                                                onChange={setCountry}
+                                            >
                                                 <Listbox.Button className='w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2.5 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm'>
-                                                    <span className='block truncate'>United States</span>
+                                                    <span className='block truncate'>
+                                                        {country ? country : 'Select Country'}
+                                                    </span>
                                                     <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                                                         <svg className='h-5 w-5 text-gray-400' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
                                                             <path fillRule='evenodd' d='M6 8l4 4 4-4H6z' />

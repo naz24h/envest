@@ -85,7 +85,8 @@ export default function Login(){
                         type='button'
                         loading={loading ? true : false}
                         onClick={handleSubmit as any}
-                        className="w-full text-white py-2 px-4 rounded-lg"                    
+                        loadingClass='flex item-center space-x-2 bg-primary-500 text-white px-3 py-1.5 w-full rounded-sm'
+                        className='bg-primary-700 hover:bg-primary-800 active:bg-primary-900 text-white px-3 py-1.5 w-full rounded-sm'                  
                     >
                         Login
                     </Button>

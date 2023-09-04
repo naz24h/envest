@@ -15,6 +15,7 @@ import { useUser } from '@/context/UserProvider';
 import { getTransaction } from '@/api/getTransaction';
 import _ from 'lodash';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 
  
 
@@ -65,9 +66,12 @@ const Dashboard = () => {
                             </p>
                         </div>
 
-                        <Button className='lg:ml-auto py-2 px-3 rounded-md'>
+                        <Link 
+                            href="/dashboard/profile-info" 
+                            className='lg:ml-auto py-2 px-3 rounded-md bg-[#00D296] text-white hover:bg-[#24c775]'
+                        >
                             Jetzt loslegen
-                        </Button>
+                        </Link>
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-6'>

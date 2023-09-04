@@ -5,10 +5,13 @@ import Input from '@/components/ui/form/Input'
 import React, {useState} from 'react'
 import { useLocalStorage } from 'react-use'
 import {toast} from 'react-toastify'
+import { useGlobalLoading } from '@/context/GlobalLoader'
+import { useRouter } from 'next/navigation'
  
 const NewTicket = () => {
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState([]) 
+    const { setGlobalLoading } = useGlobalLoading();
 
     // form data
     const [name, setName] = useState('')
@@ -19,6 +22,7 @@ const NewTicket = () => {
     const [amount, setAmount] = useState('')
     const [message, setMessage] = useState('')
 
+    const router = useRouter()
     // token
     const [token] = useLocalStorage('xtx');
     let _token = token as string;
@@ -32,12 +36,17 @@ const NewTicket = () => {
         const {value} = e.target
         setState(value)
     }
+
+    React.useEffect(() => {
+        setGlobalLoading(false);
+    }, [])
      
 
 
     const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
+
         
         const data = {
             name,
@@ -52,7 +61,6 @@ const NewTicket = () => {
 
         try{
              const res = await submitNewTicket(data, _token) 
-             console.log(res);
             if(res?.status === 200) {   
                 const message = res?.data?.success || res?.data?.message;
                 toast.success(message, {
@@ -65,6 +73,18 @@ const NewTicket = () => {
                     progress: undefined,
                     theme: "light",
                 });
+
+                // clear form
+                setName('')
+                setEmail('')
+                setSubject('')
+                setPriority('')
+                setType('')
+                setAmount('')
+                setMessage('')
+
+                router.push('/dashboard')
+
             }
         } catch(e) {
             console.log(e)
@@ -134,9 +154,9 @@ const NewTicket = () => {
                                     className='py-2 px-3 w-full border border-primary-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
                                 >
                                     <option value="" disabled className='text-primary-300'>Select Priority</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
                                 </select>
                             </div>
 
