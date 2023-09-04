@@ -30,6 +30,46 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     _token = _token ? _token.split('0|')[1] : '';
 
 
+    // handle redirection 
+    const handleRedirection = async() => {
+        let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE                 
+        let user = userInfo?.data?.data?.user;
+
+        console.log({userInfo});
+
+        if(!user || user === undefined){
+            // check email verification
+            const validationInfo = userInfo?.data?.data?.email_verified;
+            const mobileValidation = userInfo?.data?.data?.mobile_verified;
+
+            console.log({
+                validationInfo,
+                mobileValidation
+            });
+
+            if (!validationInfo) {
+                route.replace('/verify/email');
+            }else if(!mobileValidation){
+                route.replace('/verify/mobile');
+            } else{
+                setUser(user);
+                setGlobalLoading(false);
+            }
+
+
+        }else{ 
+            console.log(user.ev);
+            if (!user?.ev) {
+                route.replace('/verify/email');
+                
+            } else {
+                setUser(user);
+                setGlobalLoading(false);
+            } 
+        }
+    }
+
+
     // check user already logged in add token to header
     // user has verified email and mobile number
     React.useEffect(() => {
@@ -37,29 +77,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             route.push('/login')
         } else {
             (async () => {
-                let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE                 
-                let user = userInfo?.data?.data?.user;
-
-                // if(!user){
-                //     // check email verification
-                //     const validationInfo = userInfo?.data?.email_verified;
-                //     if (!validationInfo) {
-                //         route.push('/verify/email');
-                //     }else{
-                //         route.push('/dashboard');
-                //     }
-                // }else{ 
-                //     if (!user?.ev) {
-                //         route.push('/verify/email');
-                //     } else {
-                //         setUser(user);
-                //         setGlobalLoading(false);
-                //     } 
-                // }
-
-                setUser(user);
-                setGlobalLoading(false);
-            })()
+                setGlobalLoading(true);
+                handleRedirection();
+            })();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -93,7 +113,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <React.Fragment>
             <Navbar /> 
-            <Toaster />
 
             <header className="relative bg-transparent pt-16 text-white h-[400px] lg:h-[500px] w-screen">
                 <Image
@@ -284,7 +303,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         <span className='p-1.5 block-inline bg-[#ff3535] rounded-[6px] mr-1.5'>
                                             <Icon name="clock" className='w-2 h-2 stroke-white' />
                                         </span>
-                                        <span className='font-medium text-xs whitespace-nowrap'>23.000 €</span>
+                                        <span className='font-medium text-xs whitespace-nowrap'>{Number(transactions?.invesment_deposite ?? 0).toFixed(2)} €</span>
                                     </div>
 
                                     <div className='text-2xl lg:text-[48px]'>

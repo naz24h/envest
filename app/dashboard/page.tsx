@@ -42,9 +42,7 @@ const Dashboard = () => {
     }, [_token, user])
 
     const _transactions = transactions?.data?.transactions?.data;
-
-    console.log(user);
-
+ 
     return (
         <div className='container pb-10'>
             <div className="grid grid-cols-12 mt-12 gap-y-6 md:gap-6 lg:gap-20">
@@ -67,7 +65,7 @@ const Dashboard = () => {
                         </div>
 
                         <Link 
-                            href="/dashboard/profile-info" 
+                            href="/dashboard/kyc-verification" 
                             className='lg:ml-auto py-2 px-3 rounded-md bg-[#00D296] text-white hover:bg-[#24c775]'
                         >
                             Jetzt loslegen

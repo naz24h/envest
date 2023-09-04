@@ -66,7 +66,7 @@ export default function Register(props: any){
         token = token ? token.split('0|')[1] : ''; 
 
         if(token){
-            route.push('/dashboard');
+            route.replace('/dashboard');
         }else{
             setGlobalLoading(false);
         }
@@ -171,7 +171,7 @@ export default function Register(props: any){
             if(res?.status === 200){
                 setValue(res?.data?.data?.access_token);
                 setUser(res?.data?.data?.user);
-                route.push('/verify/email');}
+                route.replace('/verify/email');}
         } else {
             setError(error);
         }

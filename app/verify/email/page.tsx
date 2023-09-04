@@ -6,12 +6,13 @@ import Input from '@/components/ui/form/Input';
 import { useGlobalLoading } from '@/context/GlobalLoader';
 import { useUser } from '@/context/UserProvider';
 import { Dialog, Transition } from '@headlessui/react';
+import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useRouter } from 'next/navigation';
 import React, { Fragment } from 'react';
+import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import VerificationInput from "react-verification-input";
-
 
 
 export default function VerifyEmail(props: any) {
@@ -22,32 +23,123 @@ export default function VerifyEmail(props: any) {
     const router = useRouter()
     const { user } = useUser();
     const { setGlobalLoading } = useGlobalLoading();
+    const [showCountDown, setShowCountDown] = React.useState(0);
+    const [loading, setLoading] = React.useState(false);
 
     let _token = token as string;
     _token = _token ? _token.split('0|')[1] : '';
 
     // check user already logged and email already verified
-    React.useEffect(() => {
-        if (user?.ev) {
+    React.useEffect(() => { 
+        if (user && user?.ev) {
             router.push('/dashboard');
         } else {
             setGlobalLoading(false);
         }
-    });
+    }, []);
 
     // send verification code 
-    const handleVerificationCode = async (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleVerificationCode = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault(); 
 
-        const res = await sendVerificationCode('email', _token);
-        console.log(res);
+
+        const res = await sendVerificationCode('email', _token); 
+        if(res && res.data?.status === 'error'){
+            let next_time = res?.data?.message?.next_time;
+            
+            
+
+            toast.warn(res?.data?.message?.error?.[0], {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            
+
+            if(next_time){
+                let currentTime = dayjs().unix();
+                let diff = next_time - currentTime;
+                let i = diff;
+                let intervalID = setInterval(() => {
+                    setShowCountDown(i--); 
+                    if(i < 0){
+                        clearInterval(intervalID)
+                        setShowCountDown(0)
+                    }
+                },1000 )
+
+                return () => {  
+                    clearInterval(intervalID)
+                }
+            }
+        }
+
+        if(res && res.data?.status === 'success'){  
+            toast.success(res?.data?.message?.success?.[0], {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
 
     React.useEffect(() => {
         (async () => {
-            const res = await sendVerificationCode('email', _token); 
-            if(res?.status === 200) {
-                router.push('/dashboard');
+            const res = await sendVerificationCode('email', _token);  
+            if(res && res.data?.status === 'error'){
+                let next_time = res?.data?.message?.next_time;
+                 
+                toast.warn(res?.data?.message?.error?.[0], {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                
+    
+                if(next_time){
+                    let currentTime = dayjs().unix();
+                    let diff = next_time - currentTime;
+                    let i = diff;
+                    let intervalID = setInterval(() => {
+                        setShowCountDown(i--); 
+                        if(i < 0){
+                            clearInterval(intervalID)
+                            setShowCountDown(0)
+                        }
+                    },1000 )
+    
+                    return () => {  
+                        clearInterval(intervalID)
+                    }
+                }
+            }
+    
+            if(res && res.data?.status === 'success'){  
+                toast.success(res?.data?.message?.success?.[0], {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         })()
     }, [])
@@ -58,6 +150,7 @@ export default function VerifyEmail(props: any) {
 
         const _token = token as string;
         const accessToken = _token?.split('|')[1];
+        setLoading(true);
 
         if (code && accessToken) {
             const res = await verifyEmail(code, accessToken);
@@ -66,9 +159,12 @@ export default function VerifyEmail(props: any) {
 
                 // show a success message
                 setIsOpen(true)
+                setLoading(false);
+                
 
                 // redirect to mobile verification page after 2 seconds
                 setTimeout(() => {
+
                     router.push('/dashboard');
                 }, 2000); 
 
@@ -78,17 +174,19 @@ export default function VerifyEmail(props: any) {
             if (res?.data?.status === 'error') {
                 setError(res.data?.message?.error[0])
                 setCode('')
+                setLoading(false);
             }
             // if code is wrong set an error message
             if (res?.status !== 200) {
                 setError('Invalid code')
+                setLoading(false);
             }
         } else {
             setError('Code required');
         }
     }
 
-
+ 
 
     return (
         <div>
@@ -174,7 +272,11 @@ export default function VerifyEmail(props: any) {
                         
 
                         <div className='mt-4 text-center text-sm text-primary-500 tracking-[0.86px]'>
-                            {"Didn't receive code?"} <button className='hover:underline hover:text-primary-700'>Resend</button>
+                            {showCountDown > 0 ? null : "Didn't receive code?"} 
+                            <button type='button' onClick={ (e) => 
+                                showCountDown > 0 ? null : handleVerificationCode(e) } className='hover:underline hover:text-primary-700'>
+                                {showCountDown > 0 ? `Please try after ${showCountDown} seconds` : 'Resend'}
+                            </button>
                         </div>
                         
 
@@ -182,7 +284,7 @@ export default function VerifyEmail(props: any) {
                             <Button 
                                 type='submit' 
                                 onClick={handleSubmit} 
-                                loading={false}
+                                loading={loading}
                                 loadingClass='flex bg-primary-700 hover:bg-primary-800 active:bg-primary-900 text-white px-3 py-1.5 w-32 rounded-sm'
                                 className='bg-primary-700 hover:bg-primary-800 active:bg-primary-900 text-white px-3 py-1.5 w-32 rounded-sm'
                             >
