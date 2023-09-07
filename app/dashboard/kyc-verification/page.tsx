@@ -1,6 +1,7 @@
 'use client';
 import { getCountries } from '@/api/countries';
 import Button from '@/components/ui/Button';
+import Icon from '@/components/ui/Icon';
 import Spinner from '@/components/ui/Spinner';
 import Input from '@/components/ui/form/Input';
 import { useUser } from '@/context/UserProvider';
@@ -21,12 +22,14 @@ type Country = {
 const RegisterPage = () => {
     const { user } = useUser();
     const [step, setStep] = React.useState(1);
+    const [loading, setLoading] = React.useState(false);
     const [countries, setCountries] = React.useState<Country[]>([]);
     const [countryFilter, setCountryFilter] = React.useState('');
 
     // form data
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
+    const [email, setEmail] = React.useState(''); // user?.email
     const [street, setStreet] = React.useState('');
     const [city, setCity] = React.useState('');
     const [zipCode, setZipCode] = React.useState('');
@@ -46,6 +49,7 @@ const RegisterPage = () => {
         if(!user) return;
         setFirstName(user?.firstname);
         setLastName(user?.lastname);
+        setEmail(user?.email);
         setStreet(user?.address?.state);
         setCity(user?.address?.city);
         setZipCode(user?.address?.zip);
@@ -74,14 +78,66 @@ const RegisterPage = () => {
     }
 
 
+    // handle submission
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const data = {
+            firstName: firstName,
+            lastName: lastName,
+            street: street,
+            city: city,
+            zipCode: zipCode,
+            country1: country1?.country,
+            country2: country2?.country,
+            country3: country3?.country,
+            validationMethod: validationMethod,
+            idFile: idFile,
+            cardType: cardType, 
+        }
+
+        console.log(data);
+
+        setTimeout(() => {
+            setLoading(false);
+            setStep(5);
+        }, 2000)
+        
+    }
+
+
     return(
-        <section>
+        <section className='pb-20'>
+            {/* step line */}
+            <div className='container'>
+                <div className="mt-10">
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center space-x-2 py-2.5'>
+                            <Icon
+                                name='photo-id'
+                                className='w-5 h-5 text-primary'
+                            />
+                            <span>Identitätscheck</span>
+                        </div>
+                    </div>
+                    <div className='w-full bg-slate-100'>
+                        <div 
+                            className='py-0.5 h-1 rounded-lg text-xs bg-[#00D296]' 
+                            style={{width: `${(step/5)*100}%`}}
+                        >
+                            <span className='sr-only'>step</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* 1st step */}
             {
                 step === 1 ? (
                     <div className='container'>
                         <div className='flex items-center justify-center' data-step="1">
-                            <div className='w-full max-w-[800px] mt-10 box-shadow p-10'>
+                            <div className='w-full max-w-[800px] mt-10 box-shadow p-4 md:p-10'>
                                 <h3 className='text-2xl font-medium mb-5 text-center block'>Persönliche Informationen</h3>
 
                                 <div className='grid grid-cols-12 gap-5'>
@@ -137,8 +193,9 @@ const RegisterPage = () => {
                                     <div className='col-span-12'>
                                         <label htmlFor="">E-Mail</label>
                                         <Input
-                                            type='text' 
-                                            value={user?.email}
+                                            type='email' 
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
 
@@ -152,7 +209,7 @@ const RegisterPage = () => {
                                                     <div className='px-2 bg-slate-200 flex items-center justify-center border h-11 border-r-0'>
                                                         {country1?.country_code ? 
                                                             <Image
-                                                                src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
+                                                                src={`https://flagcdn.com/${_.lowerCase(country1.country_code)}.svg`}
                                                                 alt={country1?.country}
                                                                 width={32}
                                                                 height={32}
@@ -171,7 +228,7 @@ const RegisterPage = () => {
 
                                                     <Combobox.Input
                                                         displayValue={(country: Country) => country?.country}
-                                                        autoComplete='off' 
+                                                        autoComplete='off'  
                                                         onChange={(e) => setCountryFilter(e.target.value)}
                                                         className="border border-rad-500 px-2 py-2 w-full outline-none shadow-none h-11"
                                                     />
@@ -195,7 +252,7 @@ const RegisterPage = () => {
                                                                 {({selected}) => (
                                                                     <div className='flex items-center space-x-2'>
                                                                         <Image
-                                                                            src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
+                                                                            src={`https://flagcdn.com/${_.lowerCase(country?.country_code)}.svg`}
                                                                             alt={country.country}
                                                                             width={20}
                                                                             height={20}
@@ -233,7 +290,7 @@ const RegisterPage = () => {
                 step === 2 ? (
                     <div className='container'>
                         <div className='flex items-center justify-center' data-step="1">
-                            <div className='w-full max-w-[800px] mt-10 box-shadow p-10'>
+                            <div className='w-full max-w-[800px] mt-10 box-shadow p-4 md:p-10'>
                                 <h3 className='text-2xl font-medium mb-5 text-center block'>Identität bestätigen</h3>
 
                                 <div className='grid grid-cols-12 gap-5'>
@@ -247,7 +304,7 @@ const RegisterPage = () => {
                                                     <div className='px-2 bg-slate-200 flex items-center justify-center border h-11 border-r-0'>
                                                         {country2?.country_code ? 
                                                             <Image
-                                                                src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
+                                                                src={`https://flagcdn.com/${_.lowerCase(country2?.country_code)}.svg`}
                                                                 alt={country2?.country}
                                                                 width={32}
                                                                 height={32}
@@ -290,7 +347,7 @@ const RegisterPage = () => {
                                                                 {({selected}) => (
                                                                     <div className='flex items-center space-x-2'>
                                                                         <Image
-                                                                            src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
+                                                                            src={`https://flagcdn.com/${_.lowerCase(country?.country_code)}.svg`}
                                                                             alt={country.country}
                                                                             width={20}
                                                                             height={20}
@@ -307,17 +364,19 @@ const RegisterPage = () => {
                                                             </Combobox.Option>
                                                         ))
                                                     } 
-                                                </Combobox.Options>
-
+                                                </Combobox.Options> 
                                             </Combobox> 
                                     </div>
 
                                     <div className='col-span-12'>Verifizierungsmethode</div>
 
                                     <div className='col-span-12'>
-                                        <RadioGroup value={validationMethod} onChange={setValidationMethod}>
-                                            <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
-                                            
+                                        <RadioGroup 
+                                            value={validationMethod} 
+                                            onChange={setValidationMethod}
+                                        >
+
+                                            <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label> 
                                             <RadioGroup.Option
                                                 value="passport"
                                             >
@@ -325,13 +384,11 @@ const RegisterPage = () => {
                                                     <div className='flex items-center py-2 px-3 border justify-between mb-3'>
                                                         <div className=''>
                                                             Reisepass
+                                                        </div> 
+                                                        
+                                                        <div className="shrink-0 text-primary">
+                                                            <CheckIcon className="h-6 w-6" check={checked} />
                                                         </div>
-
-                                                        {true && (
-                                                                <div className="shrink-0 text-primary">
-                                                                    <CheckIcon className="h-6 w-6" check={checked} />
-                                                                </div>
-                                                            )}
                                                     </div>
                                                 )}     
                                             </RadioGroup.Option>
@@ -357,7 +414,12 @@ const RegisterPage = () => {
                                     
 
                                     <div className='col-span-12'>
-                                        <Button onClick={() => setStep(3)} className='w-full py-2 px-3 text-center rounded-md'>Next</Button>
+                                        <Button 
+                                            onClick={() => setStep(3)} 
+                                            className='w-full py-2 px-3 text-center rounded-md'
+                                        >
+                                            Next
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -369,139 +431,141 @@ const RegisterPage = () => {
             {/* 3rd step */}
             {step=== 3 ? (
                 <div className='container'>
-                <div className='flex items-center justify-center' data-step="1">
-                    <div className='w-full max-w-[800px] mt-10 box-shadow p-10'>
-                        <h3 className='text-2xl font-medium mb-5 text-center block'>Persönliche Informationen</h3>
- 
-                        <div className='flex items-center justify-center w-full'>
-                            <div className='w-[450px]'>
-                                <div className='text-lg mb-5'>Ausweis hochladen</div> 
-                                    {/* uplaod image */}
-                                    <div className="relative w-full h-[350px] bg-white mb-10 hover:bg-slate-50">
-                                        <div className='absolute -top-0.5 -left-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
-                                        <div className='absolute -top-0.5 -right-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
-                                        <div className='absolute -bottom-0.5 -left-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
-                                        <div className='absolute -bottom-0.5 -right-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
+                    <div className='flex items-center justify-center' data-step="1">
+                        <div className='w-full max-w-[800px] mt-10 box-shadow p-4 md:p-10'>
+                            <h3 className='text-2xl font-medium mb-5 text-center block'>Persönliche Informationen</h3>
+    
+                            <div className='flex items-center justify-center w-full'>
+                                <div className='w-[450px]'>
+                                    <div className='text-lg my-5'>Ausweis hochladen</div> 
+                                        {/* uplaod image */}
+                                        <div className="relative w-full h-[250px] md:h-[350px] bg-white mb-10 hover:bg-slate-50">
+                                            <div className='absolute -top-0.5 -left-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
+                                            <div className='absolute -top-0.5 -right-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
+                                            <div className='absolute -bottom-0.5 -left-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
+                                            <div className='absolute -bottom-0.5 -right-0.5 w-10 h-10 bg-[#D9D9D9] -z-10' />
 
-                                        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit'>
-                                            <Image
-                                                src="/image-upload.png"
-                                                alt="image-upload"
-                                                width={100}
-                                                height={100}
-                                                loading='lazy'
+                                            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit'>
+                                                <Image
+                                                    src="/image-upload.png"
+                                                    alt="image-upload"
+                                                    width={100}
+                                                    height={100}
+                                                    loading='lazy'
+                                                />
+                                            </div>
+
+                                            {/* show uploaded files */}
+                                            {idFile && (
+                                                <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-100'>
+                                                    <div className='bg-white rounded-md p-2'>
+                                                        <Image
+                                                            src={previewImage as string}
+                                                            alt="image-upload"
+                                                            width={450}
+                                                            height={100}
+                                                            loading='lazy'
+                                                            className='rounded-md'
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <input 
+                                                type='file' 
+                                                onChange={handleImageChange} 
+                                                className='absolute top-0 left-0 w-full h-full z-100 opacity-0' 
                                             />
                                         </div>
 
-                                        {/* show uploaded files */}
-                                        {idFile && (
-                                            <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-100'>
-                                                <div className='bg-white rounded-md p-2'>
-                                                    <Image
-                                                        src={previewImage as string}
-                                                        alt="image-upload"
-                                                        width={450}
-                                                        height={100}
-                                                        loading='lazy'
-                                                        className='rounded-md'
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <input type='file' onChange={handleImageChange} className='absolute top-0 left-0 w-full h-full z-100 opacity-0' />
+                                        <div className='col-span-12'>
+                                        <Button onClick={() => setStep(4)} className='w-full py-2 px-3 text-center rounded-md'>Next</Button>
                                     </div>
-
-                                    <div className='col-span-12'>
-                                    <Button onClick={() => setStep(4)} className='w-full py-2 px-3 text-center rounded-md'>Next</Button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             ): null}
 
             {/* 4th step */} 
            {step===4 ? (
              <div className='container'>
                 <div className='flex items-center justify-center' data-step="1">
-                    <div className='w-full max-w-[800px] mt-10 box-shadow p-10'>
+                    <div className='w-full max-w-[800px] mt-10 box-shadow p-4 md:p-10'>
                         <h3 className='text-2xl font-medium mb-5 text-center block'>Identität bestätigen</h3>
 
                         <div className='grid grid-cols-12 gap-5'> 
                             <div className='col-span-12'>
                                 <label htmlFor="">Land</label>
                                 <div className='relative'>
-                                <Combobox value={country3} onChange={setCountry3}>
-                                                <Combobox.Button className="w-full flex items-center">
+                                    <Combobox value={country3} onChange={setCountry3}>
+                                        <Combobox.Button className="w-full flex items-center">
 
-                                                    <div className='px-2 bg-slate-200 flex items-center justify-center border h-11 border-r-0'>
-                                                        {country3?.country_code ? 
-                                                            <Image
-                                                                src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
-                                                                alt={country3?.country}
-                                                                width={32}
-                                                                height={32}
-                                                            />
-                                                        : <svg 
-                                                                height="24" 
-                                                                viewBox="0 0 24 24" 
-                                                                width="20"
-                                                                fill="#0621378e"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path d="m15 3a3 3 0 0 0 -3-3h-12v24h2v-11h8v1a3 3 0 0 0 3 3h11v-13h-9zm-13-1h10a1 1 0 0 1 1 1v8h-11zm20 4v9h-9a1 1 0 0 1 -1-1v-1h3v-7z"/>
-                                                            </svg>
-                                                        }
-                                                    </div>
-
-                                                    <Combobox.Input
-                                                        displayValue={(country: Country) => country?.country}
-                                                        autoComplete='off' 
-                                                        onChange={(e) => setCountryFilter(e.target.value)}
-                                                        className="border border-rad-500 px-2 py-2 w-full outline-none shadow-none h-11"
+                                            <div className='px-2 bg-slate-200 flex items-center justify-center border h-11 border-r-0'>
+                                                {country3?.country_code ? 
+                                                    <Image
+                                                        src={`https://flagcdn.com/${_.lowerCase(country3?.country_code)}.svg`}
+                                                        alt={country3?.country}
+                                                        width={32}
+                                                        height={32}
                                                     />
-                                                </Combobox.Button> 
+                                                : <svg 
+                                                        height="24" 
+                                                        viewBox="0 0 24 24" 
+                                                        width="20"
+                                                        fill="#0621378e"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="m15 3a3 3 0 0 0 -3-3h-12v24h2v-11h8v1a3 3 0 0 0 3 3h11v-13h-9zm-13-1h10a1 1 0 0 1 1 1v8h-11zm20 4v9h-9a1 1 0 0 1 -1-1v-1h3v-7z"/>
+                                                    </svg>
+                                                }
+                                            </div>
 
-                                                <Combobox.Options className="absolute top-full left-0 bg-white shadow-lg z-50 w-full max-h-[300px] overflow-y-auto scrollbar">
+                                            <Combobox.Input
+                                                displayValue={(country: Country) => country?.country}
+                                                autoComplete='off' 
+                                                onChange={(e) => setCountryFilter(e.target.value)}
+                                                className="border border-rad-500 px-2 py-2 w-full outline-none shadow-none h-11"
+                                            />
+                                        </Combobox.Button>  
+                                        <Combobox.Options className="absolute top-full left-0 bg-white shadow-lg z-50 w-full max-h-[300px] overflow-y-auto scrollbar">
 
-                                                    {_.size(countries) === 0 && (
-                                                        <div className='w-full py-2'>
-                                                            <Spinner />
-                                                        </div>
-                                                    )}
+                                            {_.size(countries) === 0 && (
+                                                <div className='w-full py-2'>
+                                                    <Spinner />
+                                                </div>
+                                            )}
 
-                                                    {
-                                                        _.map(_.filter(countries, q => q.country.toLowerCase().includes(_.lowerCase(countryFilter))), (country: Country, index: number) => (
-                                                            <Combobox.Option
-                                                                value={country}
-                                                                key={country.country_code}
-                                                                className={({active}) => `${active ? 'bg-primary-100 text-slate-700' : 'text-slate-700'} cursor-pointer px-3 py-2`}
-                                                            >
-                                                                {({selected}) => (
-                                                                    <div className='flex items-center space-x-2'>
-                                                                        <Image
-                                                                            src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
-                                                                            alt={country.country}
-                                                                            width={20}
-                                                                            height={20}
-                                                                        />
-                                                                        <span className='flex-1'>{country.country}</span>
+                                            {
+                                                _.map(_.filter(countries, q => q.country.toLowerCase().includes(_.lowerCase(countryFilter))), (country: Country, index: number) => (
+                                                    <Combobox.Option
+                                                        value={country}
+                                                        key={country.country_code}
+                                                        className={({active}) => `${active ? 'bg-primary-100 text-slate-700' : 'text-slate-700'} cursor-pointer px-3 py-2`}
+                                                    >
+                                                        {({selected}) => (
+                                                            <div className='flex items-center space-x-2'>
+                                                                <Image
+                                                                    src={`https://flagcdn.com/${_.lowerCase(country.country_code)}.svg`}
+                                                                    alt={country.country}
+                                                                    width={20}
+                                                                    height={20}
+                                                                />
+                                                                <span className='flex-1'>{country.country}</span>
 
-                                                                        {selected && (
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" className='stroke-slate-600' width="16" height="10" viewBox="0 0 10 8" fill="none">
-                                                                                <path d="M1.43512 3.93751L3.99512 6.49751L8.39062 1.50195" strokeWidth="1" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                                                            </svg>
-                                                                        )}
-                                                                    </div>
+                                                                {selected && (
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className='stroke-slate-600' width="16" height="10" viewBox="0 0 10 8" fill="none">
+                                                                        <path d="M1.43512 3.93751L3.99512 6.49751L8.39062 1.50195" strokeWidth="1" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                                                    </svg>
                                                                 )}
-                                                            </Combobox.Option>
-                                                        ))
-                                                    } 
-                                                </Combobox.Options>
-
-                                            </Combobox> 
+                                                            </div>
+                                                        )}
+                                                    </Combobox.Option>
+                                                ))
+                                            } 
+                                        </Combobox.Options> 
+                                    </Combobox> 
                                 </div> 
                             </div>
 
@@ -521,11 +585,12 @@ const RegisterPage = () => {
                                                     <span className='text-base'>Master Card</span>
                                                 </div>
 
-                                                {true && (
-                                                        <div className="shrink-0 text-primary">
-                                                            <CheckIcon className="h-6 w-6" check={true} />
-                                                        </div>
-                                                    )}
+                                                {checked && 
+                                                (
+                                                    <div className="shrink-0 text-primary">
+                                                        <CheckIcon className="h-6 w-6" check={checked} />
+                                                    </div>
+                                                )}
                                             </div>
                                         )}     
                                     </RadioGroup.Option>
@@ -541,7 +606,7 @@ const RegisterPage = () => {
                                                 </div>
 
                                                 <div className="shrink-0 text-white">
-                                                    <CheckIcon className="h-6 w-6" check={false} />
+                                                    <CheckIcon className="h-6 w-6" check={checked} />
                                                 </div>
                                             </div>
                                         )}     
@@ -552,7 +617,14 @@ const RegisterPage = () => {
                             
 
                             <div className='col-span-12'>
-                                <Button onClick={()=>setStep(5)} className='w-full py-2 px-3 text-center rounded-md'>Next</Button>
+                                <Button 
+                                    onClick={handleSubmit} 
+                                    loading={loading}
+                                    className='w-full py-2 px-3 text-center rounded-md'
+                                    loadingClass='flex items-center justify-center space-x-2 text-white bg-primary-600 w-full py-2 rounded-md'
+                                >
+                                    Next
+                                </Button>
                             </div>
                         </div>
                     </div>

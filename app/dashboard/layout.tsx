@@ -123,7 +123,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     quality={70}
                     priority={true}
                     sizes='100vw'
-                    className='absolute top-0 left-0 h-full object-fill -z-10'
+                    className='absolute top-0 left-1/2 -translate-x-1/2 h-full object-fill -z-10'
                 />
 
                 <div className="container h-full">
