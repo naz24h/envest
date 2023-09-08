@@ -1,4 +1,5 @@
 'use client';
+import { kycVerification } from '@/api/KYCVerification';
 import { getCountries } from '@/api/countries';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
@@ -10,12 +11,19 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useLocalStorage } from 'react-use';
   
 
 type Country = {
     country: string,
     country_code: string,
     dial_code:string | number,
+}
+
+const initialCountry = {
+    country: '',
+    country_code: '',
+    dial_code: '',
 }
 
 
@@ -33,17 +41,20 @@ const RegisterPage = () => {
     const [street, setStreet] = React.useState('');
     const [city, setCity] = React.useState('');
     const [zipCode, setZipCode] = React.useState('');
-    const [country1, setCountry1] = React.useState<Country>();
-    const [country2, setCountry2] = React.useState<Country>();
-    const [country3, setCountry3] = React.useState<Country>();
+    const [country1, setCountry1] = React.useState<Country>(initialCountry);
+    const [country2, setCountry2] = React.useState<Country>(initialCountry);
+    const [country3, setCountry3] = React.useState<Country>(initialCountry);
 
-    const [validationMethod, setValidationMethod] = React.useState(null);
+    const [validationMethod, setValidationMethod] = React.useState("reisepass");
     const [idFile, setIdFile] = React.useState<File | null>(null);
     const [previewImage, setPreviewImage] = React.useState<string | ArrayBuffer | null>(null);
     
     const [cardType, setCardType] = React.useState("mastercard");
 
 
+    const [token] = useLocalStorage('xtx') 
+    let _token = token as string;
+    _token = _token?.split('0|')[1];
 
     React.useEffect(() => {
         if(!user) return;
@@ -82,27 +93,29 @@ const RegisterPage = () => {
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setLoading(true);
+ 
+        const fd = new FormData();
+        fd.append('firstName', firstName);
+        fd.append('lastName', lastName);
+        fd.append('street', street);
+        fd.append('city', city);
+        fd.append('zipCode', zipCode);
+        fd.append('country1', country1?.country);
+        fd.append('country2', country2?.country);
+        fd.append('country3', country3?.country);
+        fd.append('validationMethod', validationMethod);
+        fd.append('idFile', idFile as Blob);
+        fd.append('cardType', cardType);
 
-        const data = {
-            firstName: firstName,
-            lastName: lastName,
-            street: street,
-            city: city,
-            zipCode: zipCode,
-            country1: country1?.country,
-            country2: country2?.country,
-            country3: country3?.country,
-            validationMethod: validationMethod,
-            idFile: idFile,
-            cardType: cardType, 
-        }
 
-        console.log(data);
+        const res = await kycVerification(fd, _token);
 
-        setTimeout(() => {
+
+        if(res?.status === 200) {
             setLoading(false);
             setStep(5);
-        }, 2000)
+            return;
+        } 
         
     }
 
@@ -378,7 +391,7 @@ const RegisterPage = () => {
 
                                             <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label> 
                                             <RadioGroup.Option
-                                                value="passport"
+                                                value="reisepass"
                                             >
                                                 {({checked})=>(
                                                     <div className='flex items-center py-2 px-3 border justify-between mb-3'>
@@ -394,7 +407,7 @@ const RegisterPage = () => {
                                             </RadioGroup.Option>
 
                                             <RadioGroup.Option
-                                                value="id-card"
+                                                value="personalausweis"
                                             >
                                                 {({checked})=>(
                                                     <div className='flex items-center py-2 px-3 border justify-between mb-3'>
