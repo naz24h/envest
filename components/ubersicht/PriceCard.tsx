@@ -28,7 +28,7 @@ const PriceCard: React.FC<PriceCardProps> = ({
     name = "price-card"
 }) => {
     return (
-        <div className={`bg-white box-shadow border rounded-md relative overflow-hidden ${active ? ' border-2 border-green-400' : ''}`}>
+        <div className={`bg-white box-shadow border rounded-md relative overflow-hidden transition-colors duration-300 ${active ? ' border-2 border-green-400 shadow-lg' : ''}`}>
             <input
                 type="radio"
                 name={name}

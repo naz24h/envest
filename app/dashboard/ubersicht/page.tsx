@@ -10,8 +10,59 @@ import PriceCard from '@/components/ubersicht/PriceCard';
 
 
 const Ubersicht = () => {
+    
+    // profile form data
+    const [profileFormData, setProfileFormData] = React.useState({
+        first_name: '',
+        last_name: '',
+        street: '',
+        house_number: '',
+        zip_code: '',
+        city: '',
+        country: '',
+        mobile_number: '',
+        landline_number: '',
+        marital_status: '',
+        nationality: '',
+    });
+    
+    // servicepakete form data    
     const [selectedPlan, setSelectedPlan] = React.useState('gold');
-    console.log(selectedPlan);
+
+    // withdraw form data
+    const [withdrawFormData, setWithdrawFormData] = React.useState({
+        account_holder: '',
+        bank: '',
+        iban: '',
+        bic: '',
+    });
+    
+
+    // handle change 
+    const handleProfileFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setProfileFormData({ ...profileFormData, [name]: value });
+    }
+
+    // handle withdraw form change
+    const handleWithdrawFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setWithdrawFormData({ ...withdrawFormData, [name]: value });
+    }
+
+
+    // handle submit profile form data
+    const handleSubmitProfileFormData = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        console.log(profileFormData);
+    }
+
+    // handle submit withdraw form data
+    const handleWithdrawFormSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        console.log(withdrawFormData);
+    }
+
 
     return (
         <div className='container py-3 '>
@@ -29,6 +80,7 @@ const Ubersicht = () => {
                         <Tab.List className='flex gap-3 mt-5 border-b border-[#D9D9D9]'>
                             <Tab className={({ selected }) => selected ? 'border-2 border-transparent outline-none border-b-2 border-b-primary py-2 -mb-[1px]' : 'border-2 border-transparent '}>Profile</Tab>
                             <Tab className={({ selected }) => selected ? 'border-2 border-transparent outline-none border-b-2 border-b-primary py-2 -mb-[1px]' : 'border-2 border-transparent '}>Servicepakete</Tab>
+                            <Tab className={({ selected }) => selected ? 'border-2 border-transparent outline-none border-b-2 border-b-primary py-2 -mb-[1px]' : 'border-2 border-transparent '}>Auszahlungskonto</Tab>
                         </Tab.List>
 
                         <Tab.Panels className="py-14">
@@ -45,7 +97,9 @@ const Ubersicht = () => {
                                                 <label htmlFor="" className='font-medium mb-2 block'>Vorname</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Max'
+                                                    name='first_name'
+                                                    value={profileFormData.first_name}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
@@ -54,7 +108,9 @@ const Ubersicht = () => {
                                                 <label htmlFor="" className='font-medium mb-2 block'>Nachname</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Mustermann'
+                                                    name='last_name'
+                                                    value={profileFormData.last_name}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
@@ -63,7 +119,9 @@ const Ubersicht = () => {
                                                 <label htmlFor="" className='font-medium mb-2 block'>Straße</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Maxstraße'
+                                                    name='street'
+                                                    value={profileFormData.street}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
@@ -71,23 +129,29 @@ const Ubersicht = () => {
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Hausnummer</label>
                                                 <Input
-                                                    type='number'
                                                     min={0}
-                                                    placeholder='12'
+                                                    type='number'
+                                                    name='house_number'
+                                                    value={profileFormData.house_number}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>PLZ</label>
                                                 <Input
-                                                    type='text'
-                                                    placeholder='45127'
+                                                    type='number'
+                                                    name='zip_code'
+                                                    value={profileFormData.zip_code}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Ort</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Essen'
+                                                    name='city'
+                                                    value={profileFormData.city}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
@@ -96,21 +160,27 @@ const Ubersicht = () => {
                                                 <label htmlFor="" className='font-medium mb-2 block'>Adressland</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Deutschland'
+                                                    name='country'
+                                                    value={profileFormData.country}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Telefonnummer (Mobil)</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='+49 17134534567'
+                                                    name='mobile_number'
+                                                    value={profileFormData.mobile_number}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
                                             <div className='col-span-2 lg:col-span-1'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Telefonnummer (Festnetz)</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder=''
+                                                    name='landline_number'
+                                                    value={profileFormData.landline_number}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
@@ -118,19 +188,23 @@ const Ubersicht = () => {
                                                 <label htmlFor="" className='font-medium mb-2 block'>Familienstand</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='ledig'
+                                                    name='marital_status'
+                                                    value={profileFormData.marital_status}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
                                             <div className='col-span-2'>
                                                 <label htmlFor="" className='font-medium mb-2 block'>Nationalität</label>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Deutsch'
+                                                    name='nationality'
+                                                    value={profileFormData.nationality}
+                                                    onChange={handleProfileFormChange}
                                                 />
                                             </div>
 
                                             <div className="col-span-2 flex items-center w-full">
-                                                <Button className='bg-primary text-white py-3 px-8 rounded-md ml-auto'>
+                                                <Button type='button' onClick={handleSubmitProfileFormData} className='bg-primary text-white py-3 px-8 rounded-md ml-auto'>
                                                     Speichern
                                                 </Button>
                                             </div>
@@ -219,6 +293,96 @@ const Ubersicht = () => {
                                     </div>
                                 </div>
                             </Tab.Panel>
+
+                            {/* Auszahlungskonto */}
+                            <Tab.Panel>
+                                <div className="grid grid-cols-12 gap-8 relative">
+                                    {/* Profile form */}
+                                    <div className='col-span-12 md:col-span-7 lg:col-span-8 bg-white py-10 px-9 box-shadow'>
+                                        <h5 className='font-medium text-[#123857] mb-6'>Kontoinhaber</h5>
+
+                                        <div className="flex flex-col gap-y-4">
+                                            <div className='w-full max-w-[500px]'>
+                                                <label htmlFor="" className='font-medium mb-2 block'>Kontoinhaber</label>
+                                                <Input
+                                                    type='text'
+                                                    name='account_holder'
+                                                    value={withdrawFormData.account_holder}
+                                                    onChange={handleWithdrawFormChange}
+                                                />
+                                            </div>
+
+
+                                            <div className='w-full max-w-[500px]'>
+                                                <label htmlFor="" className='font-medium mb-2 block'>Bank</label>
+                                                <Input
+                                                    type='text'
+                                                    name='bank'
+                                                    value={withdrawFormData.bank}
+                                                    onChange={handleWithdrawFormChange}
+                                                />
+                                            </div>
+
+
+                                            <div className='w-full max-w-[500px]'>
+                                                <label htmlFor="" className='font-medium mb-2 block'>IBAN</label>
+                                                <Input
+                                                    type='text'
+                                                    name='iban'
+                                                    value={withdrawFormData.iban}
+                                                    onChange={handleWithdrawFormChange}
+                                                />
+                                            </div>
+
+
+                                            <div className='w-full max-w-[500px]'>
+                                                <label htmlFor="" className='font-medium mb-2 block'>BIC</label>
+                                                <Input
+                                                    type='text'
+                                                    name='bic'
+                                                    value={withdrawFormData.bic}
+                                                    onChange={handleWithdrawFormChange}
+                                                />
+                                            </div>
+ 
+                                            <div className="col-span-2 flex items-center w-full">
+                                                <Button type="button" onClick = {handleWithdrawFormSubmit} className='bg-primary text-white py-3 px-8 rounded-md ml-auto'>
+                                                    Speichern
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="col-span-12 md:col-span-5 lg:col-span-4 relative">
+                                        <div className="bg-white p-10 md:p-8 lg:p-10 box-shadow sticky top-20 left-0 w-full">
+                                            <div className="mb-3 flex items-center gap-2">
+                                                <span className='text-sm md:text-base'> Meine persönliche Envest-ID: </span>
+                                                <span className='text-green-500 border border-green-500 px-2 py-1'>613680</span>
+                                            </div>
+
+                                            <h5 className='text-lg md:text-base lg:text-xl font-medium leading-8 mb-3'>
+                                                Allgemeine Anfragen? Technische Probleme? Fragen zu unseren Produkten?
+                                            </h5>
+
+                                            <div className="mb-1 text-sm md:text-base">
+                                                <span> Telefon: </span>
+                                                <a href="tel:+49 (0)30 890 21-400" className='text-green-500 px-2 py-1 text-sm lg:text-base hover:underline'>+49 (0)30 890 21-400</a>
+                                            </div>
+
+                                            <div className="mb-3 text-sm lg:text-base">
+                                                <span> E-Mail: </span>
+                                                <a href='tel:+493089021400' className='text-green-500 px-2 py-1 hover:underline'>info@envest.de</a>
+                                            </div>
+
+                                            <p className="text-sm text-primary"> Mo. - Fr.von 9:00 - 18:00 Uhr</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </Tab.Panel>
+
                         </Tab.Panels>
                     </Tab.Group>
                 </div>
