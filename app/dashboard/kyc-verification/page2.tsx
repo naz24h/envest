@@ -108,7 +108,7 @@ const KYCValidation = () => {
                 {step === 2 && (
                     <React.Fragment>
                         <div className='py-10'>
-
+                            fsdfjskfdfkkjjjffffdddddssssssfffffffi
                         </div>
                     </React.Fragment>
                 )}
