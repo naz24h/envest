@@ -41,7 +41,7 @@ const CountrySelection = ({
 
 
     return (
-        <div className='relative mb-10'>
+        <div className='relative mb-4'>
             <Listbox value={value} onChange={onChange}>
                 <Listbox.Button className="flex items-center w-full text-left">
                     <div className='bg-slate-200 w-14 py-[15px] h-[46px] border border-r-0 grid place-items-center'>
