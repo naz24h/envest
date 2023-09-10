@@ -10,9 +10,6 @@ import PriceCard from '@/components/ubersicht/PriceCard';
 
 
 const Ubersicht = () => {
-    
-
-
     return (
         <div className='container py-3 '>
             <div className='mt-5'>
@@ -32,6 +29,8 @@ const Ubersicht = () => {
                         </Tab.List>
 
                         <Tab.Panels className="py-14">
+
+                            {/* Profile */}
                             <Tab.Panel>
                                 <div className="grid grid-cols-12 gap-8 relative">
                                     {/* Profile form */}
@@ -165,27 +164,44 @@ const Ubersicht = () => {
 
                             </Tab.Panel>
 
+                            {/* Servicepakete */}
                             <Tab.Panel>
                                 <div>
                                     <div className="flex flex-wrap items-stretch justify-center gap-8 relative h-fit"> 
                                         <PriceCard
-                                            title = "Envest Premium"
+                                            title = "Gold"
                                             features = {[
-                                                {title: "Einstieg ab 50.000 €", available: true},
-                                                {title: "Voller Zugriff auf ausgezeichnete Portfolio-Qualität", available: true},
-                                                {title: "Persönlicher Finanzexperte", available: true},
+                                                {title: "Kostenloses Depot", available: true},
+                                                {title: "Monatliche Auszahlung", available: true},
+                                                {title: "Investment bis 50.000€", available: true},
+                                                {title: "5,4% Depotzinsen p.a.", available: true},
+                                                {title: "12 Monate Mindesthaltedauer", available: true},
                                             ]}
-                                            unit='0.48% p.a.'
+                                            unit='0,8% p.a. vom Depotwert'
                                         />
 
                                         <PriceCard
-                                            title = "Envest Premium"
+                                            title = "Platin"
                                             features = {[
-                                                {title: "Einstieg ab 50.000 €", available: true},
-                                                {title: "Depot-Check", available: true},
-                                                {title: "Beratung via Telefon", available: true},
+                                                {title: "Kostenloses Depot", available: true},
+                                                {title: "Monatliche Auszahlung", available: true},
+                                                {title: "Investment bis 50.000€", available: true},
+                                                {title: "5,4% Depotzinsen p.a.", available: true},
+                                                {title: "12 Monate Mindesthaltedauer", available: true},
                                             ]}
-                                            unit='1.48% p.a.'
+                                            unit='0,35% p.a. vom Depotwert'
+                                        />  
+
+                                        <PriceCard
+                                            title = "Custom"
+                                            features = {[
+                                                {title: "Kostenloses Depot", available: true},
+                                                {title: "Monatliche Auszahlung", available: true},
+                                                {title: "Investment bis 50.000€", available: true},
+                                                {title: "8,5% Depotzinsen p.a.", available: true},
+                                                {title: "12 Monate Mindesthaltedauer", available: true},
+                                            ]}
+                                            unit='0,15% p.a. vom Depotwert'
                                         />  
                                         
                                     </div>

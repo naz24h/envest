@@ -20,7 +20,10 @@ const PriceCard:React.FC<PriceCardProps> = ({
     unit
 }) => {
     return(
-        <div className="bg-white box-shadow">
+        <div className="bg-white box-shadow border-2 border-green-400 relative">
+            <div>
+                
+            </div>
             <div className="p-6 w-96 h-full">
                     <h3 className="text-[22px] leading-[33px] mb-3">{title}</h3>
                     <ul className="flex flex-col space-y-1.5">
