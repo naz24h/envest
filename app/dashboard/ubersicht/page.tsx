@@ -10,6 +10,9 @@ import PriceCard from '@/components/ubersicht/PriceCard';
 
 
 const Ubersicht = () => {
+    const [selectedPlan, setSelectedPlan] = React.useState('gold');
+    console.log(selectedPlan);
+
     return (
         <div className='container py-3 '>
             <div className='mt-5'>
@@ -167,43 +170,52 @@ const Ubersicht = () => {
                             {/* Servicepakete */}
                             <Tab.Panel>
                                 <div>
-                                    <div className="flex flex-wrap items-stretch justify-center gap-8 relative h-fit"> 
+                                    <div className="flex flex-wrap items-stretch justify-center gap-8 relative h-fit">
                                         <PriceCard
-                                            title = "Gold"
-                                            features = {[
-                                                {title: "Kostenloses Depot", available: true},
-                                                {title: "Monatliche Auszahlung", available: true},
-                                                {title: "Investment bis 50.000€", available: true},
-                                                {title: "5,4% Depotzinsen p.a.", available: true},
-                                                {title: "12 Monate Mindesthaltedauer", available: true},
+                                            active={selectedPlan === 'gold'}
+                                            title="Gold"
+                                            value='gold'
+                                            features={[
+                                                { title: "Kostenloses Depot", available: true },
+                                                { title: "Monatliche Auszahlung", available: true },
+                                                { title: "Investment bis 50.000€", available: true },
+                                                { title: "5,4% Depotzinsen p.a.", available: true },
+                                                { title: "12 Monate Mindesthaltedauer", available: true },
                                             ]}
                                             unit='0,8% p.a. vom Depotwert'
+                                            onChange={e => setSelectedPlan(e.target.value)}
                                         />
 
                                         <PriceCard
-                                            title = "Platin"
-                                            features = {[
-                                                {title: "Kostenloses Depot", available: true},
-                                                {title: "Monatliche Auszahlung", available: true},
-                                                {title: "Investment bis 50.000€", available: true},
-                                                {title: "5,4% Depotzinsen p.a.", available: true},
-                                                {title: "12 Monate Mindesthaltedauer", available: true},
+                                            title="Platin"
+                                            value='platin'
+                                            active={selectedPlan === 'platin'}
+                                            onChange={e => setSelectedPlan(e.target.value)}
+                                            features={[
+                                                { title: "Kostenloses Depot", available: true },
+                                                { title: "Monatliche Auszahlung", available: true },
+                                                { title: "Investment bis 50.000€", available: true },
+                                                { title: "5,4% Depotzinsen p.a.", available: true },
+                                                { title: "12 Monate Mindesthaltedauer", available: true },
                                             ]}
                                             unit='0,35% p.a. vom Depotwert'
-                                        />  
+                                        />
 
                                         <PriceCard
-                                            title = "Custom"
-                                            features = {[
-                                                {title: "Kostenloses Depot", available: true},
-                                                {title: "Monatliche Auszahlung", available: true},
-                                                {title: "Investment bis 50.000€", available: true},
-                                                {title: "8,5% Depotzinsen p.a.", available: true},
-                                                {title: "12 Monate Mindesthaltedauer", available: true},
+                                            title="Custom"
+                                            value='custom'
+                                            active={selectedPlan === 'custom'}
+                                            onChange={e => setSelectedPlan(e.target.value)}
+                                            features={[
+                                                { title: "Kostenloses Depot", available: true },
+                                                { title: "Monatliche Auszahlung", available: true },
+                                                { title: "Investment bis 50.000€", available: true },
+                                                { title: "8,5% Depotzinsen p.a.", available: true },
+                                                { title: "12 Monate Mindesthaltedauer", available: true },
                                             ]}
                                             unit='0,15% p.a. vom Depotwert'
-                                        />  
-                                        
+                                        />
+
                                     </div>
                                 </div>
                             </Tab.Panel>
