@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserProvider';
 import { getUserInfo } from '@/api/getUser';
 import { Toaster } from '@/components/ui/toaster';
+import EinzahlenButton from '@/components/home/EinzahlenButton';
+import AuszahlenButton from '@/components/home/AuszahlenButton';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [transactions, setTransactions] = React.useState<any>()
@@ -148,7 +150,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 </span>
                             </div>
 
-                            <Button
+                            <div className='flex items-center flex-wrap gap-3'>
+                                <EinzahlenButton /> 
+                                <AuszahlenButton />
+                            </div>
+
+                            {/* <Button
                                 variant='primary'
                                 onClick={() => setIsModalOpen(true)}
                                 className='mt-3 lg:mt-12 text-sm lg:text-[16px] text-primary w-fit pt-2 pb-2 px-3 rounded-md flex items-center'
@@ -249,6 +256,20 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                                                     JBKJHJKGXXX
                                                                 </h5>
                                                             </div>
+
+                                                            <div className='px-3 py-3 bg-[#F3F3F3]'>
+                                                                <label htmlFor="BIC" className="block text-sm font-medium text-gray-700">
+                                                                    Einzahlungsbertrag
+                                                                </label>
+                                                                <h5 className='uppercase font-bold text-primary'>
+                                                                    0,00 €
+                                                                </h5>
+                                                            </div>
+
+                                                            <div className='flex items-center gap-4'>
+                                                                <Button className='w-full py-2 bg-[#E8EFF0] hover:bg-[#cbd4d6] rounded-md'>Decline Deposit</Button>
+                                                                <Button variant='primary' className='w-full py-2 rounded-md'> Approve deposit </Button>
+                                                            </div>
                                                         </div>
                                                     </Dialog.Panel>
                                                 </Transition.Child>
@@ -256,7 +277,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         </div>
                                     </Dialog>
                                 </Transition>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

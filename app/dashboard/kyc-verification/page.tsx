@@ -78,6 +78,7 @@ const KYCValidation = () => {
     // handle form submit
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        setLoading(true);
         const fd = new FormData();
         fd.append('firstName', firstName);
         fd.append('lastName', lastName);
@@ -314,14 +315,15 @@ const KYCValidation = () => {
                                          {/* show uploaded files */}
                                          {idFile && (
                                                 <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-100'>
-                                                    <div className='bg-white rounded-md p-2 my-3'>
+                                                    <div className='bg-white rounded-md p-2 my-3 max-w-[350px] max-h-[200px] relative overflow-hidden'>
                                                         <Image
                                                             src={previewImage as string}
                                                             alt="image-upload"
-                                                            width={350}
+                                                            width={250}
                                                             height={100}
                                                             loading='lazy'
-                                                            className='rounded-md object-contain'
+                                                            sizes='200px'
+                                                            className='rounded-md object-fill'
                                                         />
                                                     </div>
                                                 </div>
@@ -425,6 +427,8 @@ const KYCValidation = () => {
                                     <Button 
                                         type='button' 
                                         onClick={handleSubmit} 
+                                        loading={loading}
+                                        loadingClass='w-full ml-auto py-2 px-4 rounded-md text-white hover:opacity-30'
                                         className="w-full ml-auto py-2 px-4 rounded-md text-white hover:opacity-75"
                                     >
                                         Next

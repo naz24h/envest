@@ -1,7 +1,7 @@
 import Image from "next/image"
-import IconButton from "../ui/IconButton"
-import Status from "../ui/badge/Status"
-import Icon from "../ui/Icon"
+import IconButton from "../../ui/IconButton"
+import Status from "../../ui/badge/Status"
+import Icon from "../../ui/Icon"
 import AnleihenLineTableChart from "./AnleihenLineTableChart"
 
 
