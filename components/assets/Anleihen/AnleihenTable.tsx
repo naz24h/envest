@@ -40,6 +40,7 @@ const AnleihenTable = () => {
             container.current.appendChild(script);
             setRander(true);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]) 
  
 

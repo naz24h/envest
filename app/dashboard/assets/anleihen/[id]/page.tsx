@@ -1,4 +1,4 @@
-import AnleihenLineChart from '@/components/assets/AnleihenLineChart';
+import AnleihenLineChart from '@/components/assets/Anleihen/AnleihenLineChart';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
 import Image from 'next/image';
