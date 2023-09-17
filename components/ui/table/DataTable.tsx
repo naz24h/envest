@@ -1,9 +1,9 @@
 'use client'
-import  React from 'react';
+import React from 'react';
 import {
     useReactTable,
     flexRender,
-    getCoreRowModel, 
+    getCoreRowModel,
     VisibilityTableState,
     ColumnOrderTableState,
     ColumnPinningTableState,
@@ -15,12 +15,15 @@ import {
     PaginationTableState,
     RowSelectionTableState,
     ColumnDef,
- } from '@tanstack/react-table';
+
+    getPaginationRowModel,
+    PaginationState,
+} from '@tanstack/react-table';
 
 // TABLE PROPS
 interface DataTableProps {
     tableData: any[];
-    tableColumns: any[]; 
+    tableColumns: any[];
     tableTitle: string;
     hiddenColumns?: string[];
 
@@ -50,20 +53,20 @@ interface TableStateType extends Partial<
 }
 
 
-const DataTable:React.FC<DataTableProps> = ({
+const DataTable: React.FC<DataTableProps> = ({
     tableData,
     tableColumns,
     tableTitle,
     hiddenColumns,
     classes
 }) => {
- 
-    
+
+
 
     // default column definition
-    const defaultColumn = React.useMemo< ColumnDef<typeof tableData[0] & {className?:string}> [] > ( () => [...tableColumns], [tableColumns]);
+    const defaultColumn = React.useMemo<ColumnDef<typeof tableData[0] & { className?: string }>[]>(() => [...tableColumns], [tableColumns]);
 
-    const [columns, setColumns] = React.useState<ColumnDef<typeof tableData[0]> []>(defaultColumn);
+    const [columns, setColumns] = React.useState<ColumnDef<typeof tableData[0]>[]>(defaultColumn);
 
     // TABLE STATE
     const state: TableStateType = {
@@ -76,54 +79,121 @@ const DataTable:React.FC<DataTableProps> = ({
         columns: columns,
         state,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
     });
 
 
     // TABLE RENDER
-    return(
+    return (
         <div className='py-5'>
             {/* table container */}
             <div className='w-100 overflow-auto pb-5'>
                 <table className={`table-auto w-100 ${classes?.table ?? ''}`}>
                     <thead className={`sticky w-100 top-0 left-0 ${classes?.tableHead ?? ''}`}>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr 
-                            key={headerGroup.id}
-                            className={`w-full ${classes?.tableRow ?? ''}`}
-                        >
-                        {headerGroup.headers.map(header => (
-                            <th 
-                                key={header.id}
-                                className={`w-full py-3 text-left px-1.5 border-y border-[#D9D9D9] text-[#062137] ${classes?.tableCell ?? ''}`}
-                            >  
+                        {table.getHeaderGroups().map(headerGroup => (
+                            <tr
+                                key={headerGroup.id}
+                                className={`w-full ${classes?.tableRow ?? ''}`}
+                            >
+                                {headerGroup.headers.map(header => (
+                                    <th
+                                        key={header.id}
+                                        className={`w-full py-3 text-left px-1.5 border-y border-[#D9D9D9] text-[#062137] ${classes?.tableCell ?? ''}`}
+                                    >
 
-                            {header.isPlaceholder
-                                ? null
-                                : flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                )}
-                            </th>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </th>
+                                ))}
+                            </tr>
                         ))}
-                        </tr>
-                    ))}
                     </thead>
                     <tbody className={`w-full ${classes?.tableBody ?? ''}`}>
-                    {table.getRowModel().rows.map(row => (
-                        <tr 
-                            key={row.id} 
-                            className={`w-full hover:bg-[#E7EEF0]/20  ${classes?.tableRow ?? ''}`}
-                        >
-                        {row.getVisibleCells().map(cell => (
-                            <td key={cell.id} className={`py-1.5 px-1.5 text-[#062137] border-b border-[#E7EEF0]/70 ${classes?.tableCell ?? ''}`}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
+                        {table.getRowModel().rows.map(row => (
+                            <tr
+                                key={row.id}
+                                className={`w-full hover:bg-[#E7EEF0]/20  ${classes?.tableRow ?? ''}`}
+                            >
+                                {row.getVisibleCells().map(cell => (
+                                    <td key={cell.id} className={`py-1.5 px-1.5 text-[#062137] border-b border-[#E7EEF0]/70 ${classes?.tableCell ?? ''}`}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
+                                ))}
+                            </tr>
                         ))}
-                        </tr>
-                    ))}
                     </tbody>
                 </table>
             </div>
+
+
+            <div className="h-2" />
+            <div className="flex items-center gap-2">
+                <button
+                    className="border rounded p-1"
+                    onClick={() => table.setPageIndex(0)}
+                    disabled={!table.getCanPreviousPage()}
+                >
+                    {'<<'}
+                </button>
+                <button
+                    className="border rounded p-1"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                >
+                    {'<'}
+                </button>
+                <button
+                    className="border rounded p-1"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                >
+                    {'>'}
+                </button>
+                <button
+                    className="border rounded p-1"
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                    disabled={!table.getCanNextPage()}
+                >
+                    {'>>'}
+                </button>
+                <span className="flex items-center gap-1">
+                    <div>Page</div>
+                    <strong>
+                        {table.getState().pagination.pageIndex + 1} of{' '}
+                        {table.getPageCount()}
+                    </strong>
+                </span>
+                <span className="flex items-center gap-1">
+                    | Go to page:
+                    <input
+                        type="number"
+                        defaultValue={table.getState().pagination.pageIndex + 1}
+                        onChange={e => {
+                            const page = e.target.value ? Number(e.target.value) - 1 : 0
+                            table.setPageIndex(page)
+                        }}
+                        className="border p-1 rounded w-16"
+                    />
+                </span>
+                <select
+                    value={table.getState().pagination.pageSize}
+                    onChange={e => {
+                        table.setPageSize(Number(e.target.value))
+                    }}
+                >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                        <option key={pageSize} value={pageSize}>
+                            Show {pageSize}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div>{table.getRowModel().rows.length} Rows</div>
+            <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
         </div>
     )
 

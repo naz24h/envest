@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AktienTableColumns } from "./AktienTableColumns"; 
+import { AktienTableColumns } from "./AktienTableColumns";
 import _ from 'lodash';
 import DataTable from '@/components/ui/table/DataTable';
 import { useStocks } from '@/context/StockProvider';
@@ -44,7 +44,7 @@ import { useStocks } from '@/context/StockProvider';
 //             setRander(true);
 //         }
 //     },[]) 
- 
+
 
 //   return (
 //     <div className="py-10 h-[650px]"> 
@@ -68,16 +68,25 @@ import { useStocks } from '@/context/StockProvider';
 //   );
 // };
 
- 
+
 
 const AktienTable = () => {
-  const { exchanges, symbol, handleGetSymbols } = useStocks()
+  const { exchanges, tableData, symbol, handleGetSymbols } = useStocks()
+  const [stockLive, setStockLive] = React.useState<any>([]);
+  const [exchange, setExchange] = React.useState("");
 
-  console.log({symbol});
-  return(
+
+  const handleSelectionMenu = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    setExchange(e.target.value);
+    handleGetSymbols(e.target.value)
+  }
+
+  return (
     <div>
       <select
-        onChange={(e) => handleGetSymbols(e.target.value)}
+        value={exchange}
+        onChange={handleSelectionMenu}
         className="w-full max-w-[300px] h-10 px-3 mb-2 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
       >
         {exchanges.map((item: any, index: number) => (
@@ -86,10 +95,10 @@ const AktienTable = () => {
       </select>
 
       <DataTable
-        tableData = {["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-        tableColumns = {AktienTableColumns}
-        tableTitle = 'Aktien'
-        hiddenColumns = {['id']} 
+        tableData={tableData}
+        tableColumns={AktienTableColumns}
+        tableTitle='Aktien'
+        hiddenColumns={['id']}
         classes={{
           table: 'min-w-full divide-y divide-gray-200',
         }}
