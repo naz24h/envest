@@ -38,7 +38,7 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
 
     // get symbols list
     const handleGetSymbols = async (exchanges: string) => {
-        console.log(exchanges);
+        // console.log(exchanges);
         try {
             await axios.get('/api/get-symbols?exchange=' + exchanges)
                 .then((res) => {
@@ -82,12 +82,21 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
         }
     }
 
-
     // get stock graph data
     const handleGetStockGraphData = async (symbol: string, exchange: string, interval: string) => {
         try {
             let res = await axios.get('/api/get-intraday-data?symbol=' + symbol + '&exchange=' + exchange + '&interval=' + interval);
             return res.data
+        } catch (err: any) {
+            console.error(err)
+        }
+    }
+
+    const getCompanyLogo = async (symbol: string, exchange: string) => {
+        try {
+            let res = await axios.get('/api/get-company-logo?symbol=' + symbol + '&exchange=' + exchange);
+            return res.data
+
         } catch (err: any) {
             console.error(err)
         }
@@ -109,6 +118,7 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
             handleGetStockDataLive,
             handleGetFundamentals,
             handleGetMarketCap,
+            getCompanyLogo,
             handleGetStockGraphData,
         }}>
             {children}

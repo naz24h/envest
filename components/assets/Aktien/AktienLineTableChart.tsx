@@ -5,13 +5,13 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 
 import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
+    LineChart, 
+    Line, 
+    XAxis, 
+    YAxis, 
+    CartesianGrid, 
+    Tooltip, 
+    Legend, 
     ResponsiveContainer
 } from 'recharts';
 import { useStocks } from '@/context/StockProvider';
@@ -28,6 +28,9 @@ const AktienLineTableChart: React.FC<{ row: any, table: any }> = ({ row, table }
 
     const { stocks, setStocks, exchange } = table.getState();
 
+    const stock = stocks[row.Code]?.live;
+    const stockColor = stock?.change > 0 ? '#10B981' : '#EF4444';
+
 
     // rendom lost or profit graph data with unique key 
     const data = _.times(20, () => ({
@@ -40,13 +43,13 @@ const AktienLineTableChart: React.FC<{ row: any, table: any }> = ({ row, table }
     const handleGraphData = async () => {
         try {
             let res = await handleGetStockGraphData(row.Code, exchange, '1h');
-            console.log(res);
-            setGraphData(res);
+         
+            setGraphData(_.orderBy(_.filter(res, (item: any) => item.open !== null ), ['date'], ['desc']));
             setStocks((prev: any) => ({
                 ...prev,
                 [row.Code]: {
                     ...prev[row.Code],
-                    graphData: res
+                    graphData: _.orderBy(_.filter(res, (item: any) => item.open !== null ), ['date'], ['desc'])
                 }
             }));
         } catch (err: any) {
@@ -58,32 +61,44 @@ const AktienLineTableChart: React.FC<{ row: any, table: any }> = ({ row, table }
     useEffect(() => {
         handleGraphData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [row])
 
 
 
     const handleRedirect = () => {
-        console.log('clicked');
+       
         return router.replace('/dashboard/assets/anleihen/2')
     }
 
 
     return (
-        <LineChart
-            data={graphData}
-            height={400}
-            width={400}
-            onClick={() => handleRedirect()}
-        >
+      <ResponsiveContainer width="100%" height="100%"> 
+        <LineChart  
+            data={graphData}  
+        >  
+        {/* hide */}
+            <YAxis 
+                hide={true}
+                tickLine={false}
+                tickCount={1}
+                axisLine={false}
+                tick={false}
+
+                domain={['dataMin', 'dataMax']} 
+            />
+
+
             <Line
                 type="linear"
-                dataKey="close"
-                stroke={Math.random() > 0.5 ? '#10B981' : '#EF4444'}
+                dataKey="open"
+                stroke={stockColor}
                 dot={false}
-                strokeWidth={2}
+                strokeWidth={1}
             />
-        </LineChart>
+        </LineChart>     
+      </ResponsiveContainer>
     )
+ 
 }
 
 export default AktienLineTableChart;

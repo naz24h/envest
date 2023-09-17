@@ -43,7 +43,6 @@ const PriceColumn = ({row, table}) => {
     useEffect(()=> { 
 
         (async () => {
-            console.log({row, stocks});
             if(
                 _.isEmpty(stocks) || !stocks[row.Code] || (stocks[row.Code] && !stocks[row.Code].live)) {
                 const res = await handleGetStockDataLive(row.Code, exchange);
@@ -57,7 +56,7 @@ const PriceColumn = ({row, table}) => {
             }
         }) ()
          
-    }, [])
+    }, [row])
 
     return(
       <div className='w-72'>

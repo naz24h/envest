@@ -213,8 +213,8 @@ const DataTable: React.FC<DataTableProps> = ({
                     ))}
                 </select>
             </div>
-            <div>{table.getRowModel().rows.length} Rows</div>
-            <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
+           
+           
         </div>
     )
 

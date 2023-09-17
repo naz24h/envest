@@ -101,7 +101,7 @@ const AktienTable = () => {
       </select>
 
       <DataTable
-        tableData={symbol}
+        tableData={_.filter(symbol, (item: any) => item.Type ===  'Common Stock')}
         tableColumns={AktienTableColumns}
         tableTitle='Aktien'
         hiddenColumns={['id']}

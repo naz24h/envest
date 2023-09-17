@@ -18,10 +18,10 @@ export async function GET (request : Request){
     
   const symbolExchange = `${symbol}.${exchange}`;
 
-  const start = dayjs().subtract(7, 'day').format('YYYY-MM-DD')
+  const start = dayjs().subtract(1, 'month').format('YYYY-MM-DD')
   const end = dayjs().format('YYYY-MM-DD')
     
-  const url = `${baseUrl}/intraday/${symbolExchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}&from=${start}&to=${end}`
+  const url = `${baseUrl}/historicalquotes/${symbolExchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}&from=${start}&to=${end}`
  
   try{
       const response = await axios.get(url)

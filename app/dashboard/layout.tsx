@@ -37,17 +37,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         let userInfo = await getUserInfo(_token); // GET USER INFO AFTER RELOADING THE PAGE                 
         let user = userInfo?.data?.data?.user;
 
-        console.log({userInfo});
 
         if(!user || user === undefined){
             // check email verification
             const validationInfo = userInfo?.data?.data?.email_verified;
             const mobileValidation = userInfo?.data?.data?.mobile_verified;
 
-            console.log({
-                validationInfo,
-                mobileValidation
-            });
+            // console.log({
+            //     validationInfo,
+            //     mobileValidation
+            // });
 
             if (!validationInfo) {
                 route.replace('/verify/email');
@@ -60,7 +59,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
 
         }else{ 
-            console.log(user.ev);
+            // console.log(user.ev);
             if (!user?.ev) {
                 route.replace('/verify/email');
                 

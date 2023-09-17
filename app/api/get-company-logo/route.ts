@@ -24,21 +24,21 @@ export async function GET (request : Request){
       const data = await response.data
 
       try{ 
-        if(data.General.LogoURL == null){
+
+        if(!data.General.LogoURL){
             // return genaral data
-            return new Response(JSON.stringify(data), {
+            return new Response(JSON.stringify({logo: null}), {
               headers: {  
                 'content-type': 'application/json;charset=UTF-8',
               },
             })
         }
-        
-        const logo = await axios.get(`${baseUrl}${data.General.LogoURL}?apitoken=${ApiConfig.apiKey}`)  
-        data.General.logo = await logo.data;
+        const logo = `${baseUrl}${data.General.LogoURL}?apitoken=${ApiConfig.apiKey}`  
+         
 
           
       // return genaral data
-      return new Response(JSON.stringify(data), {
+      return new Response(JSON.stringify({logo: logo}), {
         headers: {  
           'content-type': 'application/json;charset=UTF-8',
         },
