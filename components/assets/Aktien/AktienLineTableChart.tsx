@@ -1,29 +1,30 @@
 'use client'
 import { faker } from '@faker-js/faker';
 import _, { replace } from 'lodash';
-import React, {useEffect} from 'react';
-import { useRouter  } from 'next/navigation'
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 
 import {
-    LineChart, 
-    Line, 
-    XAxis, 
-    YAxis, 
-    CartesianGrid, 
-    Tooltip, 
-    Legend, 
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
     ResponsiveContainer
 } from 'recharts';
 import { useStocks } from '@/context/StockProvider';
 
 
 // CHART PROPS
- 
 
-const AktienLineTableChart:React.FC<{row:any, table:any}> = ({row, table}) => { 
-    const router = useRouter(); 
+
+const AktienLineTableChart: React.FC<{ row: any, table: any }> = ({ row, table }) => {
+    const router = useRouter();
     const { handleGetStockGraphData } = useStocks();
-    
+    const [graphData, setGraphData] = React.useState<any>([]);
+
 
     const { stocks, setStocks, exchange } = table.getState();
 
@@ -38,9 +39,16 @@ const AktienLineTableChart:React.FC<{row:any, table:any}> = ({row, table}) => {
 
     const handleGraphData = async () => {
         try {
-            let res = await handleGetStockGraphData(row.symbol, exchange);
+            let res = await handleGetStockGraphData(row.Code, exchange, '1h');
             console.log(res);
-            return res;
+            setGraphData(res);
+            setStocks((prev: any) => ({
+                ...prev,
+                [row.Code]: {
+                    ...prev[row.Code],
+                    graphData: res
+                }
+            }));
         } catch (err: any) {
             console.error(err)
         }
@@ -48,7 +56,8 @@ const AktienLineTableChart:React.FC<{row:any, table:any}> = ({row, table}) => {
 
 
     useEffect(() => {
-        
+        handleGraphData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -59,21 +68,21 @@ const AktienLineTableChart:React.FC<{row:any, table:any}> = ({row, table}) => {
     }
 
 
-    return( 
-            <LineChart 
-                data={data}
-                height={35} 
-                width={100}   
-                onClick={() => handleRedirect()}
-            > 
-                <Line
-                    type="linear"
-                    dataKey="pv"
-                    stroke={Math.random() > 0.5 ? '#10B981' : '#EF4444'}
-                    dot={false}
-                    strokeWidth={2}
-                />
-            </LineChart> 
+    return (
+        <LineChart
+            data={graphData}
+            height={400}
+            width={400}
+            onClick={() => handleRedirect()}
+        >
+            <Line
+                type="linear"
+                dataKey="close"
+                stroke={Math.random() > 0.5 ? '#10B981' : '#EF4444'}
+                dot={false}
+                strokeWidth={2}
+            />
+        </LineChart>
     )
 }
 

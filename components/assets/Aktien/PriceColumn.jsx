@@ -9,46 +9,54 @@ const PriceColumn = ({row, table}) => {
     const { stocks, setStocks, exchange } = table.getState();
 
 
-    const getStockLiveData = async (code) => {
+    // const getStockLiveData = async (code) => {
         
-            console.log({
-                stocks,
-                row
-            }); 
+    //         console.log({
+    //             stocks,
+    //             row
+    //         }); 
 
-            const res = await handleGetStockDataLive(code, exchange);
+    //         const res = await handleGetStockDataLive(code, exchange);
             
-            setLiveStock(res); 
+    //         setLiveStock(res); 
  
-            setStocks(prev =>  {
-                if(prev[code]) {
-                    return {
-                        ...prev,
-                        [code]: {
-                            ...prev[code],
-                            live: res
-                        }
-                    }
-                } else {
-                    return {
-                        ...prev,
-                        [code]: {
-                            live: res
-                        }
-                    }
-                }
-            })
-    } 
+    //         setStocks(prev =>  {
+    //             if(prev[code]) {
+    //                 return {
+    //                     ...prev,
+    //                     [code]: {
+    //                         ...prev[code],
+    //                         live: res
+    //                     }
+    //                 }
+    //             } else {
+    //                 return {
+    //                     ...prev,
+    //                     [code]: {
+    //                         live: res
+    //                     }
+    //                 }
+    //             }
+    //         })
+    // } 
  
     useEffect(()=> { 
 
-        getStockLiveData(row.Code);
-
-        const intervalId = setInterval( async () => {
-            await getStockLiveData(row.Code);
-        }, 1000 * 60 * 5);
-
-        return () => clearInterval(intervalId); 
+        (async () => {
+            console.log({row, stocks});
+            if(
+                _.isEmpty(stocks) || !stocks[row.Code] || (stocks[row.Code] && !stocks[row.Code].live)) {
+                const res = await handleGetStockDataLive(row.Code, exchange);
+                setLiveStock(res);
+                setStocks(prev => ({...prev, [row.Code]: {
+                    ...prev[row.Code],
+                    live: res,
+                }}))
+            }else{
+                setLiveStock(stocks[row.Code].live);
+            }
+        }) ()
+         
     }, [])
 
     return(

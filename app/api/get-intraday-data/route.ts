@@ -1,5 +1,6 @@
 import { ApiConfig } from '@/config/apiConfig'
 import axios from 'axios'
+import dayjs from 'dayjs';
 import { NextResponse } from 'next/server'
 
 
@@ -16,8 +17,11 @@ export async function GET (request : Request){
     const baseUrl = ApiConfig.baseUrl 
     
   const symbolExchange = `${symbol}.${exchange}`;
+
+  const start = dayjs().subtract(7, 'day').format('YYYY-MM-DD')
+  const end = dayjs().format('YYYY-MM-DD')
     
-  const url = `${baseUrl}/intraday/${symbolExchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}`
+  const url = `${baseUrl}/intraday/${symbolExchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}&from=${start}&to=${end}`
  
   try{
       const response = await axios.get(url)

@@ -71,15 +71,16 @@ import { useStocks } from '@/context/StockProvider';
 
 
 const AktienTable = () => {
-  const { exchanges, symbol, handleGetSymbols } = useStocks() 
+  const { exchanges, symbol, handleGetSymbols } = useStocks()
   const [exchange, setExchange] = React.useState("");
-   
+
   useEffect(() => {
-    if(_.size(exchanges) > 0){
+    if (_.size(exchanges) > 0) {
       setExchange(exchanges[0].Code);
       handleGetSymbols(exchanges[0].Code)
     }
-  },[exchanges])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exchanges])
 
   const handleSelectionMenu = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
@@ -104,7 +105,7 @@ const AktienTable = () => {
         tableColumns={AktienTableColumns}
         tableTitle='Aktien'
         hiddenColumns={['id']}
-        _state= {{exchange: exchange}}
+        _state={{ exchange: exchange }}
         classes={{
           table: 'min-w-full divide-y divide-gray-200',
         }}
