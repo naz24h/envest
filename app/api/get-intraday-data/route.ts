@@ -12,13 +12,13 @@ export async function GET (request : Request){
     const {searchParams} = new URL(request.url);
     const symbol = searchParams.get('symbol');
     const exchange = searchParams.get('exchange');
+    const interval = searchParams.get('interval') ?? '5m';
     const baseUrl = ApiConfig.baseUrl 
     
   const symbolExchange = `${symbol}.${exchange}`;
     
-  const url = `${baseUrl}/live/${symbolExchange}?apitoken=${ApiConfig.apiKey}`
+  const url = `${baseUrl}/intraday/${symbolExchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}`
  
-   
   try{
       const response = await axios.get(url)
       const data = await response.data

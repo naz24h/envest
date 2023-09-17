@@ -20,6 +20,11 @@ import dayjs from 'dayjs';
 
 
 const AktienLineChart = () => {
+
+
+    // get stock data for 7 days
+
+
     
     // rendom lost or profit graph data with unique key
     const data = _.times(20, () => ({ 

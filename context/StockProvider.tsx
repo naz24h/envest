@@ -16,8 +16,8 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
     const [exchanges, setExchanges] = React.useState([]);
     const [symbol, setSymbol] = React.useState([]);
     const [stock, setStock] = React.useState([]);
-    const [stockLive, setStockLive] = React.useState([]);
-    const [tableData, setTableData] = React.useState<any[]>([]);
+    const [liveStock, setLiveStock] = React.useState([]); 
+    const [tableData, setTableData] = React.useState<any>([]);
 
     // get exchange list
     React.useEffect(() => {
@@ -35,18 +35,6 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
         }
     }, [exchanges])
 
-    // get stock live data
-    const handleGetStockDataLive = async (symbol: string, exchange: string) => {
-        try {
-            await axios.get('/api/get-stocks-live?symbol=' + symbol + '&exchange=' + exchange)
-                .then((res) => {
-                    setStockLive(res.data);
-                    return res.data;
-                })
-        } catch (err: any) {
-            console.error(err)
-        }
-    }
 
     // get symbols list
     const handleGetSymbols = async (exchanges: string) => {
@@ -54,17 +42,52 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
         try {
             await axios.get('/api/get-symbols?exchange=' + exchanges)
                 .then((res) => {
-                    const data = [] as any;
-                    _.forEach(res.data, async (item: any) => {
-                        let stock = await handleGetStockDataLive(item.Code, item.Exchange);
-                        data.push({
-                            ...item,
-                            liveStock: stock
-                        })
-                    })
-                    setTableData([...data]);
-                    setSymbol(res.data)
+                    setSymbol(res.data);  
                 })
+        } catch (err: any) {
+            console.error(err)
+        }
+    } 
+
+
+    // get stock live data
+    const handleGetStockDataLive = async (symbol: string, exchange: string) => {
+        try {
+            let res = await axios.get('/api/get-stocks-live?symbol=' + symbol + '&exchange=' + exchange);
+            return res.data 
+                
+        } catch (err: any) {
+            console.error(err)
+        }
+    }
+
+    // get fundamentals data 
+    const handleGetFundamentals = async (symbol: string, exchange: string) => {
+        try {
+            let res = await axios.get('/api/get-fundamentals?symbol=' + symbol + '&exchange=' + exchange);
+            return res.data 
+                
+        } catch (err: any) {
+            console.error(err)
+        }
+    }
+
+    // get market cap data
+    const handleGetMarketCap = async (symbol: string, exchange: string, company: string) => {
+        try {
+            let res = await axios.get('/api/get-market-cap?symbol=' + symbol + '&exchange=' + exchange + '&company=' + company);
+            return res.data
+        } catch (err: any) {
+            console.error(err)
+        }
+    }
+
+
+    // get stock graph data
+    const handleGetStockGraphData = async (symbol: string, exchange: string) => {
+        try {
+            let res = await axios.get('/api/get-intraday-data?symbol=' + symbol + '&exchange=' + exchange);
+            return res.data
         } catch (err: any) {
             console.error(err)
         }
@@ -80,12 +103,13 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
             setSymbol,
             stock,
             setStock,
+            liveStock,
+            setLiveStock, 
             handleGetSymbols,
             handleGetStockDataLive,
-            stockLive,
-            setStockLive,
-            tableData,
-            setTableData
+            handleGetFundamentals,
+            handleGetMarketCap,
+            handleGetStockGraphData,
         }}>
             {children}
         </StockContext.Provider>

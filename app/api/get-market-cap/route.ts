@@ -12,11 +12,13 @@ export async function GET (request : Request){
     const {searchParams} = new URL(request.url);
     const symbol = searchParams.get('symbol');
     const exchange = searchParams.get('exchange');
+    const company = searchParams.get('company');
+    const lang = searchParams.get('');
     const baseUrl = ApiConfig.baseUrl 
     
   const symbolExchange = `${symbol}.${exchange}`;
     
-  const url = `${baseUrl}/live/${symbolExchange}?apitoken=${ApiConfig.apiKey}`
+  const url = `${baseUrl}/fundamentals/marketcap/${symbolExchange}?apitoken=${ApiConfig.apiKey}&byname=${company}`
  
    
   try{

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AktienTableColumns } from "./AktienTableColumns";
 import _ from 'lodash';
-import DataTable from '@/components/ui/table/DataTable';
+import DataTable from './DataTable';
 import { useStocks } from '@/context/StockProvider';
 
 // const AktienTable = () => { 
@@ -71,10 +71,15 @@ import { useStocks } from '@/context/StockProvider';
 
 
 const AktienTable = () => {
-  const { exchanges, tableData, symbol, handleGetSymbols } = useStocks()
-  const [stockLive, setStockLive] = React.useState<any>([]);
+  const { exchanges, symbol, handleGetSymbols } = useStocks() 
   const [exchange, setExchange] = React.useState("");
-
+   
+  useEffect(() => {
+    if(_.size(exchanges) > 0){
+      setExchange(exchanges[0].Code);
+      handleGetSymbols(exchanges[0].Code)
+    }
+  },[exchanges])
 
   const handleSelectionMenu = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
@@ -95,10 +100,11 @@ const AktienTable = () => {
       </select>
 
       <DataTable
-        tableData={tableData}
+        tableData={symbol}
         tableColumns={AktienTableColumns}
         tableTitle='Aktien'
         hiddenColumns={['id']}
+        _state= {{exchange: exchange}}
         classes={{
           table: 'min-w-full divide-y divide-gray-200',
         }}
