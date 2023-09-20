@@ -6,7 +6,8 @@ import AktienLineTableChart from "./AktienLineTableChart"
 import PriceColumn from "./PriceColumn"
 import _ from "lodash"
 import { useStocks } from "@/context/StockProvider"
-import React from "react"
+import React from "react" 
+import Link from "next/link"
 
 
 const CompanyDetails = ({ row, table }: { row: any, table: any }) => {
@@ -140,8 +141,10 @@ export const AktienTableColumns = [
         accessor: 'preischarts',
         cell: ({ row, table }: { row: any, table: any }) => {
             return (
-                <div className='w-[200px] h-[60px]'>
-                    <AktienLineTableChart row={row.original} table={table} />
+                <div className='w-[200px]'>
+                    <div className='w-[150px] h-[60px]'>
+                        <AktienLineTableChart row={row.original} table={table} />
+                    </div>
                 </div>
             )
         }
@@ -150,14 +153,23 @@ export const AktienTableColumns = [
         header: '',
         id: 'action',
         accessor: 'action',
-        cell: ({ row }: { row: any }) => {
+        cell: ({ row, table }: { row: any, table: any }) => {
+            const data = row.original;
+             const {exchange} = table.getState(); 
             return (
-                <div className='w-[100px]'>
+                <div className='w-[150px]'>
                     <div>
-                        <IconButton
+                        {/* <IconButton
                             icon="three-dots"
                             className="w-8 h-8 bg-transparent rounded-full hover:bg-slate-500/10 flex items-center justify-center"
-                        />
+                        /> */}
+
+                        <Link 
+                            href={`/dashboard/assets/anleihen/${data?.Code}.${exchange}`} 
+                            className="py-2 px-4 bg-primary rounded-md whitespace-nowrap text-white text-sm font-medium"
+                        >
+                            View Details
+                        </Link>
                     </div>
                 </div>
             )

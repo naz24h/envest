@@ -42,7 +42,7 @@ const AktienLineTableChart: React.FC<{ row: any, table: any }> = ({ row, table }
 
     const handleGraphData = async () => {
         try {
-            let res = await handleGetStockGraphData(row.Code, exchange, '1h');
+            let res = await handleGetStockGraphData({symbol: row.Code, exchange: exchange, interval: '1h'});
          
             setGraphData(_.orderBy(_.filter(res, (item: any) => item.open !== null ), ['date'], ['desc']));
             setStocks((prev: any) => ({

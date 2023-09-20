@@ -90,10 +90,22 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
     }
 
     // get stock graph data
-    const handleGetStockGraphData = async (symbol: string, exchange: string, interval: string = '1h') => {
+    const handleGetStockGraphData = async ({
+        symbol, 
+        exchange, 
+        interval = '1h',
+        start = dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
+        end = dayjs().format('YYYY-MM-DD')
+    }: {
+        symbol: string,
+        exchange: string,
+        interval: string,
+        start: string,
+        end: string 
+    }) => {
         
-    const start = dayjs().subtract(1, 'month').format('YYYY-MM-DD')
-    const end = dayjs().format('YYYY-MM-DD')
+    // const start = dayjs().subtract(1, 'month').format('YYYY-MM-DD')
+    // const end = dayjs().format('YYYY-MM-DD')
         
     const url = `${baseUrl}/historicalquotes/${symbol}.${exchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}&from=${start}&to=${end}`
  

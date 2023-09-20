@@ -19,13 +19,13 @@ import dayjs from 'dayjs';
 
 
 
-const AnleihenLineChart = () => {
+const AnleihenLineChart = ({data, change}: {data: any[], change: number | string}) => {
     
     // rendom lost or profit graph data with unique key
-    const data = _.times(20, () => ({ 
-        name: dayjs(faker.date.anytime()).format('HH:mm'),
-        pv: faker.finance.amount(0, 100, 2)
-    }));
+    // const data = _.times(20, () => ({ 
+    //     name: dayjs(faker.date.anytime()).format('HH:mm'),
+    //     pv: faker.finance.amount(0, 100, 2)
+    // }));
 
 
      
@@ -55,6 +55,7 @@ const AnleihenLineChart = () => {
                     tickFormatter={(value) => `${value} €`}  
                     orientation="right"
                     axisLine={false}
+                    domain={['dataMin', 'dataMax']} 
                     tick={{ 
                         fill: '#B6B6B6', 
                         fontSize: 13
@@ -62,11 +63,35 @@ const AnleihenLineChart = () => {
                     width={50}
                     
                 />
-                <Tooltip />
+                <Tooltip
+                    contentStyle={{
+                        borderRadius: '10px',
+                        border: 'none',
+                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+                        padding: '10px 15px',
+                        fontSize: '13px',
+                        lineHeight: '18px',
+                        color: '#4F4F4F',
+                        fontWeight: 500,
+                        fontFamily: 'Inter',
+                        backgroundColor: '#fff',
+                    }}
+
+                    labelStyle={{
+                        fontSize: '13px',
+                        lineHeight: '18px',
+                        color: '#4F4F4F',
+                        fontWeight: 500,
+                        fontFamily: 'Inter',
+                    }}
+
+                   // show full data
+                    formatter={(value, name) => [`${value} €`, name]} 
+                />
                 <Line
                     type="linear"
-                    dataKey="pv"
-                    stroke={Math.random() > 0.5 ? '#10B981' : '#EF4444'}
+                    dataKey="open"
+                    stroke={Number(change) < 0 ? '#EF4444' : '#10B981' }
                     dot={false}
                     strokeWidth={2}
                 />

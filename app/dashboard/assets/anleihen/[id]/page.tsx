@@ -1,9 +1,58 @@
+'use client';
 import AnleihenLineChart from '@/components/assets/Anleihen/AnleihenLineChart';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
+import { useStocks } from '@/context/StockProvider';
+import _ from 'lodash';
 import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import dayjs from 'dayjs';
+
+
 
 const AnleihenPreview = () => {
+    const { handleGetStockDataLive, handleGetStockGraphData} = useStocks();
+    const [liveStock, setLiveStock] = useState<{[key:string]: string | number}>({}); 
+    const [graphData, setGraphData] = useState<any>([]);
+    const [period, setPeriod] = useState<number>(365);  
+    
+    const params = useParams();
+
+    const id = params.id as string
+    const code = id?.split('.')[0];
+    const exchange = id?.split('.')[1];
+ 
+    useEffect(()=> {  
+        (async () => {
+            if(id) {
+                const res = await handleGetStockDataLive(code, exchange);
+                setLiveStock(res);
+            }
+        }) ()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
+
+
+    useEffect(() => {
+        (async () => {
+            try {
+                let res =  await handleGetStockGraphData({
+                    symbol: code, 
+                    exchange: exchange, 
+                    interval: '5m',  
+                    start: dayjs().subtract(period, 'days').format('YYYY-MM-DD'),
+                    end: dayjs().format('YYYY-MM-DD')
+                }); 
+                setGraphData(_.orderBy(_.filter(res, (item: any) => item.open !== null ), ['date'], ['desc']));
+                
+            } catch (err: any) {
+                console.error(err)
+            }
+        })();
+    }, [id, period])
+ 
+
     return (
         <section>
             <div className='container py-3'>
@@ -31,13 +80,13 @@ const AnleihenPreview = () => {
                                 <div className='sm:p-4 md:p-6 box-shadow bg-white'>
                                     <div className='flex items-center justify-between'>
                                         <div>
-                                            <h1 className='font-medium text-3xl md:text-5xl'>57,15 €</h1>
+                                            <h1 className='font-medium text-3xl md:text-5xl'>{liveStock?.open} €</h1>
                                             <div className='flex items-center space-x-2'>
                                                 <div className='w-6 h-6 md:w-8 md:h-8 flex items-center justify-center border bg-zinc-50 rounded-full'>
-                                                    <Icon name='clock' className='w-2 h-2 md:w-2.5 md:h-2.5 stroke-red-500' />
+                                                    <Icon name='clock' className={`w-2 h-2 md:w-2.5 md:h-2.5 ${Number(liveStock?.change) < 0 ? 'stroke-red-500' : 'stroke-green-500' } `} />
                                                 </div>
 
-                                                <span className='text-red-500 text-sm md:text-lg tracking-[0.2px] font-medium'>0.06 € (0.12%)</span>
+                                                <span className={`text-sm md:text-lg tracking-[0.2px] font-medium ${Number(liveStock?.change) < 0 ? 'text-red-500' : 'text-green-500' }`}>{liveStock.change} € ({liveStock.change_p}%)</span>
                                                 <span className='text-slate-500 text-sm md:text-base font-medium'>24 H</span>
 
                                             </div>
@@ -54,13 +103,13 @@ const AnleihenPreview = () => {
                                     {/* chart */}
                                     <div className='mt-5 py-3'>
                                         <div className='w-full h-[200px] md:h-[350px]'>
-                                            <AnleihenLineChart />
+                                            <AnleihenLineChart data={graphData} change={!_.isNaN(liveStock.change) ? liveStock.change : 0} />
                                         </div>
                                         <div className="flex items-center gap-4 mt-5">
-                                            <Button className='border border-primary bg-primary text-white py-1 px-2.5 rounded-md'>1T</Button>
-                                            <Button className='border bg-white text-primary py-1 px-2.5 rounded-md hover:bg-primary-100'>2T</Button>
-                                            <Button className='border bg-white text-primary py-1 px-2.5 rounded-md hover:bg-primary-100'>30T</Button>
-                                            <Button className='border bg-white text-primary py-1 px-2.5 rounded-md hover:bg-primary-100'>3M</Button>
+                                            <Button onClick={() => setPeriod(1)} className={`border  py-1 px-2.5 rounded-md ${period === 1 ? 'border-primary bg-primary text-white' : 'bg-white text-primary'}`}>  D </Button>
+                                            <Button onClick={() => setPeriod(7)} className={`border  py-1 px-2.5 rounded-md ${period === 7 ? 'border-primary bg-primary text-white' : 'bg-white text-primary'}`}>W</Button>
+                                            <Button onClick={() => setPeriod(30)} className={`border  py-1 px-2.5 rounded-md ${period === 30 ? 'border-primary bg-primary text-white' : 'bg-white text-primary'}`}>M</Button>
+                                            <Button onClick={() => setPeriod(365)} className={`border  py-1 px-2.5 rounded-md ${period === 365 ? 'border-primary bg-primary text-white' : 'bg-white text-primary'}`}>Y</Button>
                                         </div>
                                     </div>
                                 </div>
