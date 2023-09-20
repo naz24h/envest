@@ -19,6 +19,7 @@ import {
     getPaginationRowModel,
     PaginationState,
 } from '@tanstack/react-table';
+import ReactPaginate from 'react-paginate';
 
 // TABLE PROPS
 interface DataTableProps {
@@ -152,69 +153,43 @@ const DataTable: React.FC<DataTableProps> = ({
 
 
             <div className="h-2" />
-            <div className="flex items-center gap-2">
-                <button
-                    className="border rounded p-1"
-                    onClick={() => table.setPageIndex(0)}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    {'<<'}
-                </button>
-                <button
-                    className="border rounded p-3 flex items-center justify-center hover:bg-slate-100"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    <span className='leading-[10px] text-3xl'>‹</span>
-                </button>
-                <button
-                    className="border rounded p-3 flex items-center justify-center hover:bg-slate-100"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                  <span className='leading-[10px] text-3xl'>›</span>
-                </button>
-                <button
-                    className="border rounded p-1"
-                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                    disabled={!table.getCanNextPage()}
-                >
-                    {'>>'}
-                </button>
-                <span className="flex items-center gap-1">
-                    <div>Page</div>
-                    <strong>
-                        {table.getState().pagination.pageIndex + 1} of{' '}
-                        {table.getPageCount()}
-                    </strong>
-                </span>
-                <span className="flex items-center gap-1">
-                    | Go to page:
-                    <input
-                        type="number"
-                        defaultValue={table.getState().pagination.pageIndex + 1}
-                        onChange={e => {
-                            const page = e.target.value ? Number(e.target.value) - 1 : 0
-                            table.setPageIndex(page)
-                        }}
-                        className="border p-1 rounded w-16"
+             <div className='flex flex-wrap items-center justify-between gap-10'>
+                <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500"> Rows per page: </span>
+                        <select
+                            value={table.getState().pagination.pageSize}
+                            onChange={e => {
+                                table.setPageSize(Number(e.target.value))
+                            }}
+                            className='px-2 py-1.5 border border-gray-300 rounded-md text-sm text-gray-500 hover:border-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary'
+                        >
+                            {[10, 20, 30, 40, 50].map(pageSize => (
+                                <option key={pageSize} value={pageSize}>
+                                    {pageSize} 
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+
+                    <ReactPaginate
+                        previousLabel={'previous'}
+                        nextLabel={'next'}
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={table.getPageCount()}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={(e) => table.setPageIndex(e.selected)}
+                        containerClassName={'flex items-center justify-center gap-2'}
+                        pageLinkClassName='flex items-center border px-2 justify-center min-w-[32px] w-fit h-8 rounded-md hover:bg-slate-100'
+                        pageClassName='bg-transparent'
+                        activeLinkClassName={'bg-primary text-primary-100'}
+                        nextLinkClassName='flex items-center border px-2 justify-center min-w-[32px] w-fit h-8 rounded-md hover:bg-slate-100'
+                        previousLinkClassName='flex items-center border px-2 justify-center min-w-[32px] w-fit h-8 rounded-md hover:bg-slate-100'
+                        disabledLinkClassName={'opacity-50 cursor-not-allowed'}
                     />
-                </span>
-                <select
-                    value={table.getState().pagination.pageSize}
-                    onChange={e => {
-                        table.setPageSize(Number(e.target.value))
-                    }}
-                >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
-                        </option>
-                    ))}
-                </select>
-            </div>
-           
-           
+             </div>
         </div>
     )
 
