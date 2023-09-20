@@ -135,7 +135,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <div>
                                 <h6 className='mb-2.5 lg:mb-4 block md:inline-block text-sm'>Guthaben Total</h6>
                                 <div className="flex flex-col md:flex-row md:items-end gap-4">
-                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">{Number(user?.balance ?? 0).toFixed(5)} €</h1>
+                                    <h1 className="text-3xl leading-[32px] md:text-5xl lg:text-[56px] lg:leading-[48px] font-[400]">{Number(user?.balance ?? 0).toFixed(2)} €</h1>
                                     <div className='flex items-center gap-3.5 text-sm tracking-[0.56px]'>
                                         <div className='w-6 h-6 flex items-center justify-center bg-green-500 rounded-[6px] '>
                                             <Icon name="clock" className='w-2 h-2 stroke-black' />
@@ -326,7 +326,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         <span className='font-medium text-xs whitespace-nowrap'>{Number(transactions?.invesment_deposite ?? 0).toFixed(2)} €</span>
                                     </div>
 
-                                    <div className='text-2xl lg:text-[48px]'>
+                                    <div className='font-medium text-2xl lg:text-[48px]'>
                                         {Number(transactions?.invesment_deposite ?? 0).toFixed(2)} €
                                     </div>
                                 </div>

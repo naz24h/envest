@@ -161,18 +161,18 @@ const DataTable: React.FC<DataTableProps> = ({
                     {'<<'}
                 </button>
                 <button
-                    className="border rounded p-1"
+                    className="border rounded p-3 flex items-center justify-center hover:bg-slate-100"
                     onClick={() => table.previousPage()}
                     disabled={!table.getCanPreviousPage()}
                 >
-                    {'<'}
+                    <span className='leading-[10px] text-3xl'>‹</span>
                 </button>
                 <button
-                    className="border rounded p-1"
+                    className="border rounded p-3 flex items-center justify-center hover:bg-slate-100"
                     onClick={() => table.nextPage()}
                     disabled={!table.getCanNextPage()}
                 >
-                    {'>'}
+                  <span className='leading-[10px] text-3xl'>›</span>
                 </button>
                 <button
                     className="border rounded p-1"

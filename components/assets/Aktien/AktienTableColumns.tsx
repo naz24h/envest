@@ -18,14 +18,15 @@ const CompanyDetails = ({ row, table }: { row: any, table: any }) => {
     React.useEffect(() => {
         (async () => {
             try{
-                let res = await getCompanyLogo(row.Code, exchange);
-                if(res.logo === null) return setLogo(null); 
-                setLogo(res.logo);
+                let data = await getCompanyLogo(row.Code, exchange);
+                if(!data?.logo) return setLogo(null); 
+                setLogo(data?.logo);
             }catch(err: any){
                 console.error(err)
             }
         })()
     }, [row])
+ 
 
     return(
         <div className='flex items-center gap-3 w-[300px] max-w-[350px]'>

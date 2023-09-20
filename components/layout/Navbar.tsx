@@ -8,11 +8,20 @@ import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from "react"
 import { logout } from "@/api/logout"
 import { useUser } from "@/context/UserProvider"
-
+import {useSelectedLayoutSegment } from "next/navigation"
 
 const Navbar = () => {
     const [isSticky, setSticky] = React.useState(false);
     const {logout} = useUser();
+    
+    // active link
+     const basePath = useSelectedLayoutSegment(); 
+     console.log(basePath);
+     
+     const isActive = (path:string | null) => {
+            path = path === 'dashboard' ? null : path; 
+            return basePath === path ? 'bg-[#00D296]/30 py-1 px-2 rounded' : 'text-white';
+     }
 
     const handleScroll = () => {
         const offset = window.scrollY;
@@ -22,7 +31,7 @@ const Navbar = () => {
             setSticky(false);
         }
     };
-
+ 
     React.useEffect(() => {
         handleScroll();
         window.addEventListener('scroll', handleScroll);
@@ -114,11 +123,11 @@ const Navbar = () => {
 
                 {/* nav links */}
                 <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm text-white">
-                    <Link href="/dashboard">Home</Link>
-                    <Link href="/dashboard/assets">Assets</Link>
-                    <Link href="/dashboard/investments">Investment</Link>
-                    <Link href="/dashboard/ubersicht">Übersicht</Link>
-                    <Link href="/dashboard/tickets/new-ticket">Fahrkarte</Link>
+                    <Link href="/dashboard" className={isActive('dashboard')}>Home</Link>
+                    <Link href="/dashboard/assets" className={isActive('assets')}>Assets</Link>
+                    <Link href="/dashboard/investments" className={isActive('investments')}>Investment</Link>
+                    <Link href="/dashboard/ubersicht" className={isActive('ubersicht')}>Übersicht</Link>
+                    <Link href="/dashboard/tickets/new-ticket" className={isActive("tickets")}>Fahrkarte</Link>
                 </nav>
 
                 <nav className="hidden md:flex items-center gap-3 lg:gap-10 text-sm">

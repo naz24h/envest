@@ -3,13 +3,15 @@ import { logout } from '@/api/logout';
 import axios from 'axios';
 import _ from 'lodash';
 import * as React from 'react';
-
+import { ApiConfig } from '@/config/apiConfig'
+import dayjs from 'dayjs';
 
 
 
 
 export const StockContext = React.createContext<any>(null);
 
+const { baseUrl, apiKey } = ApiConfig
 
 export const StockContextProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -24,9 +26,9 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
         if (_.size(exchanges) === 0) {
             (async () => {
                 try {
-                    await axios.get('/api/get-exchanges')
+                    await axios.get(`${baseUrl}/general/exchanges?apitoken=${apiKey}`)
                         .then((res) => {
-                            setExchanges(res.data.data)
+                            setExchanges(res.data)
                         })
                 } catch (err: any) {
                     console.error(err)
@@ -40,7 +42,8 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
     const handleGetSymbols = async (exchanges: string) => {
         // console.log(exchanges);
         try {
-            await axios.get('/api/get-symbols?exchange=' + exchanges)
+            const url = `${baseUrl}/general/symbols/${exchanges}?apitoken=${ApiConfig.apiKey}`
+            await axios.get(url)
                 .then((res) => {
                     setSymbol(res.data);
                 })
@@ -52,8 +55,9 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
 
     // get stock live data
     const handleGetStockDataLive = async (symbol: string, exchange: string) => {
+        const url = `${baseUrl}/live/${symbol}.${exchange}?apitoken=${ApiConfig.apiKey}`
         try {
-            let res = await axios.get('/api/get-stocks-live?symbol=' + symbol + '&exchange=' + exchange);
+            let res = await axios.get(url);
             return res.data
 
         } catch (err: any) {
@@ -63,8 +67,11 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
 
     // get fundamentals data 
     const handleGetFundamentals = async (symbol: string, exchange: string) => {
+        const symbolExchange = `${symbol}.${exchange}`;
+    
+        const url = `${baseUrl}/fundamentals/${symbolExchange}?apitoken=${ApiConfig.apiKey}` 
         try {
-            let res = await axios.get('/api/get-fundamentals?symbol=' + symbol + '&exchange=' + exchange);
+            let res = await axios.get(url);
             return res.data
 
         } catch (err: any) {
@@ -83,9 +90,15 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
     }
 
     // get stock graph data
-    const handleGetStockGraphData = async (symbol: string, exchange: string, interval: string) => {
+    const handleGetStockGraphData = async (symbol: string, exchange: string, interval: string = '1h') => {
+        
+    const start = dayjs().subtract(1, 'month').format('YYYY-MM-DD')
+    const end = dayjs().format('YYYY-MM-DD')
+        
+    const url = `${baseUrl}/historicalquotes/${symbol}.${exchange}?apitoken=${ApiConfig.apiKey}&interval=${interval}&from=${start}&to=${end}`
+ 
         try {
-            let res = await axios.get('/api/get-intraday-data?symbol=' + symbol + '&exchange=' + exchange + '&interval=' + interval);
+            let res = await axios.get(url);
             return res.data
         } catch (err: any) {
             console.error(err)
@@ -94,8 +107,19 @@ export const StockContextProvider = ({ children }: { children: React.ReactNode }
 
     const getCompanyLogo = async (symbol: string, exchange: string) => {
         try {
-            let res = await axios.get('/api/get-company-logo?symbol=' + symbol + '&exchange=' + exchange);
-            return res.data
+            const fundamentals = await handleGetFundamentals(symbol, exchange)
+ 
+            const logoURL = fundamentals.General.LogoURL; 
+            // console.log({logoURL});
+            if(logoURL){
+                return {
+                    logo: `${baseUrl}${logoURL}?apitoken=${ApiConfig.apiKey}` 
+                }
+            }else {
+                return {
+                    logo: null
+                }
+            }
 
         } catch (err: any) {
             console.error(err)
