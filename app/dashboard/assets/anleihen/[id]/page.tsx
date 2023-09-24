@@ -114,6 +114,7 @@ const AnleihenPreview = () => {
                                 width={52}
                                 height={52}
                                 loading="lazy"
+                                unoptimized
                             />
                             :
                             <div className='w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center'>
